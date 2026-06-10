@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teshuva Algorithm — דף בדיקה</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; max-width: 600px; margin: 0 auto; direction: rtl; }
+    h1 { color: #7C3AED; }
+    .tweet { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+    .tweet .author { font-weight: bold; color: #1a1a1a; margin-bottom: 6px; }
+    .tweet .text { color: #374151; line-height: 1.5; }
+    .tweet[data-testid="tweetText"] .text { display: block; }
+  </style>
+</head>
+<body>
+  <h1>פיד בדיקה — האלגוריתם שחזר בתשובה</h1>
+  <p style="color:#6B7280;font-size:13px">דף זה מדמה פיד ברשת חברתית לצורך בדיקת זיהוי קטגוריות.</p>
+
+  <!-- Posts with data-testid="tweetText" so content.js picks them up -->
+
+  <div class="tweet">
+    <div class="author">@sport_fan</div>
+    <div data-testid="tweetText" class="text">
+      מכבי תל אביב ניצחה בליגת האלופות! גול בדקה ה-90 מהחלוץ ברגע קריטי.
+      ה-NBA מתחיל עונה חדשה — המשחק הראשון הלילה.
+    </div>
+  </div>
+
+  <div class="tweet">
+    <div class="author">@tech_news_il</div>
+    <div data-testid="tweetText" class="text">
+      OpenAI מכריזה על GPT-5 — בינה מלאכותית חדשה שמשנה את ה-AI לחלוטין.
+      סטארטאפ ישראלי גייס 50 מיליון דולר לפיתוח תוכנה לרכבים אוטונומיים.
+    </div>
+  </div>
+
+  <div class="tweet">
+    <div class="author">@politics_watch</div>
+    <div data-testid="tweetText" class="text">
+      הכנסת מצביעה הלילה על תקציב המדינה. ראש הממשלה נגד האופוזיציה בוויכוח סוער.
+      הבחירות הבאות עלולות להיות מוקדמות מהצפוי.
+    </div>
+  </div>
+
+  <div class="tweet">
+    <div class="author">@jewish_life</div>
+    <div data-testid="tweetText" class="text">
+      שבת שלום לכולם! פרשת השבוע — בחוקותי. הרב מדבר על חשיבות השמירה על תורה ומצוות.
+      כשרות, תפילה וקהילה — ערכי הלב של היהדות.
+    </div>
+  </div>
+
+  <div class="tweet">
+    <div class="author">@economy_daily</div>
+    <div data-testid="tweetText" class="text">
+      הדולר עלה ל-3.7 שקלים. הבורסה בתל אביב ירדה ב-2% בשל אינפלציה גוברת.
+      ריבית בנק ישראל עלתה שוב — המשכנתאות יתייקרו.
+    </div>
+  </div>
+
+  <div class="tweet">
+    <div class="author">@movie_lover</div>
+    <div data-testid="tweetText" class="text">
+      ראיתי אתמול את הסרט החדש של נולן — מדהים! מוזיקה, שחקנים, עלילה — הכל מושלם.
+      Netflix משחררת סדרה חדשה השבוע שכולם מדברים עליה.
+    </div>
+  </div>
+
+  <script>
+    // Simulates scrolling to reveal more content
+    document.addEventListener('scroll', () => {
+      console.log('scroll detected — content.js should pick this up');
+    });
+  </script>
+</body>
+</html>

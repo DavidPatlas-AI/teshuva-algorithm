@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "mascot": {
+    "visible": true,
+    "position": "bottom-right",
+    "size": "medium",
+    "sound": false
+  },
+  "categories": {
+    "politics":       { "heLabel": "פוליטיקה",    "weight": 1.0, "color": "#EF4444" },
+    "sports":         { "heLabel": "ספורט",        "weight": 1.0, "color": "#3B82F6" },
+    "entertainment":  { "heLabel": "בידור",         "weight": 1.0, "color": "#EC4899" },
+    "technology":     { "heLabel": "טכנולוגיה",    "weight": 1.0, "color": "#8B5CF6" },
+    "news":           { "heLabel": "חדשות",         "weight": 1.0, "color": "#F97316" },
+    "health":         { "heLabel": "בריאות",        "weight": 1.0, "color": "#10B981" },
+    "economy":        { "heLabel": "כלכלה",         "weight": 1.0, "color": "#F59E0B" },
+    "science":        { "heLabel": "מדע",           "weight": 1.0, "color": "#06B6D4" },
+    "religion":       { "heLabel": "דת ומסורת",    "weight": 1.0, "color": "#A78BFA" },
+    "uncategorized":  { "heLabel": "שונות",         "weight": 1.0, "color": "#9CA3AF" }
+  },
+  "idleTimeout": 60,
+  "explanationFrequency": "sometimes"
+}
