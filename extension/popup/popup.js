@@ -125,9 +125,12 @@ async function loadAll() {
   const maxHour = Math.max(...hourBuckets, 1);
   document.getElementById('time-bars').innerHTML =
     hourBuckets.map(v => `<div class="time-bar" style="height:${Math.max(3,Math.round(v/maxHour*48))}px" title="${v} ביקורים"></div>`).join('');
+  // 24 labels matching the 24 time-bar divs above — one per hour
   document.getElementById('time-labels').innerHTML =
-    ['12AM','6AM','12PM','6PM'].map((l,i) => `<div class="time-label" style="grid-column:${i*6+1}/span 6">${l}</div>`).join('') +
-    Array.from({length:24},(_,i)=>`<div class="time-label" title="שעה ${i}">${i}</div>`).join('');
+    Array.from({length:24},(_,i) => {
+      const label = i === 0 ? '12AM' : i === 6 ? '6AM' : i === 12 ? '12PM' : i === 18 ? '6PM' : ''
+      return `<div class="time-label" title="שעה ${i}:00">${label}</div>`
+    }).join('');
 
   const topDomains = Object.entries(domainCounts).sort((a,b)=>b[1]-a[1]).slice(0,10);
   const maxDomain  = topDomains[0]?.[1] || 1;

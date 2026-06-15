@@ -1,4 +1,4 @@
-var TeshuvaBundle = (() => {
+(() => {
   var __defProp = Object.defineProperty;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __esm = (fn, res) => function __init() {
@@ -6807,60 +6807,336 @@ var TeshuvaBundle = (() => {
     }
   });
 
-  // extension/content/bundle-entry.js
-  var require_bundle_entry = __commonJS({
-    "extension/content/bundle-entry.js"() {
-      init_dist();
-      init_clippy();
-      var CATEGORIES = {
-        politics: { heLabel: "\u05E4\u05D5\u05DC\u05D9\u05D8\u05D9\u05E7\u05D4", color: "#EF4444", keywords: { he: ["\u05D1\u05D7\u05D9\u05E8\u05D5\u05EA", "\u05DB\u05E0\u05E1\u05EA", "\u05DE\u05DE\u05E9\u05DC\u05D4", "\u05E9\u05E8", "\u05E8\u05D0\u05E9 \u05DE\u05DE\u05E9\u05DC\u05D4", "\u05D0\u05D5\u05E4\u05D5\u05D6\u05D9\u05E6\u05D9\u05D4", "\u05E7\u05D5\u05D0\u05DC\u05D9\u05E6\u05D9\u05D4", "\u05DE\u05E4\u05DC\u05D2\u05D4", "\u05D1\u05D9\u05D1\u05D9", "\u05D2\u05E0\u05E5", "\u05DC\u05E4\u05D9\u05D3"], en: ["election", "government", "congress", "senate", "president", "minister", "vote", "policy", "democrat", "republican", "parliament"] } },
-        sports: { heLabel: "\u05E1\u05E4\u05D5\u05E8\u05D8", color: "#3B82F6", keywords: { he: ["\u05DB\u05D3\u05D5\u05E8\u05D2\u05DC", "\u05DB\u05D3\u05D5\u05E8\u05E1\u05DC", "\u05DC\u05D9\u05D2\u05D4", "\u05D2\u05D5\u05DC", "\u05DE\u05E9\u05D7\u05E7", "\u05E9\u05D7\u05E7\u05DF", "\u05E7\u05D1\u05D5\u05E6\u05D4", "\u05D0\u05DC\u05D9\u05E4\u05D5\u05EA", "\u05DE\u05DB\u05D1\u05D9", "\u05D4\u05E4\u05D5\u05E2\u05DC"], en: ["football", "basketball", "soccer", "goal", "match", "game", "player", "team", "championship", "nba", "fifa", "score", "league"] } },
-        entertainment: { heLabel: "\u05D1\u05D9\u05D3\u05D5\u05E8", color: "#EC4899", keywords: { he: ["\u05E1\u05E8\u05D8", "\u05DE\u05D5\u05D6\u05D9\u05E7\u05D4", "\u05E9\u05D9\u05E8", "\u05D6\u05DE\u05E8", "\u05E9\u05D7\u05E7\u05DF", "\u05EA\u05D5\u05DB\u05E0\u05D9\u05EA", "\u05D1\u05D9\u05D3\u05D5\u05E8", "\u05E8\u05D9\u05D0\u05DC\u05D9\u05D8\u05D9", "\u05E1\u05D3\u05E8\u05D4"], en: ["movie", "music", "song", "singer", "actor", "show", "film", "celebrity", "tv", "series", "netflix", "youtube", "tiktok", "viral"] } },
-        technology: { heLabel: "\u05D8\u05DB\u05E0\u05D5\u05DC\u05D5\u05D2\u05D9\u05D4", color: "#8B5CF6", keywords: { he: ["\u05D1\u05D9\u05E0\u05D4 \u05DE\u05DC\u05D0\u05DB\u05D5\u05EA\u05D9\u05EA", "AI", "\u05E1\u05D8\u05D0\u05E8\u05D8\u05D0\u05E4", "\u05D0\u05E4\u05DC\u05D9\u05E7\u05E6\u05D9\u05D4", "\u05EA\u05D5\u05DB\u05E0\u05D4", "\u05E7\u05D5\u05D3", "\u05E4\u05D9\u05EA\u05D5\u05D7", "\u05D2\u05D5\u05D2\u05DC", "\u05D0\u05E4\u05DC"], en: ["ai", "artificial intelligence", "software", "startup", "app", "coding", "programming", "tech", "google", "apple", "amazon", "meta", "openai", "chatgpt"] } },
-        news: { heLabel: "\u05D7\u05D3\u05E9\u05D5\u05EA", color: "#F97316", keywords: { he: ["\u05E4\u05E6\u05E6\u05D4", "\u05DE\u05DC\u05D7\u05DE\u05D4", "\u05E9\u05E8\u05D9\u05E4\u05D4", "\u05E8\u05E2\u05D9\u05D3\u05EA \u05D0\u05D3\u05DE\u05D4", "\u05D7\u05D3\u05E9\u05D5\u05EA", "\u05E2\u05D3\u05DB\u05D5\u05DF", "\u05E4\u05D9\u05D2\u05D5\u05E2", "\u05EA\u05D0\u05D5\u05E0\u05D4", "\u05DE\u05D1\u05E6\u05E2"], en: ["breaking", "news", "update", "war", "attack", "disaster", "earthquake", "fire", "crisis", "alert", "urgent", "report"] } },
-        health: { heLabel: "\u05D1\u05E8\u05D9\u05D0\u05D5\u05EA", color: "#10B981", keywords: { he: ["\u05D1\u05E8\u05D9\u05D0\u05D5\u05EA", "\u05EA\u05E8\u05D5\u05E4\u05D4", "\u05E8\u05D5\u05E4\u05D0", "\u05DE\u05D7\u05DC\u05D4", "\u05E4\u05D9\u05D8\u05E0\u05E1", "\u05D3\u05D9\u05D0\u05D8\u05D4", "\u05EA\u05D6\u05D5\u05E0\u05D4", "\u05D5\u05D9\u05D8\u05DE\u05D9\u05DF"], en: ["health", "medicine", "doctor", "disease", "fitness", "diet", "nutrition", "mental health", "therapy", "wellness", "vaccine"] } },
-        economy: { heLabel: "\u05DB\u05DC\u05DB\u05DC\u05D4", color: "#F59E0B", keywords: { he: ["\u05DB\u05DC\u05DB\u05DC\u05D4", "\u05D1\u05D5\u05E8\u05E1\u05D4", "\u05DE\u05E0\u05D9\u05D5\u05EA", "\u05D3\u05D5\u05DC\u05E8", "\u05E9\u05E7\u05DC", "\u05D0\u05D9\u05E0\u05E4\u05DC\u05E6\u05D9\u05D4", "\u05E8\u05D9\u05D1\u05D9\u05EA", "\u05D4\u05E9\u05E7\u05E2\u05D4", "\u05E0\u05D3\u05DC\u05DF", "\u05DE\u05E9\u05DB\u05E0\u05EA\u05D0"], en: ["economy", "stocks", "market", "dollar", "inflation", "investment", "bitcoin", "crypto", "finance", "bank", "mortgage"] } },
-        science: { heLabel: "\u05DE\u05D3\u05E2", color: "#06B6D4", keywords: { he: ["\u05DE\u05D3\u05E2", "\u05D7\u05DC\u05DC", "\u05E4\u05D9\u05D6\u05D9\u05E7\u05D4", "\u05DB\u05D9\u05DE\u05D9\u05D4", "\u05D1\u05D9\u05D5\u05DC\u05D5\u05D2\u05D9\u05D4", "\u05DE\u05D7\u05E7\u05E8", "\u05D2\u05D9\u05DC\u05D5\u05D9", "\u05E0\u05D0\u05E1\u05D0", "\u05DB\u05D5\u05DB\u05D1"], en: ["science", "space", "physics", "chemistry", "biology", "research", "discovery", "nasa", "star", "planet", "evolution"] } },
-        religion: { heLabel: "\u05D3\u05EA \u05D5\u05DE\u05E1\u05D5\u05E8\u05EA", color: "#A78BFA", keywords: { he: ["\u05EA\u05D5\u05E8\u05D4", "\u05E9\u05D1\u05EA", "\u05D7\u05D2", "\u05EA\u05E4\u05D9\u05DC\u05D4", "\u05E8\u05D1", "\u05D9\u05E9\u05D9\u05D1\u05D4", "\u05D4\u05DC\u05DB\u05D4", "\u05DB\u05E9\u05E8\u05D5\u05EA", "\u05E4\u05E1\u05D7", "\u05E8\u05D0\u05E9 \u05D4\u05E9\u05E0\u05D4"], en: ["torah", "shabbat", "jewish", "prayer", "rabbi", "religion", "faith", "church", "bible", "god", "holy"] } }
-      };
-      function classify(text) {
-        if (!text || text.trim().length < 10) return "uncategorized";
-        const lower = text.toLowerCase();
-        const scores = {};
-        for (const [id, cat] of Object.entries(CATEGORIES)) {
-          scores[id] = 0;
-          for (const kw of [...cat.keywords.he, ...cat.keywords.en])
-            if (lower.includes(kw.toLowerCase())) scores[id]++;
+  // brain/categories.js
+  function getCategory(id) {
+    return CATEGORIES[id] ?? null;
+  }
+  var CATEGORIES, CATEGORY_IDS;
+  var init_categories = __esm({
+    "brain/categories.js"() {
+      CATEGORIES = {
+        politics: {
+          heLabel: "\u05E4\u05D5\u05DC\u05D9\u05D8\u05D9\u05E7\u05D4",
+          color: "#EF4444",
+          keywords: {
+            he: ["\u05D1\u05D7\u05D9\u05E8\u05D5\u05EA", "\u05DB\u05E0\u05E1\u05EA", "\u05DE\u05DE\u05E9\u05DC\u05D4", "\u05E9\u05E8", "\u05E8\u05D0\u05E9 \u05DE\u05DE\u05E9\u05DC\u05D4", "\u05D0\u05D5\u05E4\u05D5\u05D6\u05D9\u05E6\u05D9\u05D4", "\u05E7\u05D5\u05D0\u05DC\u05D9\u05E6\u05D9\u05D4", "\u05DE\u05E4\u05DC\u05D2\u05D4", "\u05E4\u05D5\u05DC\u05D9\u05D8\u05D9", "\u05D1\u05D9\u05D1\u05D9", "\u05D2\u05E0\u05E5", "\u05DC\u05E4\u05D9\u05D3", "\u05E0\u05EA\u05E0\u05D9\u05D4\u05D5", "\u05D2\u05DC\u05E0\u05D8"],
+            en: ["election", "government", "congress", "senate", "president", "minister", "vote", "policy", "democrat", "republican", "parliament", "prime minister"]
+          }
+        },
+        sports: {
+          heLabel: "\u05E1\u05E4\u05D5\u05E8\u05D8",
+          color: "#3B82F6",
+          keywords: {
+            he: ["\u05DB\u05D3\u05D5\u05E8\u05D2\u05DC", "\u05DB\u05D3\u05D5\u05E8\u05E1\u05DC", "\u05DC\u05D9\u05D2\u05D4", "\u05D2\u05D5\u05DC", "\u05DE\u05E9\u05D7\u05E7", "\u05E9\u05D7\u05E7\u05DF", "\u05E7\u05D1\u05D5\u05E6\u05D4", "\u05D0\u05DC\u05D9\u05E4\u05D5\u05EA", "\u05DE\u05DB\u05D1\u05D9", "\u05D4\u05E4\u05D5\u05E2\u05DC", "\u05D1\u05D9\u05EA\u05E8", "\u05E0\u05D1\u05D7\u05E8\u05EA"],
+            en: ["football", "basketball", "soccer", "goal", "match", "game", "player", "team", "championship", "nba", "fifa", "score", "league", "tournament"]
+          }
+        },
+        entertainment: {
+          heLabel: "\u05D1\u05D9\u05D3\u05D5\u05E8",
+          color: "#EC4899",
+          keywords: {
+            he: ["\u05E1\u05E8\u05D8", "\u05DE\u05D5\u05D6\u05D9\u05E7\u05D4", "\u05E9\u05D9\u05E8", "\u05D6\u05DE\u05E8", "\u05E9\u05D7\u05E7\u05DF", "\u05EA\u05D5\u05DB\u05E0\u05D9\u05EA", "\u05D1\u05D9\u05D3\u05D5\u05E8", "\u05E8\u05D9\u05D0\u05DC\u05D9\u05D8\u05D9", "\u05E1\u05D3\u05E8\u05D4", "\u05D0\u05DC\u05D1\u05D5\u05DD", "\u05E7\u05D5\u05E0\u05E6\u05E8\u05D8"],
+            en: ["movie", "music", "song", "singer", "actor", "show", "film", "celebrity", "tv", "series", "netflix", "spotify", "concert", "album", "viral"]
+          }
+        },
+        technology: {
+          heLabel: "\u05D8\u05DB\u05E0\u05D5\u05DC\u05D5\u05D2\u05D9\u05D4",
+          color: "#8B5CF6",
+          keywords: {
+            he: ["\u05D1\u05D9\u05E0\u05D4 \u05DE\u05DC\u05D0\u05DB\u05D5\u05EA\u05D9\u05EA", "AI", "\u05E1\u05D8\u05D0\u05E8\u05D8\u05D0\u05E4", "\u05D0\u05E4\u05DC\u05D9\u05E7\u05E6\u05D9\u05D4", "\u05EA\u05D5\u05DB\u05E0\u05D4", "\u05D7\u05D1\u05E8\u05EA \u05D8\u05E7", "\u05E7\u05D5\u05D3", "\u05E4\u05D9\u05EA\u05D5\u05D7", "\u05D2\u05D5\u05D2\u05DC", "\u05D0\u05E4\u05DC", "\u05D0\u05DE\u05D6\u05D5\u05DF", "\u05DE\u05D9\u05E7\u05E8\u05D5\u05E1\u05D5\u05E4\u05D8"],
+            en: ["ai", "artificial intelligence", "software", "startup", "app", "coding", "programming", "tech", "google", "apple", "amazon", "meta", "openai", "chatgpt", "github", "developer"]
+          }
+        },
+        news: {
+          heLabel: "\u05D7\u05D3\u05E9\u05D5\u05EA",
+          color: "#F97316",
+          keywords: {
+            he: ["\u05DE\u05DC\u05D7\u05DE\u05D4", "\u05E9\u05E8\u05D9\u05E4\u05D4", "\u05E8\u05E2\u05D9\u05D3\u05EA \u05D0\u05D3\u05DE\u05D4", "\u05D7\u05D3\u05E9\u05D5\u05EA", "\u05E2\u05D3\u05DB\u05D5\u05DF", "\u05E4\u05D9\u05D2\u05D5\u05E2", "\u05EA\u05D0\u05D5\u05E0\u05D4", "\u05D0\u05E1\u05D5\u05DF", "\u05DE\u05D1\u05E6\u05E2", "\u05D9\u05E8\u05D9", "\u05E0\u05E4\u05D2\u05E2"],
+            en: ["breaking", "news", "update", "war", "attack", "disaster", "earthquake", "fire", "crisis", "alert", "urgent", "report", "killed", "injured"]
+          }
+        },
+        health: {
+          heLabel: "\u05D1\u05E8\u05D9\u05D0\u05D5\u05EA",
+          color: "#10B981",
+          keywords: {
+            he: ["\u05D1\u05E8\u05D9\u05D0\u05D5\u05EA", "\u05EA\u05E8\u05D5\u05E4\u05D4", "\u05E8\u05D5\u05E4\u05D0", "\u05DE\u05D7\u05DC\u05D4", "\u05E4\u05D9\u05D8\u05E0\u05E1", "\u05D3\u05D9\u05D0\u05D8\u05D4", "\u05EA\u05D6\u05D5\u05E0\u05D4", "\u05D5\u05D9\u05D8\u05DE\u05D9\u05DF", "\u05E4\u05E1\u05D9\u05DB\u05D5\u05DC\u05D5\u05D2\u05D9\u05D4", "\u05E0\u05E4\u05E9", "\u05DB\u05D5\u05E9\u05E8"],
+            en: ["health", "medicine", "doctor", "disease", "fitness", "diet", "nutrition", "mental health", "therapy", "wellness", "vaccine", "hospital", "symptom"]
+          }
+        },
+        economy: {
+          heLabel: "\u05DB\u05DC\u05DB\u05DC\u05D4",
+          color: "#F59E0B",
+          keywords: {
+            he: ["\u05DB\u05DC\u05DB\u05DC\u05D4", "\u05D1\u05D5\u05E8\u05E1\u05D4", "\u05DE\u05E0\u05D9\u05D5\u05EA", "\u05D3\u05D5\u05DC\u05E8", "\u05E9\u05E7\u05DC", "\u05D0\u05D9\u05E0\u05E4\u05DC\u05E6\u05D9\u05D4", "\u05E8\u05D9\u05D1\u05D9\u05EA", "\u05D4\u05E9\u05E7\u05E2\u05D4", "\u05E0\u05D3\u05DC\u05DF", "\u05DE\u05E9\u05DB\u05E0\u05EA\u05D0", "\u05DE\u05D7\u05D9\u05E8", "\u05D9\u05D5\u05E7\u05E8"],
+            en: ["economy", "stocks", "market", "dollar", "inflation", "investment", "bitcoin", "crypto", "finance", "bank", "mortgage", "price", "gdp", "recession"]
+          }
+        },
+        science: {
+          heLabel: "\u05DE\u05D3\u05E2",
+          color: "#06B6D4",
+          keywords: {
+            he: ["\u05DE\u05D3\u05E2", "\u05D7\u05DC\u05DC", "\u05E4\u05D9\u05D6\u05D9\u05E7\u05D4", "\u05DB\u05D9\u05DE\u05D9\u05D4", "\u05D1\u05D9\u05D5\u05DC\u05D5\u05D2\u05D9\u05D4", "\u05DE\u05D7\u05E7\u05E8", "\u05D2\u05D9\u05DC\u05D5\u05D9", "\u05E0\u05D0\u05E1\u05D0", "\u05DB\u05D5\u05DB\u05D1", "\u05D7\u05D9\u05D9\u05D3\u05E7", "\u05D0\u05D1\u05D5\u05DC\u05D5\u05E6\u05D9\u05D4"],
+            en: ["science", "space", "physics", "chemistry", "biology", "research", "discovery", "nasa", "star", "planet", "evolution", "study", "experiment", "quantum"]
+          }
+        },
+        religion: {
+          heLabel: "\u05D3\u05EA \u05D5\u05DE\u05E1\u05D5\u05E8\u05EA",
+          color: "#A78BFA",
+          keywords: {
+            he: ["\u05EA\u05D5\u05E8\u05D4", "\u05E9\u05D1\u05EA", "\u05D7\u05D2", "\u05EA\u05E4\u05D9\u05DC\u05D4", "\u05E8\u05D1", "\u05D9\u05E9\u05D9\u05D1\u05D4", "\u05D4\u05DC\u05DB\u05D4", "\u05DB\u05E9\u05E8\u05D5\u05EA", "\u05E4\u05E1\u05D7", "\u05E8\u05D0\u05E9 \u05D4\u05E9\u05E0\u05D4", "\u05D9\u05D5\u05DD \u05DB\u05D9\u05E4\u05D5\u05E8", "\u05E1\u05D5\u05DB\u05D5\u05EA", "\u05D7\u05E0\u05D5\u05DB\u05D4"],
+            en: ["torah", "shabbat", "jewish", "prayer", "rabbi", "religion", "faith", "church", "bible", "god", "holy", "synagogue", "kosher"]
+          }
         }
-        const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
-        return best && best[1] > 0 ? best[0] : "uncategorized";
+      };
+      CATEGORY_IDS = Object.keys(CATEGORIES);
+    }
+  });
+
+  // brain/classifier.js
+  function scoreText(text) {
+    if (!text || text.length < MIN_TEXT_LENGTH) return {};
+    const lower = text.toLowerCase();
+    const scores = {};
+    for (const id of CATEGORY_IDS) {
+      const { keywords } = CATEGORIES[id];
+      let score = 0;
+      for (const kw of keywords.he) if (lower.includes(kw)) score++;
+      for (const kw of keywords.en) if (lower.includes(kw.toLowerCase())) score++;
+      if (score > 0) scores[id] = score;
+    }
+    return scores;
+  }
+  function classify(text) {
+    const scores = scoreText(text);
+    if (Object.keys(scores).length === 0) return "uncategorized";
+    return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  }
+  var MIN_TEXT_LENGTH;
+  var init_classifier = __esm({
+    "brain/classifier.js"() {
+      init_categories();
+      MIN_TEXT_LENGTH = 15;
+    }
+  });
+
+  // brain/state.js
+  function createState(storageAdapter) {
+    const session = {};
+    const allTime = {};
+    const weights = {};
+    function initDefaults() {
+      for (const id of CATEGORY_IDS) {
+        session[id] = 0;
+        allTime[id] = allTime[id] ?? 0;
+        weights[id] = weights[id] ?? DEFAULT_WEIGHT;
       }
-      var session = {};
-      var allTime = {};
-      for (const k of Object.keys(CATEGORIES)) {
-        session[k] = 0;
-        allTime[k] = 0;
+    }
+    async function persist() {
+      await storageAdapter.set(STORAGE_KEY, { allTime: { ...allTime }, weights: { ...weights } });
+    }
+    return {
+      // טען נתונים שמורים מהאחסון
+      async load() {
+        const saved = await storageAdapter.get(STORAGE_KEY);
+        if (saved?.allTime) Object.assign(allTime, saved.allTime);
+        if (saved?.weights) Object.assign(weights, saved.weights);
+        initDefaults();
+      },
+      // רשום צפייה בקטגוריה
+      observe(categoryId) {
+        session[categoryId] = (session[categoryId] ?? 0) + 1;
+        allTime[categoryId] = (allTime[categoryId] ?? 0) + 1;
+        persist();
+      },
+      // המשתמש הראה עניין (לחץ, שיתף, אהב)
+      positiveSignal(categoryId) {
+        weights[categoryId] = Math.min(MAX_WEIGHT, (weights[categoryId] ?? DEFAULT_WEIGHT) + WEIGHT_POSITIVE_DELTA);
+        persist();
+      },
+      // המשתמש דילג מהר
+      negativeSignal(categoryId) {
+        weights[categoryId] = Math.max(MIN_WEIGHT, (weights[categoryId] ?? DEFAULT_WEIGHT) - WEIGHT_NEGATIVE_DELTA);
+        persist();
+      },
+      // קריאת נתוני הסשן הנוכחי
+      getSessionStats() {
+        return { ...session };
+      },
+      // קריאת נתונים מצטברים מכל הזמן
+      getAllTimeStats() {
+        return { ...allTime };
+      },
+      // קריאת משקלות העניין של המשתמש
+      getWeights() {
+        return { ...weights };
+      },
+      // סה"כ פוסטים שנצפו בסשן הזה
+      getSessionTotal() {
+        return Object.values(session).reduce((sum, n) => sum + n, 0);
+      },
+      // מחק את כל הנתונים
+      async reset() {
+        for (const id of CATEGORY_IDS) {
+          session[id] = 0;
+          allTime[id] = 0;
+          weights[id] = DEFAULT_WEIGHT;
+        }
+        await storageAdapter.set(STORAGE_KEY, null);
       }
-      function observe(text) {
-        const cat = classify(text);
-        session[cat] = (session[cat] || 0) + 1;
-        allTime[cat] = (allTime[cat] || 0) + 1;
-        chrome.storage.local.get("allTime", (d) => {
-          const saved = d.allTime || {};
-          saved[cat] = (saved[cat] || 0) + 1;
-          chrome.storage.local.set({ allTime: saved });
+    };
+  }
+  var DEFAULT_WEIGHT, MAX_WEIGHT, MIN_WEIGHT, WEIGHT_POSITIVE_DELTA, WEIGHT_NEGATIVE_DELTA, STORAGE_KEY;
+  var init_state = __esm({
+    "brain/state.js"() {
+      init_categories();
+      DEFAULT_WEIGHT = 1;
+      MAX_WEIGHT = 3;
+      MIN_WEIGHT = 0.1;
+      WEIGHT_POSITIVE_DELTA = 0.15;
+      WEIGHT_NEGATIVE_DELTA = 0.08;
+      STORAGE_KEY = "teshuva_state";
+    }
+  });
+
+  // brain/explanations.js
+  function greeting() {
+    const hour = (/* @__PURE__ */ new Date()).getHours();
+    if (hour >= 5 && hour < 12) return "\u05D1\u05D5\u05E7\u05E8 \u05D8\u05D5\u05D1! \u2600\uFE0F";
+    if (hour >= 12 && hour < 17) return "\u05E6\u05D4\u05E8\u05D9\u05D9\u05DD \u05D8\u05D5\u05D1\u05D9\u05DD! \u{1F324}\uFE0F";
+    if (hour >= 17 && hour < 21) return "\u05E2\u05E8\u05D1 \u05D8\u05D5\u05D1! \u{1F306}";
+    return "\u05DC\u05D9\u05DC\u05D4 \u05D8\u05D5\u05D1! \u{1F319}";
+  }
+  function explain(categoryId, allTimeStats) {
+    const cat = getCategory(categoryId);
+    if (!cat) return null;
+    const label = cat.heLabel;
+    const total = Object.values(allTimeStats).reduce((sum, n) => sum + n, 0) || 1;
+    const count = allTimeStats[categoryId] || 0;
+    const pct = Math.round(count / total * 100);
+    if (count === 0) return `\u05D6\u05D5 \u05D4\u05E4\u05E2\u05DD \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 ${label} \u2014 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DE\u05EA\u05E0\u05E1\u05D4.`;
+    if (pct >= 40) return `\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05D4\u05E8\u05D1\u05D4 ${label} (${pct}% \u05DE\u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA). \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DC\u05DE\u05D3 \u05E9\u05D6\u05D4 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA.`;
+    if (pct >= 15) return `${label} \u05DE\u05D4\u05D5\u05D5\u05D4 ${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF \u05E9\u05DC\u05DA \u2014 \u05E0\u05D5\u05E9\u05D0 \u05E9\u05D7\u05D5\u05D6\u05E8 \u05D0\u05E6\u05DC\u05DA.`;
+    return `${label} \u05DE\u05D5\u05E4\u05D9\u05E2 \u05DC\u05E4\u05E2\u05DE\u05D9\u05DD (${pct}% \u05DE\u05D4\u05E4\u05D9\u05D3). \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E2\u05D3\u05D9\u05D9\u05DF \u05DE\u05E0\u05E1\u05D4 \u05DC\u05D4\u05D1\u05D9\u05DF \u05D0\u05DD \u05D6\u05D4 \u05E8\u05DC\u05D5\u05D5\u05E0\u05D8\u05D9 \u05DC\u05DA.`;
+  }
+  function weeklyInsights(allTimeStats, historyStats = {}) {
+    const insights = [];
+    const total = Object.values(allTimeStats).reduce((sum, n) => sum + n, 0);
+    if (total === 0) return ["\u05E2\u05D5\u05D3 \u05DC\u05D0 \u05E6\u05D1\u05E8\u05EA \u05DE\u05E1\u05E4\u05D9\u05E7 \u05E0\u05EA\u05D5\u05E0\u05D9\u05DD. \u05D4\u05DE\u05E9\u05DA \u05DC\u05D2\u05DC\u05D5\u05DC!"];
+    const top = Object.entries(allTimeStats).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1])[0];
+    if (top) {
+      const label = getCategory(top[0])?.heLabel ?? top[0];
+      const pct = Math.round(top[1] / total * 100);
+      insights.push(`\u05D4\u05E0\u05D5\u05E9\u05D0 \u05E9\u05D0\u05EA\u05D4 \u05E0\u05D7\u05E9\u05E3 \u05D0\u05DC\u05D9\u05D5 \u05D4\u05DB\u05D9 \u05D4\u05E8\u05D1\u05D4 \u05D4\u05D5\u05D0 ${label} \u2014 ${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF.`);
+    }
+    const socialVisits = Object.values(historyStats.socialCounts ?? {}).reduce((s, n) => s + n, 0);
+    if (socialVisits > 0) {
+      insights.push(`\u05D1\u05D9\u05E7\u05E8\u05EA \u05D1\u05E8\u05E9\u05EA\u05D5\u05EA \u05D7\u05D1\u05E8\u05EA\u05D9\u05D5\u05EA ${socialVisits.toLocaleString()} \u05E4\u05E2\u05DE\u05D9\u05DD \u05D4\u05E9\u05D1\u05D5\u05E2.`);
+    }
+    if (historyStats.peakHour != null) {
+      insights.push(`\u05D0\u05EA\u05D4 \u05D2\u05D5\u05DC\u05E9 \u05D4\u05DB\u05D9 \u05D4\u05E8\u05D1\u05D4 \u05D1\u05E9\u05E2\u05D4 ${historyStats.peakHour}:00.`);
+    }
+    return insights;
+  }
+  var init_explanations = __esm({
+    "brain/explanations.js"() {
+      init_categories();
+    }
+  });
+
+  // brain/brain-api.js
+  function createBrain(storageAdapter) {
+    const state = createState(storageAdapter);
+    return {
+      // טען state שמור — לקרוא פעם אחת בהפעלה
+      load() {
+        return state.load();
+      },
+      // רשום פוסט חדש שנצפה — מחזיר את הקטגוריה
+      observe(text) {
+        const categoryId = classify(text);
+        if (categoryId !== "uncategorized") state.observe(categoryId);
+        return categoryId;
+      },
+      // הסבר למה המשתמש רואה תוכן של קטגוריה זו
+      explain(categoryId) {
+        return explain(categoryId, state.getAllTimeStats());
+      },
+      // ברכה לפי שעה
+      greeting() {
+        return greeting();
+      },
+      // תובנות שבועיות — מחרוזות לטאב "תובנות" בפופ-אפ
+      weeklyInsights(historyStats) {
+        return weeklyInsights(state.getAllTimeStats(), historyStats);
+      },
+      // כל הסטטיסטיקות — לפופ-אפ
+      getStats() {
+        return {
+          session: state.getSessionStats(),
+          allTime: state.getAllTimeStats(),
+          weights: state.getWeights(),
+          total: state.getSessionTotal(),
+          categories: CATEGORIES,
+          ids: CATEGORY_IDS
+        };
+      },
+      // המשתמש הראה עניין חיובי בתוכן
+      positive(categoryId) {
+        state.positiveSignal(categoryId);
+      },
+      // המשתמש דילג מהר
+      negative(categoryId) {
+        state.negativeSignal(categoryId);
+      },
+      // מחק את כל הנתונים
+      reset() {
+        return state.reset();
+      },
+      // כלי עזר לדיבוג — ניקוד הטקסט בלי לשמור
+      debug: {
+        score: scoreText,
+        classify
+      }
+    };
+  }
+  var init_brain_api = __esm({
+    "brain/brain-api.js"() {
+      init_classifier();
+      init_state();
+      init_explanations();
+      init_categories();
+    }
+  });
+
+  // brain/adapters/chrome-adapter.js
+  function createChromeAdapter() {
+    return {
+      get(key) {
+        return new Promise((resolve) => {
+          chrome.storage.local.get(key, (result) => resolve(result[key] ?? null));
         });
-        return cat;
+      },
+      set(key, value) {
+        return new Promise((resolve) => {
+          chrome.storage.local.set({ [key]: value }, resolve);
+        });
       }
-      function explain(catId) {
-        const cat = CATEGORIES[catId];
-        const label = cat?.heLabel || catId;
-        const total = Object.values(allTime).reduce((a, b) => a + b, 0) || 1;
-        const pct = Math.round((allTime[catId] || 0) / total * 100);
-        if (pct === 0) return `\u05E0\u05E8\u05D0\u05D4 \u05E9\u05D6\u05D5 \u05E4\u05E2\u05DD \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 ${label}!`;
-        return `\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 ${label} \u05DB\u05D9 ${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF \u05E9\u05DC\u05DA \u05D4\u05D5\u05D0 \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D4\u05D6\u05D4.`;
-      }
-      var SITE_SELECTORS = {
+    };
+  }
+  var init_chrome_adapter = __esm({
+    "brain/adapters/chrome-adapter.js"() {
+    }
+  });
+
+  // extension/content/site-adapters.js
+  function getSelectorForCurrentSite() {
+    const hostname = location.hostname.replace("www.", "");
+    return SITE_SELECTORS[hostname] ?? null;
+  }
+  var SITE_SELECTORS;
+  var init_site_adapters = __esm({
+    "extension/content/site-adapters.js"() {
+      SITE_SELECTORS = {
         "twitter.com": "[data-testid='tweetText']",
         "x.com": "[data-testid='tweetText']",
         "facebook.com": "[data-ad-preview='message'], [dir='auto']",
@@ -6869,52 +7145,72 @@ var TeshuvaBundle = (() => {
         "tiktok.com": "[data-e2e='browse-video-desc']",
         "localhost": "[data-testid='tweetText']"
       };
+    }
+  });
+
+  // extension/content/feed-observer.js
+  function startFeedObserver(selector, onElement) {
+    if (!selector) return;
+    const seen = /* @__PURE__ */ new WeakSet();
+    function processEl(el) {
+      if (seen.has(el)) return;
+      seen.add(el);
+      const text = (el.innerText || el.textContent || "").trim();
+      if (text.length >= MIN_TEXT_LENGTH2) onElement(el, text);
+    }
+    function scanVisible() {
+      document.querySelectorAll(selector).forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top >= 0 && r.top < window.innerHeight) processEl(el);
+      });
+    }
+    scanVisible();
+    new MutationObserver(scanVisible).observe(document.body, { childList: true, subtree: true });
+    window.addEventListener("scroll", () => setTimeout(scanVisible, 300), { passive: true });
+  }
+  var MIN_TEXT_LENGTH2;
+  var init_feed_observer = __esm({
+    "extension/content/feed-observer.js"() {
+      MIN_TEXT_LENGTH2 = 15;
+    }
+  });
+
+  // extension/content/bundle-entry.js
+  var require_bundle_entry = __commonJS({
+    "extension/content/bundle-entry.js"() {
+      init_dist();
+      init_clippy();
+      init_brain_api();
+      init_chrome_adapter();
+      init_site_adapters();
+      init_feed_observer();
+      var SPEAK_COOLDOWN = 9e3;
       (async () => {
-        await new Promise((resolve) => {
-          chrome.storage.local.get("allTime", (d) => {
-            if (d.allTime) Object.assign(allTime, d.allTime);
-            resolve();
-          });
-        });
+        const brain = createBrain(createChromeAdapter());
+        await brain.load();
         const agent = await initAgent(Clippy);
         agent.show();
-        const el = document.querySelector(".clippy-container") || document.querySelector(".clippy");
-        if (el) {
-          el.style.cssText += ";position:fixed!important;bottom:30px!important;right:30px!important;top:auto!important;left:auto!important;z-index:2147483647!important;";
+        const clippyEl = agent._el;
+        if (clippyEl) {
+          clippyEl.style.cssText += ";position:fixed!important;bottom:30px!important;right:30px!important;top:auto!important;left:auto!important;z-index:2147483647!important;";
         }
         await new Promise((r) => setTimeout(r, 800));
-        agent.speak("\u05E9\u05DC\u05D5\u05DD! \u05D0\u05E0\u05D9 \u05DB\u05D0\u05DF \u05DB\u05D3\u05D9 \u05DC\u05D4\u05E1\u05D1\u05D9\u05E8 \u05DC\u05DE\u05D4 \u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4.");
+        agent.speak(brain.greeting());
         agent.animate();
-        const hostname = location.hostname.replace("www.", "");
-        const selector = SITE_SELECTORS[hostname];
+        const selector = getSelectorForCurrentSite();
         if (!selector) return;
-        const seen = /* @__PURE__ */ new WeakSet();
         let lastSpeak = 0;
-        const COOLDOWN = 9e3;
-        function processElement(el2) {
-          if (seen.has(el2)) return;
-          seen.add(el2);
-          const text = (el2.innerText || el2.textContent || "").trim();
-          if (text.length < 15) return;
-          const catId = observe(text);
+        startFeedObserver(selector, (_el, text) => {
+          const catId = brain.observe(text);
           const now = Date.now();
-          if (catId !== "uncategorized" && now - lastSpeak > COOLDOWN) {
+          if (catId !== "uncategorized" && now - lastSpeak > SPEAK_COOLDOWN) {
             lastSpeak = now;
             agent.animate();
-            setTimeout(() => agent.speak(explain(catId)), 600);
+            setTimeout(() => agent.speak(brain.explain(catId)), 600);
           }
-        }
-        function scanVisible() {
-          document.querySelectorAll(selector).forEach((el2) => {
-            const r = el2.getBoundingClientRect();
-            if (r.top >= 0 && r.top < window.innerHeight) processElement(el2);
-          });
-        }
-        scanVisible();
-        new MutationObserver(scanVisible).observe(document.body, { childList: true, subtree: true });
-        window.addEventListener("scroll", () => setTimeout(scanVisible, 300), { passive: true });
+        });
       })();
     }
   });
-  return require_bundle_entry();
+  require_bundle_entry();
 })();

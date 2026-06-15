@@ -6834,43 +6834,43 @@
       (async () => {
         const agent = await initAgent(Clippy);
         agent.show();
+        const clippyEl = agent._el;
         await new Promise((r) => setTimeout(r, 700));
         agent.speak(getGreeting());
         agent.animate();
         let dragging = false;
         let lastX, lastY;
-        document.addEventListener("mousedown", (e) => {
-          const el = e.target.closest(".clippy-container");
-          if (!el) return;
-          dragging = true;
-          lastX = e.screenX;
-          lastY = e.screenY;
-          window.desktopAPI.startDrag();
-          e.preventDefault();
-        });
-        document.addEventListener("mousemove", (e) => {
-          const overClippy = !!e.target.closest(".clippy-container");
-          if (overClippy) {
-            window.desktopAPI.mouseEnter();
-          } else if (!dragging) {
-            window.desktopAPI.mouseLeave();
-          }
-          if (dragging) {
-            const dx = e.screenX - lastX;
-            const dy = e.screenY - lastY;
-            window.desktopAPI.moveWindow(dx, dy);
+        if (clippyEl) {
+          clippyEl.addEventListener("mousedown", (e) => {
+            dragging = true;
             lastX = e.screenX;
             lastY = e.screenY;
-          }
+            window.desktopAPI.startDrag();
+            e.preventDefault();
+          });
+          clippyEl.addEventListener("click", () => {
+            const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+            agent.speak(msg);
+            agent.animate();
+          });
+          clippyEl.addEventListener("mouseenter", () => {
+            window.desktopAPI.mouseEnter();
+          });
+          clippyEl.addEventListener("mouseleave", () => {
+            if (!dragging) window.desktopAPI.mouseLeave();
+          });
+        }
+        document.addEventListener("mousemove", (e) => {
+          if (!dragging) return;
+          const dx = e.screenX - lastX;
+          const dy = e.screenY - lastY;
+          window.desktopAPI.moveWindow(dx, dy);
+          lastX = e.screenX;
+          lastY = e.screenY;
         });
         document.addEventListener("mouseup", () => {
           dragging = false;
-        });
-        document.addEventListener("click", (e) => {
-          if (!e.target.closest(".clippy-container")) return;
-          const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
-          agent.speak(msg);
-          agent.animate();
+          window.desktopAPI.mouseLeave();
         });
         setInterval(() => {
           agent.animate();
