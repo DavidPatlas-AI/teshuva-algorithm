@@ -1,86 +1,92 @@
-// גשר בין המוח (brain-api) לדמות (IMascot) — מחליט מתי לדבר ומה לומר
+// גשר יחיד בין brain ↔ mascot ↔ user
+// bundle-entry.js מייצר instance מזה ומפנה אליו הכל
 
-import { shouldAsk, markAsked, buildQuestion } from '../brain/questions.js'
-
-// כמה שניות בין דיבורים רצופים
-const SPEAK_COOLDOWN_MS = 9000
+import { createQuestions }           from '../brain/questions.js'
+import { SPEAK_COOLDOWN_MS, ONBOARDING_KEY } from '../shared/constants.js'
+import { pickMood, playMood }         from './animations.js'
 
 export function createMascotController(mascot, brain) {
-  let lastSpokenAt = 0
-  let pendingQuestion = null
+  const questions   = createQuestions()
+  let lastSpokenAt  = 0
+  let pendingQ      = null   // שאלה פתוחה שממתינה לתשובה
 
   function canSpeak() {
     return Date.now() - lastSpokenAt > SPEAK_COOLDOWN_MS
   }
 
-  function speak(text) {
-    if (!canSpeak()) return
+  function speak(text, mood = 'idle') {
+    if (!canSpeak()) return false
     lastSpokenAt = Date.now()
+    playMood(mascot, mood)
     mascot.say(text)
-    mascot.animate()
+    return true
   }
 
   return {
-    // נקרא בהפעלה — ברכה
+    // ── הפעלה ─────────────────────────────────────────────────
     async start() {
       await brain.load()
-      setTimeout(() => {
-        speak(brain.greeting())
-      }, 800)
+
+      // הודעת פתיחה — אחת מהשתיים
+      const isNew = await new Promise(resolve =>
+        chrome.storage.local.get(ONBOARDING_KEY, d => resolve(!d[ONBOARDING_KEY]))
+      )
+
+      if (isNew) {
+        chrome.storage.local.set({ [ONBOARDING_KEY]: true })
+        setTimeout(() => {
+          speak('שלום! אני האלגוריתם שחזר בתשובה. אצפה במה שאתה רואה ואסביר למה.', 'greet')
+          setTimeout(() => speak('פשוט גלול כרגיל — אני אלמד ממך אוטומטית.', 'think'), 6_000)
+        }, 800)
+      } else {
+        setTimeout(() => speak(brain.greeting(), 'greet'), 800)
+      }
     },
 
-    // נקרא כשפוסט חדש גולש — מחזיר קטגוריה
+    // ── פוסט חדש גולש ────────────────────────────────────────
     onPostSeen(text) {
       const catId = brain.observe(text)
       if (catId === 'uncategorized') return catId
 
-      // אחרי כמה פוסטים — שאל את המשתמש
-      const stats = brain.getStats()
-      const sessionCount = stats.session[catId] || 0
+      const { session } = brain.getStats()
+      const count       = session[catId] ?? 0
 
-      if (shouldAsk(catId, sessionCount)) {
-        const question = buildQuestion(catId)
-        if (question && canSpeak()) {
-          pendingQuestion = question
-          markAsked(catId)
+      if (questions.shouldAsk(catId, count)) {
+        const q = questions.build(catId)
+        if (q && canSpeak()) {
+          pendingQ     = q
           lastSpokenAt = Date.now()
-          mascot.say(question.text)
-          mascot.animate()
+          questions.markAsked(catId)
+          playMood(mascot, 'think')
+          mascot.say(q.text)
         }
-      } else if (canSpeak()) {
-        lastSpokenAt = Date.now()
-        setTimeout(() => mascot.say(brain.explain(catId)), 600)
-        mascot.animate()
+      } else {
+        speak(brain.explain(catId), pickMood(brain.getStats().weights?.[catId] ?? 1))
       }
 
       return catId
     },
 
-    // תשובה חיובית מהמשתמש (👍)
+    // ── משוב מהמשתמש ─────────────────────────────────────────
     onPositive() {
-      if (!pendingQuestion) return
-      brain.positive(pendingQuestion.categoryId)
-      speak(pendingQuestion.answers.yes)
-      pendingQuestion = null
+      if (!pendingQ) return
+      brain.positive(pendingQ.categoryId)
+      speak(pendingQ.answers.yes, 'excited')
+      pendingQ = null
     },
 
-    // תשובה שלילית מהמשתמש (👎)
     onNegative() {
-      if (!pendingQuestion) return
-      brain.negative(pendingQuestion.categoryId)
-      speak(pendingQuestion.answers.no)
-      pendingQuestion = null
+      if (!pendingQ) return
+      brain.negative(pendingQ.categoryId)
+      speak(pendingQ.answers.no, 'confused')
+      pendingQ = null
     },
 
-    // "למה אני רואה את זה?" — לחיצה ידנית
+    // ── "למה אני רואה את זה?" ─────────────────────────────────
     onWhyClick(categoryId) {
-      const { allTime } = brain.getStats()
-      speak(brain.explain(categoryId))
+      speak(brain.explain(categoryId), 'think')
     },
 
-    // קבל את הסטטיסטיקות המלאות
-    getStats() {
-      return brain.getStats()
-    },
+    getStats() { return brain.getStats() },
   }
 }

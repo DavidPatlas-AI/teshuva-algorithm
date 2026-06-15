@@ -6919,6 +6919,18 @@
     }
   });
 
+  // shared/constants.js
+  var STORAGE_KEY, ONBOARDING_KEY, SPEAK_COOLDOWN_MS, ASK_AFTER_COUNT, ASK_COOLDOWN_MS;
+  var init_constants = __esm({
+    "shared/constants.js"() {
+      STORAGE_KEY = "teshuva_state";
+      ONBOARDING_KEY = "teshuva_onboarded";
+      SPEAK_COOLDOWN_MS = 9e3;
+      ASK_AFTER_COUNT = 5;
+      ASK_COOLDOWN_MS = 5 * 6e4;
+    }
+  });
+
   // brain/state.js
   function createState(storageAdapter) {
     const session = {};
@@ -6985,16 +6997,16 @@
       }
     };
   }
-  var DEFAULT_WEIGHT, MAX_WEIGHT, MIN_WEIGHT, WEIGHT_POSITIVE_DELTA, WEIGHT_NEGATIVE_DELTA, STORAGE_KEY;
+  var DEFAULT_WEIGHT, MAX_WEIGHT, MIN_WEIGHT, WEIGHT_POSITIVE_DELTA, WEIGHT_NEGATIVE_DELTA;
   var init_state = __esm({
     "brain/state.js"() {
       init_categories();
+      init_constants();
       DEFAULT_WEIGHT = 1;
       MAX_WEIGHT = 3;
       MIN_WEIGHT = 0.1;
       WEIGHT_POSITIVE_DELTA = 0.15;
       WEIGHT_NEGATIVE_DELTA = 0.08;
-      STORAGE_KEY = "teshuva_state";
     }
   });
 
@@ -7128,6 +7140,164 @@
     }
   });
 
+  // brain/questions.js
+  function createQuestions() {
+    let lastAskedAt = 0;
+    const asked = /* @__PURE__ */ new Set();
+    return {
+      // האם הגיע הזמן לשאול על קטגוריה זו?
+      shouldAsk(categoryId, sessionCount) {
+        if (sessionCount < ASK_AFTER_COUNT) return false;
+        if (asked.has(categoryId)) return false;
+        if (Date.now() - lastAskedAt < ASK_COOLDOWN_MS) return false;
+        return true;
+      },
+      // סמן ששאלנו
+      markAsked(categoryId) {
+        asked.add(categoryId);
+        lastAskedAt = Date.now();
+      },
+      // בנה שאלה מוכנה להצגה
+      build(categoryId) {
+        const cat = getCategory(categoryId);
+        if (!cat) return null;
+        const label = cat.heLabel;
+        return {
+          text: `\u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E0\u05D7\u05E9\u05E3 \u05D4\u05E8\u05D1\u05D4 \u05DC${label}. \u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA? \u05DC\u05D7\u05E5 + \u05DB\u05DF / - \u05DC\u05D0`,
+          categoryId,
+          answers: {
+            yes: `\u05EA\u05D5\u05D3\u05D4! \u05D0\u05E1\u05DE\u05DF \u05E9\u05D0\u05EA\u05D4 \u05D0\u05D5\u05D4\u05D1 ${label}.`,
+            no: `\u05D4\u05D1\u05E0\u05EA\u05D9, \u05D0\u05E0\u05E1\u05D4 \u05DC\u05D6\u05D4\u05D5\u05EA \u05E4\u05D7\u05D5\u05EA ${label} \u05D1\u05E2\u05EA\u05D9\u05D3.`
+          }
+        };
+      },
+      // "למה אני רואה את זה?" — הסבר ידני על בקשה
+      whyDoISeeThis(categoryId, allTimeStats) {
+        const cat = getCategory(categoryId);
+        if (!cat) return "\u05DC\u05D0 \u05D4\u05E6\u05DC\u05D7\u05EA\u05D9 \u05DC\u05D6\u05D4\u05D5\u05EA \u05D0\u05EA \u05D4\u05E0\u05D5\u05E9\u05D0.";
+        const label = cat.heLabel;
+        const total = Object.values(allTimeStats).reduce((s, n) => s + n, 0) || 1;
+        const pct = Math.round((allTimeStats[categoryId] ?? 0) / total * 100);
+        if (pct === 0) return `\u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DE\u05E0\u05E1\u05D4 \u05DC\u05D4\u05E6\u05D9\u05D2 \u05DC\u05DA ${label} \u05DC\u05E8\u05D0\u05D5\u05EA \u05D0\u05DD \u05D6\u05D4 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF.`;
+        if (pct >= 50) return `${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF \u05E9\u05DC\u05DA \u05D4\u05D5\u05D0 ${label}. \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DE\u05D0\u05DE\u05D9\u05DF \u05E9\u05D6\u05D4 \u05D4\u05E0\u05D5\u05E9\u05D0 \u05E9\u05DC\u05DA!`;
+        if (pct >= 20) return `${label} \u05DE\u05D4\u05D5\u05D5\u05D4 ${pct}% \u05DE\u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA. \u05D0\u05EA\u05D4 \u05E0\u05D7\u05E9\u05E3 \u05DC\u05D6\u05D4 \u05DC\u05E2\u05D9\u05EA\u05D9\u05DD \u05E7\u05E8\u05D5\u05D1\u05D5\u05EA.`;
+        return `${label} \u05DE\u05D5\u05E4\u05D9\u05E2 \u05D1-${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF \u05E9\u05DC\u05DA. \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D5\u05DE\u05D3 \u05D0\u05EA \u05D4\u05D8\u05E2\u05DD \u05E9\u05DC\u05DA.`;
+      }
+    };
+  }
+  var init_questions = __esm({
+    "brain/questions.js"() {
+      init_categories();
+      init_constants();
+    }
+  });
+
+  // mascot/animations.js
+  function pickMood(weight) {
+    if (weight >= 2) return "excited";
+    if (weight <= 0.3) return "confused";
+    return "idle";
+  }
+  function playMood(mascot, mood = "idle") {
+    const list = MOOD_ANIMATIONS[mood] ?? MOOD_ANIMATIONS.idle;
+    const name = list[Math.floor(Math.random() * list.length)];
+    mascot.animate(name);
+  }
+  var MOOD_ANIMATIONS;
+  var init_animations = __esm({
+    "mascot/animations.js"() {
+      MOOD_ANIMATIONS = {
+        greet: ["Wave", "Greeting"],
+        think: ["Thinking", "LookDown"],
+        excited: ["Congratulate", "Wave"],
+        confused: ["LookLeft", "LookRight"],
+        idle: ["IdleRopePile", "IdleFingerTap"]
+      };
+    }
+  });
+
+  // mascot/mascot-controller.js
+  function createMascotController(mascot, brain) {
+    const questions = createQuestions();
+    let lastSpokenAt = 0;
+    let pendingQ = null;
+    function canSpeak() {
+      return Date.now() - lastSpokenAt > SPEAK_COOLDOWN_MS;
+    }
+    function speak(text, mood = "idle") {
+      if (!canSpeak()) return false;
+      lastSpokenAt = Date.now();
+      playMood(mascot, mood);
+      mascot.say(text);
+      return true;
+    }
+    return {
+      // ── הפעלה ─────────────────────────────────────────────────
+      async start() {
+        await brain.load();
+        const isNew = await new Promise(
+          (resolve) => chrome.storage.local.get(ONBOARDING_KEY, (d) => resolve(!d[ONBOARDING_KEY]))
+        );
+        if (isNew) {
+          chrome.storage.local.set({ [ONBOARDING_KEY]: true });
+          setTimeout(() => {
+            speak("\u05E9\u05DC\u05D5\u05DD! \u05D0\u05E0\u05D9 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E9\u05D7\u05D6\u05E8 \u05D1\u05EA\u05E9\u05D5\u05D1\u05D4. \u05D0\u05E6\u05E4\u05D4 \u05D1\u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05D5\u05D0\u05E1\u05D1\u05D9\u05E8 \u05DC\u05DE\u05D4.", "greet");
+            setTimeout(() => speak("\u05E4\u05E9\u05D5\u05D8 \u05D2\u05DC\u05D5\u05DC \u05DB\u05E8\u05D2\u05D9\u05DC \u2014 \u05D0\u05E0\u05D9 \u05D0\u05DC\u05DE\u05D3 \u05DE\u05DE\u05DA \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.", "think"), 6e3);
+          }, 800);
+        } else {
+          setTimeout(() => speak(brain.greeting(), "greet"), 800);
+        }
+      },
+      // ── פוסט חדש גולש ────────────────────────────────────────
+      onPostSeen(text) {
+        const catId = brain.observe(text);
+        if (catId === "uncategorized") return catId;
+        const { session } = brain.getStats();
+        const count = session[catId] ?? 0;
+        if (questions.shouldAsk(catId, count)) {
+          const q = questions.build(catId);
+          if (q && canSpeak()) {
+            pendingQ = q;
+            lastSpokenAt = Date.now();
+            questions.markAsked(catId);
+            playMood(mascot, "think");
+            mascot.say(q.text);
+          }
+        } else {
+          speak(brain.explain(catId), pickMood(brain.getStats().weights?.[catId] ?? 1));
+        }
+        return catId;
+      },
+      // ── משוב מהמשתמש ─────────────────────────────────────────
+      onPositive() {
+        if (!pendingQ) return;
+        brain.positive(pendingQ.categoryId);
+        speak(pendingQ.answers.yes, "excited");
+        pendingQ = null;
+      },
+      onNegative() {
+        if (!pendingQ) return;
+        brain.negative(pendingQ.categoryId);
+        speak(pendingQ.answers.no, "confused");
+        pendingQ = null;
+      },
+      // ── "למה אני רואה את זה?" ─────────────────────────────────
+      onWhyClick(categoryId) {
+        speak(brain.explain(categoryId), "think");
+      },
+      getStats() {
+        return brain.getStats();
+      }
+    };
+  }
+  var init_mascot_controller = __esm({
+    "mascot/mascot-controller.js"() {
+      init_questions();
+      init_constants();
+      init_animations();
+    }
+  });
+
   // extension/content/site-adapters.js
   function getSelectorForCurrentSite() {
     const hostname = location.hostname.replace("www.", "");
@@ -7175,41 +7345,6 @@
     }
   });
 
-  // brain/questions.js
-  function shouldAsk(categoryId, sessionCount) {
-    if (sessionCount < ASK_AFTER_COUNT) return false;
-    if (askedCategories.has(categoryId)) return false;
-    if (Date.now() - lastAskedAt < ASK_COOLDOWN_MS) return false;
-    return true;
-  }
-  function markAsked(categoryId) {
-    askedCategories.add(categoryId);
-    lastAskedAt = Date.now();
-  }
-  function buildQuestion(categoryId) {
-    const cat = getCategory(categoryId);
-    if (!cat) return null;
-    const label = cat.heLabel;
-    return {
-      text: `\u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E0\u05D7\u05E9\u05E3 \u05D4\u05E8\u05D1\u05D4 \u05DC${label}. \u05D4\u05D0\u05DD \u05D6\u05D4 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA? \u05DC\u05D7\u05E5 \u{1F44D} \u05DB\u05DF / \u{1F44E} \u05DC\u05D0`,
-      categoryId,
-      answers: {
-        yes: `\u05EA\u05D5\u05D3\u05D4! \u05D0\u05E1\u05DE\u05DF \u05E9\u05D0\u05EA\u05D4 \u05D0\u05D5\u05D4\u05D1 ${label}.`,
-        no: `\u05D4\u05D1\u05E0\u05EA\u05D9, \u05D0\u05E0\u05E1\u05D4 \u05DC\u05D6\u05D4\u05D5\u05EA \u05E4\u05D7\u05D5\u05EA ${label} \u05D1\u05E2\u05EA\u05D9\u05D3.`
-      }
-    };
-  }
-  var ASK_AFTER_COUNT, ASK_COOLDOWN_MS, lastAskedAt, askedCategories;
-  var init_questions = __esm({
-    "brain/questions.js"() {
-      init_categories();
-      ASK_AFTER_COUNT = 5;
-      ASK_COOLDOWN_MS = 5 * 60 * 1e3;
-      lastAskedAt = 0;
-      askedCategories = /* @__PURE__ */ new Set();
-    }
-  });
-
   // extension/content/bundle-entry.js
   var require_bundle_entry = __commonJS({
     "extension/content/bundle-entry.js"() {
@@ -7217,72 +7352,32 @@
       init_clippy();
       init_brain_api();
       init_chrome_adapter();
+      init_mascot_controller();
       init_site_adapters();
       init_feed_observer();
-      init_questions();
-      var SPEAK_COOLDOWN = 9e3;
-      var ONBOARDING_KEY = "teshuva_onboarded";
       (async () => {
-        const brain = createBrain(createChromeAdapter());
-        await brain.load();
         const agent = await initAgent(Clippy);
         agent.show();
         const clippyEl = agent._el;
         if (clippyEl) {
           clippyEl.style.cssText += ";position:fixed!important;bottom:30px!important;right:30px!important;top:auto!important;left:auto!important;z-index:2147483647!important;";
         }
-        await new Promise((r) => setTimeout(r, 800));
-        const isNew = await new Promise((resolve) => {
-          chrome.storage.local.get(ONBOARDING_KEY, (d) => resolve(!d[ONBOARDING_KEY]));
-        });
-        if (isNew) {
-          chrome.storage.local.set({ [ONBOARDING_KEY]: true });
-          agent.speak("\u05E9\u05DC\u05D5\u05DD! \u05D0\u05E0\u05D9 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E9\u05D7\u05D6\u05E8 \u05D1\u05EA\u05E9\u05D5\u05D1\u05D4. \u05D0\u05E6\u05E4\u05D4 \u05D1\u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05D5\u05D0\u05E1\u05D1\u05D9\u05E8 \u05DC\u05DE\u05D4.");
-          agent.animate();
-          setTimeout(() => {
-            agent.speak("\u05E4\u05E9\u05D5\u05D8 \u05D2\u05DC\u05D5\u05DC \u05DB\u05E8\u05D2\u05D9\u05DC \u2014 \u05D0\u05E0\u05D9 \u05D0\u05DC\u05DE\u05D3 \u05DE\u05DE\u05DA \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.");
-            agent.animate();
-          }, 6e3);
-        } else {
-          agent.speak(brain.greeting());
-          agent.animate();
-        }
+        const mascot = {
+          say: (text) => agent.speak(text),
+          animate: (name) => name ? agent.play(name) : agent.animate(),
+          show: () => agent.show(),
+          hide: () => agent.hide(),
+          onClick: (cb) => clippyEl?.addEventListener("click", cb)
+        };
+        const brain = createBrain(createChromeAdapter());
+        const controller = createMascotController(mascot, brain);
+        await controller.start();
         const selector = getSelectorForCurrentSite();
         if (!selector) return;
-        let lastSpeak = 0;
-        let pendingQuestion = null;
-        startFeedObserver(selector, (_el, text) => {
-          const catId = brain.observe(text);
-          const now = Date.now();
-          if (catId === "uncategorized" || now - lastSpeak <= SPEAK_COOLDOWN) return;
-          const stats = brain.getStats();
-          const sessionCount = stats.session[catId] || 0;
-          if (shouldAsk(catId, sessionCount)) {
-            const question = buildQuestion(catId);
-            if (question) {
-              pendingQuestion = question;
-              markAsked(catId);
-              lastSpeak = now;
-              agent.animate();
-              agent.speak(question.text);
-            }
-          } else {
-            lastSpeak = now;
-            agent.animate();
-            setTimeout(() => agent.speak(brain.explain(catId)), 600);
-          }
-        });
+        startFeedObserver(selector, (_el, text) => controller.onPostSeen(text));
         document.addEventListener("keydown", (e) => {
-          if (!pendingQuestion) return;
-          if (e.key === "+" || e.key === "=") {
-            brain.positive(pendingQuestion.categoryId);
-            agent.speak(pendingQuestion.answers.yes);
-            pendingQuestion = null;
-          } else if (e.key === "-") {
-            brain.negative(pendingQuestion.categoryId);
-            agent.speak(pendingQuestion.answers.no);
-            pendingQuestion = null;
-          }
+          if (e.key === "+" || e.key === "=") controller.onPositive();
+          else if (e.key === "-") controller.onNegative();
         });
       })();
     }

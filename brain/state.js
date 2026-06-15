@@ -1,14 +1,11 @@
 import { CATEGORY_IDS } from './categories.js'
+import { STORAGE_KEY }   from '../shared/constants.js'
 
-// ערכי ברירת מחדל
-const DEFAULT_WEIGHT = 1.0
-const MAX_WEIGHT = 3.0
-const MIN_WEIGHT = 0.1
+const DEFAULT_WEIGHT        = 1.0
+const MAX_WEIGHT            = 3.0
+const MIN_WEIGHT            = 0.1
 const WEIGHT_POSITIVE_DELTA = 0.15
 const WEIGHT_NEGATIVE_DELTA = 0.08
-
-// מקש האחסון — שם אחד שכולם מסכימים עליו
-const STORAGE_KEY = 'teshuva_state'
 
 // מפתח אחסון מחזיר { get(key), set(key, value) } — Promise בשני הכיוונים
 // כך אותו קוד עובד ב-Chrome extension וב-Electron

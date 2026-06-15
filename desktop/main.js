@@ -31,6 +31,7 @@ function createWindow() {
 
   ipcMain.on('mouse-enter-clippy', () => win.setIgnoreMouseEvents(false))
   ipcMain.on('mouse-leave-clippy', () => win.setIgnoreMouseEvents(true, { forward: true }))
+  ipcMain.on('start-drag',         () => win.setIgnoreMouseEvents(false))
   ipcMain.on('move-window', (_, { deltaX, deltaY }) => {
     const [x, y] = win.getPosition()
     win.setPosition(x + deltaX, y + deltaY)
