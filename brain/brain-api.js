@@ -4,6 +4,7 @@
 import { classify, scoreText }               from './classifier.js'
 import { createState }                        from './state.js'
 import { greeting, explain, weeklyInsights }  from './explanations.js'
+import { buildIntent }                        from './intent.js'
 import { CATEGORIES, CATEGORY_IDS }           from './categories.js'
 
 // storageAdapter: { get(key) → Promise<any>, set(key, value) → Promise<void> }
@@ -24,9 +25,14 @@ export function createBrain(storageAdapter) {
       return categoryId
     },
 
-    // הסבר למה המשתמש רואה תוכן של קטגוריה זו
+    // הסבר קצר למה המשתמש רואה תוכן של קטגוריה זו
     explain(categoryId) {
       return explain(categoryId, state.getAllTimeStats())
+    },
+
+    // הסבר עמוק — סוג הכוונה + אחוז + טקסט מפורט
+    intent(categoryId) {
+      return buildIntent(categoryId, state.getAllTimeStats(), state.getWeights())
     },
 
     // ברכה לפי שעה

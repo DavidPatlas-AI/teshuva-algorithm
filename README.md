@@ -20,16 +20,46 @@ The algorithm repents. It confesses. It explains.
 
 ---
 
+## Screenshot
+
+> 📸 *Screenshot coming soon — load the extension and Clippy will appear in the bottom-right corner.*
+
+---
+
 ## What's Inside
 
 ```
 📦 teshuva-algorithm/
-├── 🧠 brain/          — Learning engine: classifies content into categories
-├── 🎭 mascot/         — Clippy-based mascot with speech bubbles
-├── 🔌 extension/      — Chrome/Edge browser extension (Manifest V3)
-│   ├── content/       — Runs on Twitter, Facebook, Instagram, YouTube, TikTok
-│   └── popup/         — Rich stats popup: history, categories, insights
-└── 🖥️ desktop/        — Clippy lives on your desktop (Electron app)
+├── 🧠 brain/          — Learning engine
+│   ├── categories.js  — Single source of truth for 9 content categories
+│   ├── classifier.js  — Keyword-based text → category classifier
+│   ├── state.js       — Persistent stats (allTime, weights) via storage adapter
+│   ├── explanations.js — Hebrew explanation strings
+│   ├── questions.js   — User-facing questions (shouldAsk / build)
+│   ├── intent.js      — Deep "why" reasoning: dominant / recurring / first-time
+│   └── brain-api.js   — Public facade (the only file you import)
+├── 🎭 mascot/
+│   ├── IMascot.js         — Interface contract
+│   ├── ClippyMascot.js    — Clippy implementation
+│   ├── animations.js      — Mood → animation mapping
+│   └── mascot-controller.js — Brain ↔ mascot bridge (single entry point)
+├── 🔌 extension/
+│   ├── background-entry.js — Service worker source (builds → background.js)
+│   ├── api.js             — Message protocol: popup/content → background
+│   ├── content/
+│   │   ├── bundle-entry.js — Content script source (builds → bundle.js)
+│   │   ├── feed-observer.js — MutationObserver + scroll listener
+│   │   └── site-adapters.js — CSS selectors per social network
+│   └── popup/
+│       ├── popup-entry.js  — Popup source (builds → popup.js)
+│       └── popup.html
+├── 🖥️ desktop/
+│   ├── main.js        — Electron main process
+│   ├── preload.js     — IPC bridge
+│   └── renderer-entry.js — Desktop Clippy (builds → renderer.js)
+└── 📦 shared/
+    ├── constants.js   — STORAGE_KEY, MSG types, EVENTS, timeouts
+    └── event-bus.js   — Lightweight pub/sub
 ```
 
 ### Features
@@ -40,9 +70,12 @@ The algorithm repents. It confesses. It explains.
 | Content category detection | ✅ |
 | Hebrew + English keywords | ✅ |
 | Browsing history analysis | ✅ |
-| Live feed analysis (Twitter, YouTube, etc.) | ✅ |
-| Stats popup with 4 tabs | ✅ |
+| Live feed analysis (Twitter, YouTube, TikTok, Instagram, Facebook) | ✅ |
+| Stats popup — 4 tabs (Overview / Categories / History / Insights) | ✅ |
 | Drag to reposition Clippy | ✅ |
+| First-time onboarding message | ✅ |
+| User feedback: 👍 / 👎 per category | ✅ |
+| Intent engine (why you see what you see) | ✅ |
 
 ---
 
@@ -50,17 +83,21 @@ The algorithm repents. It confesses. It explains.
 
 ### Browser Extension (Chrome / Edge)
 
-1. Clone this repo
-2. Run `npm install && npm run build`
-3. Open `chrome://extensions` → Developer mode → Load unpacked
-4. Select the `extension/` folder
-5. Visit Twitter, YouTube, Instagram — Clippy appears!
+```bash
+git clone https://github.com/YOUR_USERNAME/teshuva-algorithm
+cd teshuva-algorithm
+npm install
+npm run build
+```
+
+1. Open `chrome://extensions` → enable **Developer mode**
+2. Click **Load unpacked** → select the `extension/` folder
+3. Visit Twitter, YouTube, Instagram — Clippy appears in the bottom-right corner
 
 ### Desktop App (Windows)
 
 ```bash
-npm install
-npm run desktop
+npm start
 ```
 
 Or double-click `הפעל קליפי.bat` on your desktop.
@@ -70,67 +107,90 @@ Or double-click `הפעל קליפי.bat` on your desktop.
 ## How It Works
 
 ```
-You scroll Twitter
-    ↓
-Content script reads tweet text
-    ↓
-Brain classifies: "politics", "sports", "technology"...
-    ↓
-Clippy speaks: "You're seeing this because 38% of your feed is politics"
-    ↓
-Stats saved to chrome.storage + browsing history analyzed
-    ↓
-Popup shows full breakdown: categories, top domains, hourly patterns, insights
+You scroll Twitter / YouTube / Instagram
+        ↓
+feed-observer.js detects visible post text
+        ↓
+mascot-controller.onPostSeen(text)
+        ↓
+brain.observe(text)  →  categoryId
+brain.intent(categoryId)  →  { type, percentage, heText }
+        ↓
+Should ask user? (after 5 posts in same category)
+  YES → Clippy asks "מעניין אותך ספורט? + / -"
+  NO  → Clippy explains "אתה רואה ספורט כי 38% מהפיד שלך..."
+        ↓
+Stats saved to chrome.storage under key "teshuva_state"
+        ↓
+Popup reads stats via background.js message protocol
 ```
 
 ---
 
-## 🗺️ Roadmap / Call for Contributions
+## Using the Brain API
 
-This is v1. The vision is much bigger. Here's where the community can take it:
+```js
+import { createBrain }         from './brain/brain-api.js'
+import { createChromeAdapter } from './brain/adapters/chrome-adapter.js'
 
-### 🔍 Algorithm Reverse Engineering
-- Detect **promoted content** vs organic
-- Identify when a post has been **suppressed** (visible 2 hours ago, gone now)
-- Track **virality patterns** — why did this go viral?
+const brain = createBrain(createChromeAdapter())
+await brain.load()
 
-### 🤝 Talk Back to the Algorithm
-- A "**report card**" you send to platforms: *"My feed was 70% ads this week"*
-- Browser extension that **logs anomalies** to a public, anonymized dataset
-- Community dashboard showing **collective algorithm patterns**
+// Classify and record a post
+const categoryId = brain.observe("Netanyahu said today in the Knesset...")
+// → "politics"
 
-### 🧠 Smarter Brain
-- Replace keyword matching with a small local LLM
-- Learn from explicit feedback: 👍 "This is accurate" / 👎 "You got this wrong"
-- Cross-reference with [Media Bias / Fact Check](https://mediabiasfactcheck.com/)
+// Short explanation
+brain.explain("politics")
+// → "אתה רואה פוליטיקה כי 43% מהתוכן שלך הוא בנושא הזה."
 
-### 🎭 More Personalities
-- Replace Clippy with other agents (Merlin, Peedy, Bonzi)
-- Build a fully custom Hebrew mascot
-- Make the agent's personality match its findings (worried when seeing lots of news, excited when seeing sports)
+// Deep intent
+brain.intent("politics")
+// → { type: "dominant", percentage: 43, heText: "פוליטיקה שולטת ב-43% מהפיד שלך..." }
 
-### 🌐 Multi-language Support
-- Arabic, French, Spanish keyword libraries
-- RTL layout improvements
+// User feedback
+brain.positive("politics")   // increases weight
+brain.negative("politics")   // decreases weight
 
-### 📊 Export & Share
-- Export your weekly "algorithm report" as PDF
-- Share anonymized stats to a community feed
-- API for researchers studying social media consumption
+// Stats
+brain.getStats()
+// → { session, allTime, weights, total, categories, ids }
+```
+
+### Storage Adapters
+
+```js
+// Chrome extension
+import { createChromeAdapter }   from './brain/adapters/chrome-adapter.js'
+
+// Electron desktop
+import { createElectronAdapter } from './brain/adapters/electron-adapter.js'
+```
 
 ---
 
-## Philosophy
+## 🗺️ Roadmap
 
-The algorithm knows everything about you.  
-It knows when you're sad, when you're bored, when you're angry.  
-It uses that knowledge to keep you scrolling.
+### v0.2.0 — Smarter Brain
+- Intent-driven explanations (dominant / recurring / first-time / explicit)
+- Animated mood responses (greet / think / excited / confused)
+- Improved onboarding flow
 
-This project flips the script:  
-**You** get to know what the algorithm knows about you.  
-And maybe — just maybe — that knowledge changes how you use it.
+### v0.3.0 — Algorithm Reverse Engineering
+- Detect **promoted content** vs organic
+- Track **virality patterns**
+- Identify suppressed posts
 
-*The algorithm repented. Now it's your turn to decide what to do with the truth.*
+### v0.4.0 — Community
+- Anonymized dataset export
+- Community dashboard: collective algorithm patterns
+- API for researchers
+
+### v1.0.0 — Product
+- Chrome Web Store listing
+- More mascot personalities (Merlin, Bonzi Buddy, custom Hebrew character)
+- Multi-language support (Arabic, French, Spanish)
+- Local LLM classifier (replace keyword matching)
 
 ---
 

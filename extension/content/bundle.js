@@ -7055,6 +7055,64 @@
     }
   });
 
+  // brain/intent.js
+  function buildIntent(categoryId, allTimeStats, weights) {
+    const cat = getCategory(categoryId);
+    const total = Object.values(allTimeStats).reduce((s, n) => s + n, 0) || 1;
+    const count = allTimeStats[categoryId] ?? 0;
+    const pct = Math.round(count / total * 100);
+    const weight = weights?.[categoryId] ?? 1;
+    const type = resolveType(count, pct, weight);
+    return {
+      type,
+      categoryId,
+      heLabel: cat?.heLabel ?? categoryId,
+      percentage: pct,
+      weight,
+      heText: buildText(type, cat?.heLabel ?? categoryId, pct, weight)
+    };
+  }
+  function resolveType(count, pct, weight) {
+    if (count === 0) return INTENT_TYPE.FIRST_TIME;
+    if (weight >= 1.5) return INTENT_TYPE.EXPLICIT;
+    if (pct >= 40) return INTENT_TYPE.DOMINANT;
+    if (pct >= 15) return INTENT_TYPE.RECURRING;
+    return INTENT_TYPE.TEST;
+  }
+  function buildText(type, label, pct, weight) {
+    switch (type) {
+      case INTENT_TYPE.FIRST_TIME:
+        return `\u05D6\u05D5 \u05D4\u05E4\u05E2\u05DD \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E0\u05D7\u05E9\u05E3 \u05DC${label}. \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DE\u05E0\u05E1\u05D4 \u05D0\u05D5\u05EA\u05DA.`;
+      case INTENT_TYPE.EXPLICIT:
+        return `\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 ${label} \u05DB\u05D9 \u05D4\u05E8\u05D0\u05D9\u05EA \u05E9\u05D6\u05D4 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA. \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DC\u05DE\u05D3.`;
+      case INTENT_TYPE.DOMINANT:
+        return `${label} \u05E9\u05D5\u05DC\u05D8 \u05D1-${pct}% \u05DE\u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA \u2014 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05D1\u05D8\u05D5\u05D7 \u05E9\u05D6\u05D4 \u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05E6\u05D4.`;
+      case INTENT_TYPE.RECURRING:
+        return `${label} \u05DE\u05D4\u05D5\u05D5\u05D4 ${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF \u05E9\u05DC\u05DA. \u05E0\u05D5\u05E9\u05D0 \u05E9\u05D7\u05D5\u05D6\u05E8, \u05D0\u05D1\u05DC \u05DC\u05D0 \u05E9\u05D5\u05DC\u05D8.`;
+      case INTENT_TYPE.TEST:
+      default:
+        return `${label} \u05DE\u05D5\u05E4\u05D9\u05E2 \u05DC\u05E4\u05E2\u05DE\u05D9\u05DD (${pct}% \u05DE\u05D4\u05E4\u05D9\u05D3). \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E2\u05D3\u05D9\u05D9\u05DF \u05D1\u05D5\u05D3\u05E7 \u05D0\u05DD \u05D6\u05D4 \u05DE\u05D3\u05D5\u05D9\u05E7 \u05E2\u05D1\u05D5\u05E8\u05DA.`;
+    }
+  }
+  var INTENT_TYPE;
+  var init_intent = __esm({
+    "brain/intent.js"() {
+      init_categories();
+      INTENT_TYPE = {
+        DOMINANT: "dominant",
+        // > 40% מהפיד
+        RECURRING: "recurring",
+        // 15–40%
+        FIRST_TIME: "first-time",
+        // 0 פוסטים קודמים
+        TEST: "test",
+        // האלגוריתם מנסה את המשתמש
+        EXPLICIT: "explicit"
+        // המשתמש לחץ 👍 בעבר
+      };
+    }
+  });
+
   // brain/brain-api.js
   function createBrain(storageAdapter) {
     const state = createState(storageAdapter);
@@ -7069,9 +7127,13 @@
         if (categoryId !== "uncategorized") state.observe(categoryId);
         return categoryId;
       },
-      // הסבר למה המשתמש רואה תוכן של קטגוריה זו
+      // הסבר קצר למה המשתמש רואה תוכן של קטגוריה זו
       explain(categoryId) {
         return explain(categoryId, state.getAllTimeStats());
+      },
+      // הסבר עמוק — סוג הכוונה + אחוז + טקסט מפורט
+      intent(categoryId) {
+        return buildIntent(categoryId, state.getAllTimeStats(), state.getWeights());
       },
       // ברכה לפי שעה
       greeting() {
@@ -7116,6 +7178,7 @@
       init_classifier();
       init_state();
       init_explanations();
+      init_intent();
       init_categories();
     }
   });
