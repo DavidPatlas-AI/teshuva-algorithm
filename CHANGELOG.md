@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## v0.2.0 — Architecture v2 + UX *(in progress)*
+## v0.2.0 — Architecture v2 + UX
 
 ### Added
+- `tests/manual-test-plan.md` — 10 test scenarios covering all layers A–J
+- `USAGE-GUIDE.md` — full developer and user documentation
 - `shared/constants.js` — single source of truth for `STORAGE_KEY`, `MSG` types, `EVENTS`, all timeouts
 - `shared/event-bus.js` — lightweight `createEventBus()` pub/sub for decoupled layer communication
 - `extension/api.js` — message protocol (`sendMsg`, `api.getStats/resetStats/positive/negative`)
@@ -21,6 +23,11 @@ All notable changes to this project will be documented in this file.
 - `brain/state.js` imports `STORAGE_KEY` from `shared/constants.js`
 - `brain/questions.js` converted to `createQuestions()` factory — zero module-level state
 - `mascot/mascot-controller.js` is now the **single entry point** for all brain ↔ mascot logic
+  - `greeting()` → `greet` mood animation
+  - `explain()` / `onWhyClick()` → `think` mood animation (uses `brain.intent().heText` for richer text)
+  - `onPositive()` → `excited` mood animation
+  - `onNegative()` → `confused` mood animation
+  - Idle loop: `playMood('idle')` every 15 seconds when Clippy is quiet
 - `extension/content/bundle-entry.js` reduced to 50 lines — delegates entirely to `mascot-controller`
 - `popup.js` reads stats via `api.getStats()` through `background.js` — no direct storage access
 - `desktop/main.js` — added missing `ipcMain.on('start-drag')` handler

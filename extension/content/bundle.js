@@ -7256,11 +7256,6 @@
   });
 
   // mascot/animations.js
-  function pickMood(weight) {
-    if (weight >= 2) return "excited";
-    if (weight <= 0.3) return "confused";
-    return "idle";
-  }
   function playMood(mascot, mood = "idle") {
     const list = MOOD_ANIMATIONS[mood] ?? MOOD_ANIMATIONS.idle;
     const name = list[Math.floor(Math.random() * list.length)];
@@ -7284,31 +7279,42 @@
     const questions = createQuestions();
     let lastSpokenAt = 0;
     let pendingQ = null;
+    let idleTimer = null;
     function canSpeak() {
       return Date.now() - lastSpokenAt > SPEAK_COOLDOWN_MS;
     }
-    function speak(text, mood = "idle") {
+    function speak(text, mood = MOOD.idle) {
       if (!canSpeak()) return false;
       lastSpokenAt = Date.now();
       playMood(mascot, mood);
       mascot.say(text);
       return true;
     }
+    function startIdleLoop() {
+      idleTimer = setInterval(() => {
+        if (canSpeak()) playMood(mascot, MOOD.idle);
+      }, IDLE_INTERVAL_MS);
+    }
+    function stopIdleLoop() {
+      clearInterval(idleTimer);
+      idleTimer = null;
+    }
     return {
       // ── הפעלה ─────────────────────────────────────────────────
       async start() {
         await brain.load();
+        startIdleLoop();
         const isNew = await new Promise(
           (resolve) => chrome.storage.local.get(ONBOARDING_KEY, (d) => resolve(!d[ONBOARDING_KEY]))
         );
         if (isNew) {
           chrome.storage.local.set({ [ONBOARDING_KEY]: true });
           setTimeout(() => {
-            speak("\u05E9\u05DC\u05D5\u05DD! \u05D0\u05E0\u05D9 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E9\u05D7\u05D6\u05E8 \u05D1\u05EA\u05E9\u05D5\u05D1\u05D4. \u05D0\u05E6\u05E4\u05D4 \u05D1\u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05D5\u05D0\u05E1\u05D1\u05D9\u05E8 \u05DC\u05DE\u05D4.", "greet");
-            setTimeout(() => speak("\u05E4\u05E9\u05D5\u05D8 \u05D2\u05DC\u05D5\u05DC \u05DB\u05E8\u05D2\u05D9\u05DC \u2014 \u05D0\u05E0\u05D9 \u05D0\u05DC\u05DE\u05D3 \u05DE\u05DE\u05DA \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.", "think"), 6e3);
+            speak("\u05E9\u05DC\u05D5\u05DD! \u05D0\u05E0\u05D9 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E9\u05D7\u05D6\u05E8 \u05D1\u05EA\u05E9\u05D5\u05D1\u05D4. \u05D0\u05E6\u05E4\u05D4 \u05D1\u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05D5\u05D0\u05E1\u05D1\u05D9\u05E8 \u05DC\u05DE\u05D4.", MOOD.greeting);
+            setTimeout(() => speak("\u05E4\u05E9\u05D5\u05D8 \u05D2\u05DC\u05D5\u05DC \u05DB\u05E8\u05D2\u05D9\u05DC \u2014 \u05D0\u05E0\u05D9 \u05D0\u05DC\u05DE\u05D3 \u05DE\u05DE\u05DA \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.", MOOD.explain), 6e3);
           }, 800);
         } else {
-          setTimeout(() => speak(brain.greeting(), "greet"), 800);
+          setTimeout(() => speak(brain.greeting(), MOOD.greeting), 800);
         }
       },
       // ── פוסט חדש גולש ────────────────────────────────────────
@@ -7323,11 +7329,12 @@
             pendingQ = q;
             lastSpokenAt = Date.now();
             questions.markAsked(catId);
-            playMood(mascot, "think");
+            playMood(mascot, MOOD.explain);
             mascot.say(q.text);
           }
-        } else {
-          speak(brain.explain(catId), pickMood(brain.getStats().weights?.[catId] ?? 1));
+        } else if (canSpeak()) {
+          const intent = brain.intent(catId);
+          speak(intent.heText, MOOD.explain);
         }
         return catId;
       },
@@ -7335,29 +7342,43 @@
       onPositive() {
         if (!pendingQ) return;
         brain.positive(pendingQ.categoryId);
-        speak(pendingQ.answers.yes, "excited");
+        speak(pendingQ.answers.yes, MOOD.positive);
         pendingQ = null;
       },
       onNegative() {
         if (!pendingQ) return;
         brain.negative(pendingQ.categoryId);
-        speak(pendingQ.answers.no, "confused");
+        speak(pendingQ.answers.no, MOOD.negative);
         pendingQ = null;
       },
-      // ── "למה אני רואה את זה?" ─────────────────────────────────
+      // ── "למה אני רואה את זה?" — לחיצה ידנית ─────────────────
       onWhyClick(categoryId) {
-        speak(brain.explain(categoryId), "think");
+        const intent = brain.intent(categoryId);
+        speak(intent.heText, MOOD.explain);
+      },
+      // ── ניקוי (לשימוש בסביבת test) ───────────────────────────
+      destroy() {
+        stopIdleLoop();
       },
       getStats() {
         return brain.getStats();
       }
     };
   }
+  var MOOD, IDLE_INTERVAL_MS;
   var init_mascot_controller = __esm({
     "mascot/mascot-controller.js"() {
       init_questions();
       init_constants();
       init_animations();
+      MOOD = {
+        greeting: "greet",
+        explain: "think",
+        positive: "excited",
+        negative: "confused",
+        idle: "idle"
+      };
+      IDLE_INTERVAL_MS = 15e3;
     }
   });
 

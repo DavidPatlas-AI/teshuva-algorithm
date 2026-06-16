@@ -1,20 +1,33 @@
 // גשר יחיד בין brain ↔ mascot ↔ user
 // bundle-entry.js מייצר instance מזה ומפנה אליו הכל
 
-import { createQuestions }           from '../brain/questions.js'
+import { createQuestions }                   from '../brain/questions.js'
 import { SPEAK_COOLDOWN_MS, ONBOARDING_KEY } from '../shared/constants.js'
-import { pickMood, playMood }         from './animations.js'
+import { playMood }                           from './animations.js'
+
+// mapping מדויק: פעולה → mood
+// greeting → greet | explain → think | positive → excited | negative → confused | idle → idle
+const MOOD = {
+  greeting: 'greet',
+  explain:  'think',
+  positive: 'excited',
+  negative: 'confused',
+  idle:     'idle',
+}
+
+const IDLE_INTERVAL_MS = 15_000  // אנימציית idle כל 15 שניות
 
 export function createMascotController(mascot, brain) {
-  const questions   = createQuestions()
-  let lastSpokenAt  = 0
-  let pendingQ      = null   // שאלה פתוחה שממתינה לתשובה
+  const questions  = createQuestions()
+  let lastSpokenAt = 0
+  let pendingQ     = null
+  let idleTimer    = null
 
   function canSpeak() {
     return Date.now() - lastSpokenAt > SPEAK_COOLDOWN_MS
   }
 
-  function speak(text, mood = 'idle') {
+  function speak(text, mood = MOOD.idle) {
     if (!canSpeak()) return false
     lastSpokenAt = Date.now()
     playMood(mascot, mood)
@@ -22,12 +35,24 @@ export function createMascotController(mascot, brain) {
     return true
   }
 
+  // אנימציית idle — רצה כל עוד Clippy בשקט
+  function startIdleLoop() {
+    idleTimer = setInterval(() => {
+      if (canSpeak()) playMood(mascot, MOOD.idle)
+    }, IDLE_INTERVAL_MS)
+  }
+
+  function stopIdleLoop() {
+    clearInterval(idleTimer)
+    idleTimer = null
+  }
+
   return {
     // ── הפעלה ─────────────────────────────────────────────────
     async start() {
       await brain.load()
+      startIdleLoop()
 
-      // הודעת פתיחה — אחת מהשתיים
       const isNew = await new Promise(resolve =>
         chrome.storage.local.get(ONBOARDING_KEY, d => resolve(!d[ONBOARDING_KEY]))
       )
@@ -35,11 +60,11 @@ export function createMascotController(mascot, brain) {
       if (isNew) {
         chrome.storage.local.set({ [ONBOARDING_KEY]: true })
         setTimeout(() => {
-          speak('שלום! אני האלגוריתם שחזר בתשובה. אצפה במה שאתה רואה ואסביר למה.', 'greet')
-          setTimeout(() => speak('פשוט גלול כרגיל — אני אלמד ממך אוטומטית.', 'think'), 6_000)
+          speak('שלום! אני האלגוריתם שחזר בתשובה. אצפה במה שאתה רואה ואסביר למה.', MOOD.greeting)
+          setTimeout(() => speak('פשוט גלול כרגיל — אני אלמד ממך אוטומטית.', MOOD.explain), 6_000)
         }, 800)
       } else {
-        setTimeout(() => speak(brain.greeting(), 'greet'), 800)
+        setTimeout(() => speak(brain.greeting(), MOOD.greeting), 800)
       }
     },
 
@@ -57,11 +82,14 @@ export function createMascotController(mascot, brain) {
           pendingQ     = q
           lastSpokenAt = Date.now()
           questions.markAsked(catId)
-          playMood(mascot, 'think')
+          // שאלה = think mood (Clippy מהרהר)
+          playMood(mascot, MOOD.explain)
           mascot.say(q.text)
         }
-      } else {
-        speak(brain.explain(catId), pickMood(brain.getStats().weights?.[catId] ?? 1))
+      } else if (canSpeak()) {
+        // השתמש ב-intent לקבלת הסבר עמוק יותר מ-explain()
+        const intent = brain.intent(catId)
+        speak(intent.heText, MOOD.explain)
       }
 
       return catId
@@ -71,20 +99,26 @@ export function createMascotController(mascot, brain) {
     onPositive() {
       if (!pendingQ) return
       brain.positive(pendingQ.categoryId)
-      speak(pendingQ.answers.yes, 'excited')
+      speak(pendingQ.answers.yes, MOOD.positive)
       pendingQ = null
     },
 
     onNegative() {
       if (!pendingQ) return
       brain.negative(pendingQ.categoryId)
-      speak(pendingQ.answers.no, 'confused')
+      speak(pendingQ.answers.no, MOOD.negative)
       pendingQ = null
     },
 
-    // ── "למה אני רואה את זה?" ─────────────────────────────────
+    // ── "למה אני רואה את זה?" — לחיצה ידנית ─────────────────
     onWhyClick(categoryId) {
-      speak(brain.explain(categoryId), 'think')
+      const intent = brain.intent(categoryId)
+      speak(intent.heText, MOOD.explain)
+    },
+
+    // ── ניקוי (לשימוש בסביבת test) ───────────────────────────
+    destroy() {
+      stopIdleLoop()
     },
 
     getStats() { return brain.getStats() },
