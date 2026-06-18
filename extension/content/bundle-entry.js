@@ -9,6 +9,7 @@ import { createChromeAdapter }       from '../../brain/adapters/chrome-adapter.j
 import { createMascotController }    from '../../mascot/mascot-controller.js'
 import { getSelectorForCurrentSite } from './site-adapters.js'
 import { startFeedObserver }         from './feed-observer.js'
+import { dismissPost, isActionSupported } from './action-engine.js'
 
 ;(async () => {
   // ── Mascot (Clippy) ────────────────────────────────────────
@@ -32,14 +33,16 @@ import { startFeedObserver }         from './feed-observer.js'
 
   // ── Controller — נקודת הכניסה היחידה ללוגיקה ──────────────
   const brain      = createBrain(createChromeAdapter())
-  const controller = createMascotController(mascot, brain)
+  const controller = createMascotController(mascot, brain, {
+    onDismiss: isActionSupported() ? dismissPost : null,
+  })
   await controller.start()
 
   // ── Feed Observer ─────────────────────────────────────────
   const selector = getSelectorForCurrentSite()
   if (!selector) return
 
-  startFeedObserver(selector, (_el, text) => controller.onPostSeen(text))
+  startFeedObserver(selector, (el, text) => controller.onPostSeen(text, el))
 
   // ── Keyboard feedback (dev convenience, יוחלף ב-UI בעתיד) ──
   document.addEventListener('keydown', e => {

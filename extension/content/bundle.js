@@ -7274,11 +7274,114 @@
     }
   });
 
+  // agent/dialogue.js
+  function createDialogue(memory = null) {
+    const turns = [];
+    let lastUserTs = 0;
+    return {
+      // Add a user message and analyze its intent
+      addUserTurn(text) {
+        const intent = detectIntent(text);
+        const turn = { role: "user", text, intent, ts: Date.now() };
+        turns.push(turn);
+        if (turns.length > MAX_TURNS) turns.shift();
+        lastUserTs = Date.now();
+        memory?.noteInteraction(text, intent);
+        return intent;
+      },
+      // Add an agent response
+      addAgentTurn(text) {
+        turns.push({ role: "agent", text, intent: null, ts: Date.now() });
+        if (turns.length > MAX_TURNS) turns.shift();
+      },
+      // Generate a contextual response based on the last user turn + history
+      buildResponse(categoryId, brain) {
+        const lastUser = [...turns].reverse().find((t) => t.role === "user");
+        if (!lastUser) return null;
+        const { intent } = lastUser;
+        switch (intent) {
+          case "explain":
+            return brain.intent(categoryId).heText;
+          case "stats": {
+            const stats = brain.getStats();
+            const total = stats.total ?? 0;
+            return total === 0 ? "\u05E2\u05D5\u05D3 \u05DC\u05D0 \u05E6\u05D1\u05E8\u05EA \u05E0\u05EA\u05D5\u05E0\u05D9\u05DD \u2014 \u05D4\u05DE\u05E9\u05DA \u05DC\u05D2\u05DC\u05D5\u05E9!" : `\u05E6\u05E4\u05D9\u05EA \u05D1-${total} \u05E4\u05D5\u05E1\u05D8\u05D9\u05DD. \u05D4\u05E7\u05D8\u05D2\u05D5\u05E8\u05D9\u05D4 \u05D4\u05DE\u05D5\u05D1\u05D9\u05DC\u05D4: ${getTopCategory(stats)}.`;
+          }
+          case "reset":
+            return "\u05DE\u05D5\u05DB\u05DF \u05DC\u05D0\u05E4\u05E1 \u05D4\u05DB\u05DC? \u05DC\u05D7\u05E5 + \u05DC\u05D0\u05D9\u05E9\u05D5\u05E8, - \u05DC\u05D1\u05D9\u05D8\u05D5\u05DC.";
+          case "greeting":
+            return brain.greeting();
+          case "question":
+            return brain.explain(categoryId);
+          case "positive":
+          case "negative":
+            return null;
+          // handled by mascot-controller
+          default:
+            return brain.explain(categoryId);
+        }
+      },
+      getHistory() {
+        return [...turns];
+      },
+      getLastIntent() {
+        return turns.filter((t) => t.role === "user").slice(-1)[0]?.intent ?? null;
+      },
+      getLastUserTs() {
+        return lastUserTs;
+      },
+      clearHistory() {
+        turns.length = 0;
+      },
+      // Context window summary for long-term memory consolidation
+      getSummary() {
+        const userTurns = turns.filter((t) => t.role === "user");
+        const intents = [...new Set(userTurns.map((t) => t.intent).filter(Boolean))];
+        return { turnCount: turns.length, intents, lastText: userTurns.slice(-1)[0]?.text ?? "" };
+      }
+    };
+  }
+  function detectIntent(text) {
+    const lower = text.toLowerCase();
+    for (const [intent, kws] of Object.entries(INTENT_KEYWORDS)) {
+      if (kws.some((kw) => lower.includes(kw))) return intent;
+    }
+    return "general";
+  }
+  function getTopCategory(stats) {
+    let best = null, bestN = 0;
+    for (const [k, n] of Object.entries(stats.allTime ?? {})) {
+      if (n > bestN) {
+        bestN = n;
+        best = k;
+      }
+    }
+    return stats.categories?.[best]?.heLabel ?? best ?? "\u2014";
+  }
+  var MAX_TURNS, INTENT_KEYWORDS;
+  var init_dialogue = __esm({
+    "agent/dialogue.js"() {
+      init_constants();
+      MAX_TURNS = 10;
+      INTENT_KEYWORDS = {
+        question: ["\u05DC\u05DE\u05D4", "\u05DE\u05D4", "\u05D0\u05D9\u05DA", "\u05DE\u05EA\u05D9", "\u05DB\u05DE\u05D4", "why", "what", "how", "when"],
+        positive: ["\u05DB\u05DF", "\u05D1\u05E1\u05D3\u05E8", "\u05DE\u05E1\u05DB\u05D9\u05DD", "yes", "ok", "great", "\u{1F44D}"],
+        negative: ["\u05DC\u05D0", "\u05DC\u05D0 \u05E8\u05D5\u05E6\u05D4", "no", "stop", "\u05E0\u05D5\u05E8\u05D0\u05D9", "\u{1F44E}"],
+        reset: ["\u05D0\u05E4\u05E1", "\u05D4\u05EA\u05D7\u05DC \u05DE\u05D7\u05D3\u05E9", "reset", "clear"],
+        explain: ["\u05D4\u05E1\u05D1\u05E8", "\u05EA\u05E1\u05D1\u05D9\u05E8", "explain", "\u05DC\u05DE\u05D4 \u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4", "why do i see"],
+        stats: ["\u05E1\u05D8\u05D8\u05D9\u05E1\u05D8\u05D9\u05E7\u05D5\u05EA", "\u05DB\u05DE\u05D4", "statistics", "stats", "how many"],
+        greeting: ["\u05E9\u05DC\u05D5\u05DD", "\u05D4\u05D9\u05D9", "hello", "hi", "\u05D1\u05D5\u05E7\u05E8", "morning"]
+      };
+    }
+  });
+
   // mascot/mascot-controller.js
-  function createMascotController(mascot, brain) {
+  function createMascotController(mascot, brain, options = {}) {
     const questions = createQuestions();
+    const dialogue = options.dialogue ?? createDialogue(options.memory ?? null);
     let lastSpokenAt = 0;
     let pendingQ = null;
+    let pendingEl = null;
     let idleTimer = null;
     function canSpeak() {
       return Date.now() - lastSpokenAt > SPEAK_COOLDOWN_MS;
@@ -7318,15 +7421,25 @@
         }
       },
       // ── פוסט חדש גולש ────────────────────────────────────────
-      onPostSeen(text) {
+      onPostSeen(text, el = null) {
         const catId = brain.observe(text);
         if (catId === "uncategorized") return catId;
-        const { session } = brain.getStats();
+        const { session, weights } = brain.getStats();
+        const weight = weights?.[catId] ?? 1;
+        if (weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
+          options.onDismiss(el).then((result) => {
+            if (result.ok && canSpeak()) {
+              speak("\u05D4\u05E1\u05E8\u05EA\u05D9 \u05E4\u05D5\u05E1\u05D8 \u05DC\u05D0 \u05E8\u05DC\u05D5\u05D5\u05E0\u05D8\u05D9 \u05D1\u05E9\u05DE\u05DA \u{1F4CE}", MOOD.positive);
+            }
+          });
+          return catId;
+        }
         const count = session[catId] ?? 0;
         if (questions.shouldAsk(catId, count)) {
           const q = questions.build(catId);
           if (q && canSpeak()) {
             pendingQ = q;
+            pendingEl = el;
             lastSpokenAt = Date.now();
             questions.markAsked(catId);
             playMood(mascot, MOOD.explain);
@@ -7344,17 +7457,40 @@
         brain.positive(pendingQ.categoryId);
         speak(pendingQ.answers.yes, MOOD.positive);
         pendingQ = null;
+        pendingEl = null;
       },
       onNegative() {
         if (!pendingQ) return;
         brain.negative(pendingQ.categoryId);
         speak(pendingQ.answers.no, MOOD.negative);
+        const elToDismiss = pendingEl;
         pendingQ = null;
+        pendingEl = null;
+        if (options.onDismiss && elToDismiss) {
+          options.onDismiss(elToDismiss).then((result) => {
+            if (result.ok) {
+              setTimeout(() => {
+                if (canSpeak()) speak("\u05D4\u05E1\u05E8\u05EA\u05D9 \u05D0\u05EA \u05D4\u05E4\u05D5\u05E1\u05D8 \u05D4\u05D6\u05D4! \u{1F4CE}", MOOD.positive);
+              }, 2500);
+            }
+          });
+        }
       },
       // ── "למה אני רואה את זה?" — לחיצה ידנית ─────────────────
       onWhyClick(categoryId) {
         const intent = brain.intent(categoryId);
         speak(intent.heText, MOOD.explain);
+      },
+      // ── שיחה טקסטואלית (dialogue layer) ─────────────────────
+      onUserText(text) {
+        const intent = dialogue.addUserTurn(text);
+        const catId = brain.observe(text);
+        const response = dialogue.buildResponse(catId === "uncategorized" ? null : catId, brain);
+        if (response) {
+          dialogue.addAgentTurn(response);
+          speak(response, MOOD.explain);
+        }
+        return intent;
       },
       // ── ניקוי (לשימוש בסביבת test) ───────────────────────────
       destroy() {
@@ -7365,12 +7501,13 @@
       }
     };
   }
-  var MOOD, IDLE_INTERVAL_MS;
+  var MOOD, IDLE_INTERVAL_MS, AUTO_DISMISS_THRESHOLD;
   var init_mascot_controller = __esm({
     "mascot/mascot-controller.js"() {
       init_questions();
       init_constants();
       init_animations();
+      init_dialogue();
       MOOD = {
         greeting: "greet",
         explain: "think",
@@ -7379,6 +7516,7 @@
         idle: "idle"
       };
       IDLE_INTERVAL_MS = 15e3;
+      AUTO_DISMISS_THRESHOLD = 0.4;
     }
   });
 
@@ -7429,6 +7567,93 @@
     }
   });
 
+  // extension/content/action-engine.js
+  function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+  function findText(candidates, patterns) {
+    return [...document.querySelectorAll(candidates)].find((el) => patterns.some((p) => p.test(el.textContent)));
+  }
+  async function dismissPost(el) {
+    const host = location.hostname.replace("www.", "");
+    const platform = PLATFORMS[host];
+    if (!platform || !el) return { ok: false, reason: "unsupported" };
+    try {
+      const container = platform.container(el);
+      if (!container) return { ok: false, reason: "container-not-found" };
+      platform.reveal(container);
+      await sleep(DELAY.reveal);
+      const btn = platform.menuBtn(container);
+      if (!btn) return { ok: false, reason: "menu-btn-not-found" };
+      btn.click();
+      await sleep(DELAY.menu);
+      const opt = platform.option();
+      if (!opt) {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+        return { ok: false, reason: "option-not-found" };
+      }
+      opt.click();
+      return { ok: true, host };
+    } catch (err) {
+      return { ok: false, reason: err.message };
+    }
+  }
+  function isActionSupported() {
+    const host = location.hostname.replace("www.", "");
+    return host in PLATFORMS;
+  }
+  var DELAY, PLATFORMS;
+  var init_action_engine = __esm({
+    "extension/content/action-engine.js"() {
+      DELAY = { reveal: 250, menu: 450, option: 350 };
+      PLATFORMS = {
+        "youtube.com": {
+          container: (el) => el.closest("ytd-rich-item-renderer, ytd-video-renderer, ytd-compact-video-renderer, ytd-reel-item-renderer"),
+          reveal: (c) => {
+            c.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+            c.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+          },
+          menuBtn: (c) => c.querySelector("ytd-menu-renderer button#button, ytd-menu-renderer yt-icon-button#button"),
+          option: () => findText(
+            "ytd-menu-service-item-renderer, tp-yt-paper-item",
+            [/not interested/i, /לא מעוניין/i]
+          )
+        },
+        "x.com": {
+          container: (el) => el.closest('article[data-testid="tweet"]'),
+          reveal: () => {
+          },
+          menuBtn: (c) => c.querySelector('[data-testid="caret"]'),
+          option: () => findText(
+            '[data-testid="Dropdown"] [role="menuitem"], [role="menuitem"]',
+            [/not interested/i, /לא מעוניין/i, /this post/i]
+          )
+        },
+        "facebook.com": {
+          container: (el) => el.closest('div[role="article"]') || el.closest('[data-pagelet^="FeedUnit"]'),
+          reveal: () => {
+          },
+          menuBtn: (c) => c.querySelector('[aria-label="More options"], [aria-label="\u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05E0\u05D5\u05E1\u05E4\u05D5\u05EA"]'),
+          option: () => findText(
+            '[role="menuitem"], [role="menu"] [tabindex="0"]',
+            [/hide post/i, /הסתר פוסט/i, /not interested/i, /לא מעוניין/i, /snooze/i]
+          )
+        },
+        "instagram.com": {
+          container: (el) => el.closest("article, ._aatb") || el.parentElement?.closest('[role="presentation"]'),
+          reveal: () => {
+          },
+          menuBtn: (c) => c.querySelector('[aria-label="More options"]') || [...c.querySelectorAll("button")].findLast((b) => b.querySelector("svg")),
+          option: () => findText(
+            '[role="dialog"] button, [role="menu"] button',
+            [/not interested/i, /לא מעוניין/i, /don.t suggest/i]
+          )
+        }
+      };
+      PLATFORMS["twitter.com"] = PLATFORMS["x.com"];
+    }
+  });
+
   // extension/content/bundle-entry.js
   var require_bundle_entry = __commonJS({
     "extension/content/bundle-entry.js"() {
@@ -7439,6 +7664,7 @@
       init_mascot_controller();
       init_site_adapters();
       init_feed_observer();
+      init_action_engine();
       (async () => {
         const agent = await initAgent(Clippy);
         agent.show();
@@ -7454,11 +7680,13 @@
           onClick: (cb) => clippyEl?.addEventListener("click", cb)
         };
         const brain = createBrain(createChromeAdapter());
-        const controller = createMascotController(mascot, brain);
+        const controller = createMascotController(mascot, brain, {
+          onDismiss: isActionSupported() ? dismissPost : null
+        });
         await controller.start();
         const selector = getSelectorForCurrentSite();
         if (!selector) return;
-        startFeedObserver(selector, (_el, text) => controller.onPostSeen(text));
+        startFeedObserver(selector, (el, text) => controller.onPostSeen(text, el));
         document.addEventListener("keydown", (e) => {
           if (e.key === "+" || e.key === "=") controller.onPositive();
           else if (e.key === "-") controller.onNegative();

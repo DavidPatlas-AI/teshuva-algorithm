@@ -6839,16 +6839,18 @@
         agent.speak(getGreeting());
         agent.animate();
         let dragging = false;
+        let dragMoved = false;
         let lastX, lastY;
         if (clippyEl) {
           clippyEl.addEventListener("mousedown", (e) => {
             dragging = true;
+            dragMoved = false;
             lastX = e.screenX;
             lastY = e.screenY;
             window.desktopAPI.startDrag();
-            e.preventDefault();
           });
           clippyEl.addEventListener("click", () => {
+            if (dragMoved) return;
             const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
             agent.speak(msg);
             agent.animate();
@@ -6864,6 +6866,7 @@
           if (!dragging) return;
           const dx = e.screenX - lastX;
           const dy = e.screenY - lastY;
+          if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
           window.desktopAPI.moveWindow(dx, dy);
           lastX = e.screenX;
           lastY = e.screenY;

@@ -18,13 +18,17 @@ const MOOD = {
 
 const IDLE_INTERVAL_MS = 15_000  // אנימציית idle כל 15 שניות
 
-// options.dialogue — optional createDialogue() instance for conversational AI layer
-// options.memory   — optional createMemory() instance for long-term recall
+// options.dialogue  — optional createDialogue() instance for conversational AI layer
+// options.memory    — optional createMemory() instance for long-term recall
+// options.onDismiss — async (el) => { ok, host } — מנוע הפעולות
+const AUTO_DISMISS_THRESHOLD = 0.4   // weight מתחת לזה = מחיקה אוטומטית
+
 export function createMascotController(mascot, brain, options = {}) {
   const questions  = createQuestions()
   const dialogue   = options.dialogue ?? createDialogue(options.memory ?? null)
   let lastSpokenAt = 0
   let pendingQ     = null
+  let pendingEl    = null   // אלמנט ה-DOM של הפוסט האחרון שנשאל עליו
   let idleTimer    = null
 
   function canSpeak() {
@@ -73,25 +77,36 @@ export function createMascotController(mascot, brain, options = {}) {
     },
 
     // ── פוסט חדש גולש ────────────────────────────────────────
-    onPostSeen(text) {
+    onPostSeen(text, el = null) {
       const catId = brain.observe(text)
       if (catId === 'uncategorized') return catId
 
-      const { session } = brain.getStats()
-      const count       = session[catId] ?? 0
+      // מחיקה אוטומטית כשהמשתמש כבר הביע אי-עניין חזק בקטגוריה
+      const { session, weights } = brain.getStats()
+      const weight = weights?.[catId] ?? 1.0
+
+      if (weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
+        options.onDismiss(el).then(result => {
+          if (result.ok && canSpeak()) {
+            speak('הסרתי פוסט לא רלוונטי בשמך 📎', MOOD.positive)
+          }
+        })
+        return catId
+      }
+
+      const count = session[catId] ?? 0
 
       if (questions.shouldAsk(catId, count)) {
         const q = questions.build(catId)
         if (q && canSpeak()) {
           pendingQ     = q
+          pendingEl    = el
           lastSpokenAt = Date.now()
           questions.markAsked(catId)
-          // שאלה = think mood (Clippy מהרהר)
           playMood(mascot, MOOD.explain)
           mascot.say(q.text)
         }
       } else if (canSpeak()) {
-        // השתמש ב-intent לקבלת הסבר עמוק יותר מ-explain()
         const intent = brain.intent(catId)
         speak(intent.heText, MOOD.explain)
       }
@@ -104,14 +119,29 @@ export function createMascotController(mascot, brain, options = {}) {
       if (!pendingQ) return
       brain.positive(pendingQ.categoryId)
       speak(pendingQ.answers.yes, MOOD.positive)
-      pendingQ = null
+      pendingQ  = null
+      pendingEl = null
     },
 
     onNegative() {
       if (!pendingQ) return
       brain.negative(pendingQ.categoryId)
       speak(pendingQ.answers.no, MOOD.negative)
-      pendingQ = null
+
+      // נסה למחוק את הפוסט מיד
+      const elToDismiss = pendingEl
+      pendingQ  = null
+      pendingEl = null
+
+      if (options.onDismiss && elToDismiss) {
+        options.onDismiss(elToDismiss).then(result => {
+          if (result.ok) {
+            setTimeout(() => {
+              if (canSpeak()) speak('הסרתי את הפוסט הזה! 📎', MOOD.positive)
+            }, 2_500)
+          }
+        })
+      }
     },
 
     // ── "למה אני רואה את זה?" — לחיצה ידנית ─────────────────
