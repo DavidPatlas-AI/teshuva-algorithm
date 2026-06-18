@@ -200,6 +200,11 @@
         const totalSocial = Object.values(socialCounts).reduce((a, b) => a + b, 0);
         const liveCats = Object.entries(stored).filter(([k, v]) => v > 0 && k !== "uncategorized").sort((a, b) => b[1] - a[1]);
         const topLiveCat = liveCats[0];
+        const dismissedTotal = brainState?.dismissedTotal ?? 0;
+        if (dismissedTotal > 0) {
+          document.getElementById("stat-dismissed").textContent = dismissedTotal.toLocaleString();
+          document.getElementById("dismiss-banner").style.display = "flex";
+        }
         document.getElementById("header-sub").textContent = `${totalVisits.toLocaleString()} \u05D1\u05D9\u05E7\u05D5\u05E8\u05D9\u05DD \u05D1-7 \u05D9\u05DE\u05D9\u05DD`;
         document.getElementById("stat-visits").textContent = totalVisits.toLocaleString();
         document.getElementById("stat-social").textContent = totalSocial.toLocaleString();

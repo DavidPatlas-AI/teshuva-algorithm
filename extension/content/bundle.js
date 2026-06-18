@@ -6936,15 +6936,21 @@
     const session = {};
     const allTime = {};
     const weights = {};
+    const dismissed = {};
     function initDefaults() {
       for (const id of CATEGORY_IDS) {
         session[id] = 0;
         allTime[id] = allTime[id] ?? 0;
         weights[id] = weights[id] ?? DEFAULT_WEIGHT;
+        dismissed[id] = dismissed[id] ?? 0;
       }
     }
     async function persist() {
-      await storageAdapter.set(STORAGE_KEY, { allTime: { ...allTime }, weights: { ...weights } });
+      await storageAdapter.set(STORAGE_KEY, {
+        allTime: { ...allTime },
+        weights: { ...weights },
+        dismissed: { ...dismissed }
+      });
     }
     return {
       // טען נתונים שמורים מהאחסון
@@ -6952,6 +6958,7 @@
         const saved = await storageAdapter.get(STORAGE_KEY);
         if (saved?.allTime) Object.assign(allTime, saved.allTime);
         if (saved?.weights) Object.assign(weights, saved.weights);
+        if (saved?.dismissed) Object.assign(dismissed, saved.dismissed);
         initDefaults();
       },
       // רשום צפייה בקטגוריה
@@ -6970,6 +6977,11 @@
         weights[categoryId] = Math.max(MIN_WEIGHT, (weights[categoryId] ?? DEFAULT_WEIGHT) - WEIGHT_NEGATIVE_DELTA);
         persist();
       },
+      // פוסט הוסר בפועל מהפיד
+      dismissSignal(categoryId) {
+        dismissed[categoryId] = (dismissed[categoryId] ?? 0) + 1;
+        persist();
+      },
       // קריאת נתוני הסשן הנוכחי
       getSessionStats() {
         return { ...session };
@@ -6982,9 +6994,17 @@
       getWeights() {
         return { ...weights };
       },
+      // קריאת ספירת הפוסטים שהוסרו
+      getDismissed() {
+        return { ...dismissed };
+      },
       // סה"כ פוסטים שנצפו בסשן הזה
       getSessionTotal() {
         return Object.values(session).reduce((sum, n) => sum + n, 0);
+      },
+      // סה"כ פוסטים שהוסרו מכל הזמן
+      getDismissedTotal() {
+        return Object.values(dismissed).reduce((sum, n) => sum + n, 0);
       },
       // מחק את כל הנתונים
       async reset() {
@@ -6992,6 +7012,7 @@
           session[id] = 0;
           allTime[id] = 0;
           weights[id] = DEFAULT_WEIGHT;
+          dismissed[id] = 0;
         }
         await storageAdapter.set(STORAGE_KEY, null);
       }
@@ -7149,6 +7170,8 @@
           session: state.getSessionStats(),
           allTime: state.getAllTimeStats(),
           weights: state.getWeights(),
+          dismissed: state.getDismissed(),
+          dismissedTotal: state.getDismissedTotal(),
           total: state.getSessionTotal(),
           categories: CATEGORIES,
           ids: CATEGORY_IDS
@@ -7161,6 +7184,10 @@
       // המשתמש דילג מהר
       negative(categoryId) {
         state.negativeSignal(categoryId);
+      },
+      // פוסט הוסר בפועל ע"י מנוע הפעולות — לספירה בפופ-אפ
+      recordDismiss(categoryId) {
+        state.dismissSignal(categoryId);
       },
       // מחק את כל הנתונים
       reset() {
@@ -7428,8 +7455,9 @@
         const weight = weights?.[catId] ?? 1;
         if (weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
           options.onDismiss(el).then((result) => {
-            if (result.ok && canSpeak()) {
-              speak("\u05D4\u05E1\u05E8\u05EA\u05D9 \u05E4\u05D5\u05E1\u05D8 \u05DC\u05D0 \u05E8\u05DC\u05D5\u05D5\u05E0\u05D8\u05D9 \u05D1\u05E9\u05DE\u05DA \u{1F4CE}", MOOD.positive);
+            if (result.ok) {
+              brain.recordDismiss(catId);
+              if (canSpeak()) speak("\u05D4\u05E1\u05E8\u05EA\u05D9 \u05E4\u05D5\u05E1\u05D8 \u05DC\u05D0 \u05E8\u05DC\u05D5\u05D5\u05E0\u05D8\u05D9 \u05D1\u05E9\u05DE\u05DA \u{1F4CE}", MOOD.positive);
             }
           });
           return catId;
@@ -7464,11 +7492,13 @@
         brain.negative(pendingQ.categoryId);
         speak(pendingQ.answers.no, MOOD.negative);
         const elToDismiss = pendingEl;
+        const dismissCatId = pendingQ.categoryId;
         pendingQ = null;
         pendingEl = null;
         if (options.onDismiss && elToDismiss) {
           options.onDismiss(elToDismiss).then((result) => {
             if (result.ok) {
+              brain.recordDismiss(dismissCatId);
               setTimeout(() => {
                 if (canSpeak()) speak("\u05D4\u05E1\u05E8\u05EA\u05D9 \u05D0\u05EA \u05D4\u05E4\u05D5\u05E1\u05D8 \u05D4\u05D6\u05D4! \u{1F4CE}", MOOD.positive);
               }, 2500);

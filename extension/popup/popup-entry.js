@@ -90,6 +90,13 @@ async function loadAll() {
     .sort((a, b) => b[1] - a[1])
   const topLiveCat  = liveCats[0]
 
+  // ── Dismiss banner ───────────────────────────────────────────
+  const dismissedTotal = brainState?.dismissedTotal ?? 0
+  if (dismissedTotal > 0) {
+    document.getElementById('stat-dismissed').textContent = dismissedTotal.toLocaleString()
+    document.getElementById('dismiss-banner').style.display = 'flex'
+  }
+
   // ── Header ────────────────────────────────────────────────────
   document.getElementById('header-sub').textContent =
     `${totalVisits.toLocaleString()} ביקורים ב-7 ימים`

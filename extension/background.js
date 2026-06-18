@@ -151,7 +151,8 @@
             await chrome.storage.local.set({
               [STORAGE_KEY]: {
                 allTime: { ...empty },
-                weights: Object.fromEntries(CATEGORY_IDS.map((id) => [id, 1]))
+                weights: Object.fromEntries(CATEGORY_IDS.map((id) => [id, 1])),
+                dismissed: { ...empty }
               }
             });
             return { ok: true };

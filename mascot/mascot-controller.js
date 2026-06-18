@@ -87,8 +87,9 @@ export function createMascotController(mascot, brain, options = {}) {
 
       if (weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
         options.onDismiss(el).then(result => {
-          if (result.ok && canSpeak()) {
-            speak('הסרתי פוסט לא רלוונטי בשמך 📎', MOOD.positive)
+          if (result.ok) {
+            brain.recordDismiss(catId)
+            if (canSpeak()) speak('הסרתי פוסט לא רלוונטי בשמך 📎', MOOD.positive)
           }
         })
         return catId
@@ -129,13 +130,15 @@ export function createMascotController(mascot, brain, options = {}) {
       speak(pendingQ.answers.no, MOOD.negative)
 
       // נסה למחוק את הפוסט מיד
-      const elToDismiss = pendingEl
+      const elToDismiss  = pendingEl
+      const dismissCatId = pendingQ.categoryId
       pendingQ  = null
       pendingEl = null
 
       if (options.onDismiss && elToDismiss) {
         options.onDismiss(elToDismiss).then(result => {
           if (result.ok) {
+            brain.recordDismiss(dismissCatId)
             setTimeout(() => {
               if (canSpeak()) speak('הסרתי את הפוסט הזה! 📎', MOOD.positive)
             }, 2_500)

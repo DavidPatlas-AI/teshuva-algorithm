@@ -48,12 +48,14 @@ export function createBrain(storageAdapter) {
     // כל הסטטיסטיקות — לפופ-אפ
     getStats() {
       return {
-        session:    state.getSessionStats(),
-        allTime:    state.getAllTimeStats(),
-        weights:    state.getWeights(),
-        total:      state.getSessionTotal(),
-        categories: CATEGORIES,
-        ids:        CATEGORY_IDS,
+        session:        state.getSessionStats(),
+        allTime:        state.getAllTimeStats(),
+        weights:        state.getWeights(),
+        dismissed:      state.getDismissed(),
+        dismissedTotal: state.getDismissedTotal(),
+        total:          state.getSessionTotal(),
+        categories:     CATEGORIES,
+        ids:            CATEGORY_IDS,
       }
     },
 
@@ -65,6 +67,11 @@ export function createBrain(storageAdapter) {
     // המשתמש דילג מהר
     negative(categoryId) {
       state.negativeSignal(categoryId)
+    },
+
+    // פוסט הוסר בפועל ע"י מנוע הפעולות — לספירה בפופ-אפ
+    recordDismiss(categoryId) {
+      state.dismissSignal(categoryId)
     },
 
     // מחק את כל הנתונים

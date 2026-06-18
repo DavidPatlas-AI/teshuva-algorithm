@@ -59,8 +59,9 @@ async function handle(msg) {
       const empty = Object.fromEntries(CATEGORY_IDS.map(id => [id, 0]))
       await chrome.storage.local.set({
         [STORAGE_KEY]: {
-          allTime:  { ...empty },
-          weights:  Object.fromEntries(CATEGORY_IDS.map(id => [id, 1.0])),
+          allTime:   { ...empty },
+          weights:   Object.fromEntries(CATEGORY_IDS.map(id => [id, 1.0])),
+          dismissed: { ...empty },
         },
       })
       return { ok: true }
