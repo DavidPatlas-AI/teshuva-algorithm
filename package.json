@@ -1,6 +1,6 @@
 {
   "name": "teshuva-algorithm",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The Algorithm That Repented — Clippy mascot that explains why you see what you see on social media",
   "main": "desktop/main.js",
   "scripts": {
