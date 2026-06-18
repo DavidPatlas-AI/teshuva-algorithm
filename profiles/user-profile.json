@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "id": "default",
+  "createdAt": null,
+  "updatedAt": null,
+  "preferences": {
+    "language": "he",
+    "mascot": "clippy",
+    "skin": "default",
+    "speakCooldownMs": 9000,
+    "idleIntervalMs": 15000,
+    "showOnboarding": true,
+    "notificationsEnabled": false
+  },
+  "history": {
+    "allTime": {},
+    "weights": {},
+    "totalSeen": 0,
+    "firstSeenAt": null,
+    "lastSeenAt": null
+  },
+  "behavior": {
+    "avgSessionLengthMin": 0,
+    "peakHour": null,
+    "dominantCategory": null,
+    "feedVariety": 0
+  }
+}

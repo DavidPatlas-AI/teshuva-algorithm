@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teshuva Marketplace — לוח מפתחים</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; direction: rtl; background: #f8fafc; color: #1e293b; }
+    header { background: #312e81; color: white; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    header h1 { font-size: 1.4rem; }
+    .badge { background: #10b981; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.75rem; }
+    nav { background: white; border-bottom: 1px solid #e2e8f0; display: flex; gap: 0; }
+    nav a { padding: 1rem 1.5rem; text-decoration: none; color: #64748b; font-weight: 600; border-bottom: 3px solid transparent; }
+    nav a.active { color: #6366f1; border-color: #6366f1; }
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1.5rem; }
+    .card { background: white; border-radius: 10px; border: 1px solid #e2e8f0; padding: 1.5rem; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.1rem; margin-bottom: 1rem; color: #312e81; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f1f5f9; padding: 0.6rem 1rem; text-align: right; font-size: 0.85rem; color: #64748b; }
+    td { padding: 0.7rem 1rem; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+    .status { padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; }
+    .status.approved  { background: #d1fae5; color: #059669; }
+    .status.pending   { background: #fef3c7; color: #d97706; }
+    .status.rejected  { background: #fee2e2; color: #dc2626; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .stat { background: white; border-radius: 8px; border: 1px solid #e2e8f0; padding: 1.2rem; text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: #6366f1; }
+    .stat-label { font-size: 0.8rem; color: #64748b; margin-top: 0.2rem; }
+    .btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; border: none; }
+    .btn-primary { background: #6366f1; color: white; }
+    .btn-outline { background: white; border: 1px solid #6366f1; color: #6366f1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <span>📎</span>
+  <h1>Teshuva Marketplace — לוח מפתחים</h1>
+  <span class="badge">Beta</span>
+</header>
+
+<nav>
+  <a href="#" class="active">הסקינים שלי</a>
+  <a href="#">הכנסות</a>
+  <a href="#">ביקורות</a>
+  <a href="#">הגדרות</a>
+</nav>
+
+<div class="container">
+  <!-- Stats -->
+  <div class="stats-row" style="margin-bottom:1.5rem">
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">פריטים פורסמו</div></div>
+    <div class="stat"><div class="stat-num">1,247</div><div class="stat-label">הורדות כולל</div></div>
+    <div class="stat"><div class="stat-num">4.7 ★</div><div class="stat-label">ממוצע דירוג</div></div>
+    <div class="stat"><div class="stat-num">₪89</div><div class="stat-label">הכנסות החודש</div></div>
+  </div>
+
+  <!-- Items Table -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h2>הפריטים שלי</h2>
+      <button class="btn btn-primary">+ פרסם פריט חדש</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>שם</th>
+          <th>קטגוריה</th>
+          <th>גרסה</th>
+          <th>סטטוס</th>
+          <th>הורדות</th>
+          <th>דירוג</th>
+          <th>פעולות</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Merlin Skin</td>
+          <td>skin</td>
+          <td>1.2.0</td>
+          <td><span class="status approved">מאושר</span></td>
+          <td>834</td>
+          <td>4.8 ★</td>
+          <td><button class="btn btn-outline" style="font-size:.8rem;padding:.3rem .7rem">ערוך</button></td>
+        </tr>
+        <tr>
+          <td>Activity Logger</td>
+          <td>plugin</td>
+          <td>1.0.1</td>
+          <td><span class="status pending">ממתין</span></td>
+          <td>413</td>
+          <td>4.5 ★</td>
+          <td><button class="btn btn-outline" style="font-size:.8rem;padding:.3rem .7rem">ערוך</button></td>
+        </tr>
+        <tr>
+          <td>Dark Theme</td>
+          <td>theme</td>
+          <td>0.9.0</td>
+          <td><span class="status rejected">נדחה</span></td>
+          <td>0</td>
+          <td>—</td>
+          <td><button class="btn btn-outline" style="font-size:.8rem;padding:.3rem .7rem">תקן</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

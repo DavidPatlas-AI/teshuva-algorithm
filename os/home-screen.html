@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teshuva OS — Home</title>
+  <link rel="stylesheet" href="theme.css" />
+  <style>
+    body { margin:0; background:var(--os-bg,#f8fafc); overflow:hidden; }
+    .wallpaper {
+      position:fixed; inset:0;
+      background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#4c1d95 100%);
+      z-index:-1;
+    }
+    .widget-area {
+      padding:1.5rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      align-items:flex-start;
+    }
+    .agent-bubble {
+      position:fixed;
+      bottom:64px;
+      right:1rem;
+      z-index:9000;
+    }
+    .taskbar {
+      position:fixed;
+      bottom:0; left:0; right:0;
+      height:48px;
+      background:rgba(49,46,129,.95);
+      backdrop-filter:blur(8px);
+      display:flex;
+      align-items:center;
+      padding:0 1rem;
+      gap:.5rem;
+      z-index:9998;
+    }
+    .taskbar-btn {
+      background:none; border:none; color:white;
+      padding:.3rem .7rem; border-radius:6px; cursor:pointer;
+      font-size:.9rem; font-weight:600; font-family:inherit;
+    }
+    .taskbar-btn:hover { background:rgba(255,255,255,.15); }
+    .taskbar-spacer { flex:1; }
+    .taskbar-time { color:rgba(255,255,255,.8); font-size:.85rem; font-family:monospace; }
+  </style>
+</head>
+<body>
+
+<div class="wallpaper"></div>
+
+<!-- Widget Area -->
+<div class="widget-area" id="widget-area">
+  <!-- Widgets injected by home-screen.js -->
+</div>
+
+<!-- Clippy placeholder -->
+<div class="agent-bubble" id="agent-area">
+  <div style="font-size:60px;cursor:pointer" id="clippy-icon" title="לחץ להפעיל Clippy">📎</div>
+</div>
+
+<!-- Taskbar -->
+<div class="taskbar">
+  <button class="taskbar-btn" id="btn-launcher">⊞ תפריט</button>
+  <button class="taskbar-btn" id="btn-agent">📎 Clippy</button>
+  <button class="taskbar-btn" id="btn-notes">📝</button>
+  <button class="taskbar-btn" id="btn-tasks">✅</button>
+  <div class="taskbar-spacer"></div>
+  <div class="taskbar-time" id="taskbar-clock">00:00</div>
+  <button class="taskbar-btn" id="btn-settings">⚙️</button>
+</div>
+
+<script type="module" src="home-screen.js"></script>
+</body>
+</html>

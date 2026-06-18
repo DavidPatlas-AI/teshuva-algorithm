@@ -1,0 +1,32 @@
+{
+  "syncVersion": "1.0",
+  "description": "Teshuva Algorithm cloud storage format",
+  "fields": {
+    "syncVersion": "string — format version for compatibility checks",
+    "exportedAt":  "ISO 8601 datetime",
+    "updatedAt":   "ISO 8601 datetime — last modification",
+    "allTime": {
+      "type": "object",
+      "description": "category counts, e.g. { politics: 47, sports: 12 }",
+      "mergeStrategy": "max per key"
+    },
+    "weights": {
+      "type": "object",
+      "description": "category weights 0.1–3.0, default 1.0",
+      "mergeStrategy": "average per key"
+    },
+    "preferences": {
+      "type": "object",
+      "description": "user preferences object",
+      "mergeStrategy": "last-write-wins by updatedAt"
+    }
+  },
+  "example": {
+    "syncVersion": "1.0",
+    "exportedAt":  "2026-06-16T12:00:00.000Z",
+    "updatedAt":   "2026-06-16T11:58:00.000Z",
+    "allTime":    { "politics": 47, "sports": 12, "entertainment": 31 },
+    "weights":    { "politics": 1.3, "sports": 0.9, "entertainment": 1.1 },
+    "preferences": { "language": "he", "skin": "default" }
+  }
+}

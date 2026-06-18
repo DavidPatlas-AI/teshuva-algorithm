@@ -1,0 +1,22 @@
+theme: minima
+title: "Teshuva Algorithm"
+description: "האלגוריתם שחזר בתשובה — סוכן אישי חמוד שמסביר למה אתה רואה דברים"
+baseurl: "/teshuva-algorithm"
+url: "https://YOUR_USERNAME.github.io"
+lang: he
+direction: rtl
+
+header_pages:
+  - install.md
+  - extension.md
+  - desktop.md
+  - brain.md
+  - mascot.md
+  - roadmap.md
+  - changelog.md
+
+minima:
+  custom_css_path: "/assets/css/style.css"
+
+plugins:
+  - jekyll-feed

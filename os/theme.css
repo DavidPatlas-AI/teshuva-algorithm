@@ -1,0 +1,121 @@
+/* ================================================================
+   Teshuva OS — System Theme
+   ================================================================ */
+
+:root {
+  --os-primary:      #312e81;
+  --os-accent:       #6366f1;
+  --os-green:        #10b981;
+  --os-bg:           #f8fafc;
+  --os-surface:      #ffffff;
+  --os-border:       #e2e8f0;
+  --os-text:         #1e293b;
+  --os-muted:        #64748b;
+  --os-radius:       10px;
+  --os-shadow:       0 4px 24px rgba(0,0,0,.08);
+  --os-shadow-lg:    0 8px 32px rgba(0,0,0,.15);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --os-primary:   #4f46e5;
+    --os-accent:    #818cf8;
+    --os-green:     #34d399;
+    --os-bg:        #0f172a;
+    --os-surface:   #1e293b;
+    --os-border:    #334155;
+    --os-text:      #f1f5f9;
+    --os-muted:     #94a3b8;
+  }
+}
+
+/* Window base */
+.teshuva-window {
+  background: var(--os-surface);
+  border:     1px solid var(--os-border);
+  border-radius: var(--os-radius);
+  box-shadow: var(--os-shadow-lg);
+  direction:  rtl;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color:      var(--os-text);
+  transition: box-shadow .15s;
+}
+.teshuva-window:focus-within {
+  box-shadow: 0 12px 40px rgba(99,102,241,.2);
+}
+
+/* Widgets */
+.teshuva-widget {
+  background: var(--os-surface);
+  border:     1px solid var(--os-border);
+  border-radius: var(--os-radius);
+  padding:    .8rem 1rem;
+  box-shadow: var(--os-shadow);
+  direction:  rtl;
+}
+.teshuva-widget-title {
+  font-weight: 800;
+  color:       var(--os-primary);
+  margin-bottom: .5rem;
+  font-size:   .9rem;
+}
+
+/* Notification toast */
+.teshuva-toast {
+  background:     var(--os-surface);
+  border:         1px solid var(--os-border);
+  border-radius:  8px;
+  padding:        .8rem 1.2rem;
+  box-shadow:     var(--os-shadow-lg);
+  max-width:      280px;
+  font-family:    'Segoe UI', Arial, sans-serif;
+  font-size:      .9rem;
+  direction:      rtl;
+  text-align:     right;
+  transition:     opacity .2s;
+}
+
+/* Control center */
+.teshuva-control-center {
+  background:     var(--os-surface);
+  border:         1px solid var(--os-border);
+  border-radius:  12px;
+  padding:        1rem;
+  box-shadow:     var(--os-shadow-lg);
+  width:          220px;
+  direction:      rtl;
+  font-family:    'Segoe UI', Arial, sans-serif;
+}
+
+/* Home screen */
+.teshuva-home {
+  position:       fixed;
+  inset:          0;
+  background:     var(--os-bg);
+  direction:      rtl;
+  font-family:    'Segoe UI', Arial, sans-serif;
+  display:        flex;
+  flex-direction: column;
+  overflow:       hidden;
+}
+.teshuva-home-widgets {
+  display:     flex;
+  flex-wrap:   wrap;
+  gap:         1rem;
+  padding:     1.5rem;
+}
+.teshuva-taskbar {
+  position:       fixed;
+  bottom:         0;
+  left:           0;
+  right:          0;
+  background:     var(--os-primary);
+  color:          white;
+  height:         48px;
+  display:        flex;
+  align-items:    center;
+  padding:        0 1rem;
+  gap:            .5rem;
+  z-index:        9998;
+}

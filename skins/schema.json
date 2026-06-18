@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Teshuva Skin Schema",
+  "type": "object",
+  "required": ["id", "name", "author", "version", "entry"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "מזהה ייחודי (lowercase, hyphens only)"
+    },
+    "name": {
+      "type": "string",
+      "description": "שם תצוגה"
+    },
+    "description": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "entry": {
+      "type": "string",
+      "description": "נתיב יחסי לקובץ mascot.js"
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["free", "premium", "pro"],
+      "default": "free"
+    },
+    "preview": {
+      "type": "string",
+      "description": "נתיב לתמונת preview (PNG/GIF)"
+    },
+    "animations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "רשימת שמות האנימציות הנתמכות"
+    }
+  }
+}

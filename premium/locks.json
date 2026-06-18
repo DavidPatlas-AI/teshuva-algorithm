@@ -1,0 +1,34 @@
+{
+  "free": [
+    "classify",
+    "explain_basic",
+    "popup_overview",
+    "popup_categories",
+    "popup_history",
+    "feedback_thumbs",
+    "desktop_app",
+    "storage_local"
+  ],
+  "premium": [
+    "intent_advanced",
+    "weekly_insights",
+    "mood_engine_full",
+    "skins_marketplace_5",
+    "custom_categories_20",
+    "export_csv",
+    "export_json"
+  ],
+  "pro": [
+    "intent_advanced",
+    "weekly_insights",
+    "mood_engine_full",
+    "skins_marketplace_all",
+    "custom_categories_unlimited",
+    "export_csv",
+    "export_json",
+    "ai_classification",
+    "multi_device_sync",
+    "chrome_notifications",
+    "early_access"
+  ]
+}

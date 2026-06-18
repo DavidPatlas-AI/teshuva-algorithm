@@ -1,0 +1,11 @@
+{
+  "id": "my-skin",
+  "name": "My Custom Skin",
+  "description": "תיאור הסקין שלך",
+  "author": "שמך",
+  "version": "1.0.0",
+  "entry": "mascot.js",
+  "tier": "free",
+  "preview": "preview.gif",
+  "animations": ["Wave", "Idle", "Speak", "Think"]
+}

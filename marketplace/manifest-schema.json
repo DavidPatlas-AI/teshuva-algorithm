@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Marketplace Item Manifest",
+  "type": "object",
+  "required": ["id", "name", "version", "category", "entry", "author"],
+  "properties": {
+    "id":          { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "name":        { "type": "string", "maxLength": 50 },
+    "description": { "type": "string", "maxLength": 500 },
+    "version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "category":    { "type": "string", "enum": ["skins", "plugins", "themes"] },
+    "entry":       { "type": "string", "description": "relative path to entry file" },
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name":    { "type": "string" },
+        "github":  { "type": "string" },
+        "website": { "type": "string", "format": "uri" }
+      }
+    },
+    "tier":        { "type": "string", "enum": ["free", "premium", "pro"] },
+    "preview":     { "type": "string", "description": "URL to preview GIF/PNG" },
+    "license":     { "type": "string", "default": "MIT" },
+    "keywords":    { "type": "array", "items": { "type": "string" } },
+    "minVersion":  { "type": "string", "description": "minimum teshuva-algorithm version" }
+  }
+}

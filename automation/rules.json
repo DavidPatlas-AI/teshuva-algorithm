@@ -1,0 +1,68 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "politics-overload",
+      "name": "פוליטיקה מוגזמת",
+      "trigger": {
+        "type": "category_percentage",
+        "categoryId": "politics",
+        "threshold": 0.5,
+        "window": "session"
+      },
+      "action": {
+        "type": "ask_question",
+        "text": "50% מהפיד שלך עכשיו הוא פוליטיקה — רוצה הפסקה?",
+        "mood": "confused",
+        "cooldownMs": 1800000
+      },
+      "enabled": true
+    },
+    {
+      "id": "positive-streak",
+      "name": "רצף לייקים",
+      "trigger": {
+        "type": "positive_count",
+        "threshold": 3,
+        "window": "session"
+      },
+      "action": {
+        "type": "say",
+        "text": "נראה שאתה מוצא הרבה תוכן מעניין! רוצה לראות ניתוח שבועי?",
+        "mood": "excited",
+        "cooldownMs": 3600000
+      },
+      "enabled": true
+    },
+    {
+      "id": "long-session",
+      "name": "גלישה ממושכת",
+      "trigger": {
+        "type": "session_duration_min",
+        "threshold": 30
+      },
+      "action": {
+        "type": "say",
+        "text": "גולש כבר חצי שעה — אולי כדאי להפסיק קצת? 🌿",
+        "mood": "think",
+        "cooldownMs": 3600000
+      },
+      "enabled": true
+    },
+    {
+      "id": "new-category",
+      "name": "קטגוריה חדשה",
+      "trigger": {
+        "type": "first_in_category",
+        "categoryId": "*"
+      },
+      "action": {
+        "type": "say",
+        "text": "זה הפוסט הראשון שלך על ${heLabel} — מעניין!",
+        "mood": "greet",
+        "cooldownMs": 0
+      },
+      "enabled": true
+    }
+  ]
+}

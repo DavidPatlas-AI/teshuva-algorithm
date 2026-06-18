@@ -1,0 +1,24 @@
+{
+  "PREMIUM_FEATURES": [
+    "intent_advanced",
+    "weekly_insights",
+    "mood_engine_full",
+    "skins_marketplace_5",
+    "custom_categories_20",
+    "export_csv",
+    "export_json"
+  ],
+  "PRO_FEATURES": [
+    "ai_classification",
+    "multi_device_sync",
+    "chrome_notifications",
+    "skins_marketplace_all",
+    "custom_categories_unlimited",
+    "early_access"
+  ],
+  "TIERS": {
+    "free":    { "monthly": 0,  "yearly": 0   },
+    "premium": { "monthly": 19, "yearly": 149 },
+    "pro":     { "monthly": 49, "yearly": 399 }
+  }
+}

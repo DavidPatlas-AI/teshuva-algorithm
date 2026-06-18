@@ -1,0 +1,14 @@
+{
+  "id": "clippy",
+  "name": "Clippy Classic",
+  "description": "Clippy המקורי — מחזיר אותנו ל-1997",
+  "author": "Microsoft / pi0/clippyjs",
+  "version": "1.0.0",
+  "entry": "mascot.js",
+  "tier": "free",
+  "preview": "preview.gif",
+  "animations": [
+    "Wave", "Greeting", "Thinking", "LookDown", "LookLeft", "LookRight",
+    "Congratulate", "IdleRopePile", "IdleFingerTap"
+  ]
+}

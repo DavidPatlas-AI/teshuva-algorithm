@@ -1,0 +1,87 @@
+/* GitHub Pages custom styles for teshuva-algorithm docs */
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --accent: #10b981;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --bg: #ffffff;
+  --bg-alt: #f8fafc;
+  --border: #e2e8f0;
+  --radius: 8px;
+}
+
+/* RTL support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Page layout */
+.site-header { border-bottom: 3px solid var(--primary); }
+.site-header .site-title { color: var(--primary); font-weight: 700; }
+.site-nav a { color: var(--primary); }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9em;
+}
+th {
+  background: var(--primary);
+  color: white;
+  padding: 0.6rem 1rem;
+  text-align: right;
+}
+td {
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) td { background: var(--bg-alt); }
+
+/* Code blocks */
+pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  overflow-x: auto;
+  font-size: 0.88em;
+  line-height: 1.6;
+  direction: ltr;
+  text-align: left;
+}
+code { font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace; }
+
+/* Inline code */
+p code, li code {
+  background: #f1f5f9;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: #4f46e5;
+  font-size: 0.9em;
+}
+
+/* Headings */
+h1 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; }
+h2 { color: var(--text); margin-top: 2rem; }
+h3 { color: var(--text-muted); }
+
+/* Horizontal rule */
+hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+/* Checkboxes in lists */
+li input[type="checkbox"] { margin-left: 0.5rem; }
+
+/* Footer */
+.site-footer { border-top: 2px solid var(--primary); color: var(--text-muted); }
+
+/* Responsive */
+@media (max-width: 640px) {
+  table { font-size: 0.8em; }
+  pre { font-size: 0.8em; }
+}
