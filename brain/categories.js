@@ -1,78 +1,183 @@
 // מקור האמת היחיד לקטגוריות — כל שאר הקבצים מייבאים מכאן
 
+// כל קטגוריה: { heLabel, color, terms: [{t: string, w: number}] }
+// t = מחרוזת שנכללת בטקסט, w = משקל (1=רגיל, 2=חזק, 3=חד-משמעי)
+
 export const CATEGORIES = {
+
   politics: {
     heLabel: 'פוליטיקה',
     color: '#EF4444',
-    keywords: {
-      he: ['בחירות','כנסת','ממשלה','שר','ראש ממשלה','אופוזיציה','קואליציה','מפלגה','פוליטי','ביבי','גנץ','לפיד','נתניהו','גלנט'],
-      en: ['election','government','congress','senate','president','minister','vote','policy','democrat','republican','parliament','prime minister'],
-    },
+    terms: [
+      // חד-משמעיים
+      {t:'נתניהו',w:3},{t:'כנסת',w:3},{t:'בכנסת',w:3},{t:'לכנסת',w:3},
+      {t:'הכנסת',w:3},{t:'ביבי',w:3},{t:'גנץ',w:3},{t:'לפיד',w:3},
+      {t:'גלנט',w:3},{t:'אופוזיציה',w:3},{t:'קואליציה',w:3},{t:'הממשלה',w:3},
+      {t:'הכנסת',w:3},{t:'ח"כ',w:3},{t:'חכ',w:2},
+      // חזקים
+      {t:'בחירות',w:2},{t:'לבחירות',w:2},{t:'ממשלה',w:2},{t:'מפלגה',w:2},
+      {t:'של הממשלה',w:2},{t:'פוליטיקה',w:2},{t:'פוליטי',w:2},{t:'מדיניות',w:2},
+      {t:'שר ',w:2},{t:'השר',w:2},{t:'ראש ממשלה',w:2},{t:'צבא',w:1},
+      {t:'ימין',w:1},{t:'שמאל',w:1},{t:'דמוקרטיה',w:2},
+      // אנגלית
+      {t:'election',w:2},{t:'government',w:2},{t:'congress',w:2},{t:'senate',w:2},
+      {t:'president',w:2},{t:'minister',w:2},{t:'vote',w:1},{t:'policy',w:1},
+      {t:'democrat',w:2},{t:'republican',w:2},{t:'parliament',w:2},
+      {t:'prime minister',w:3},{t:'political',w:2},{t:'trump',w:3},
+      {t:'biden',w:3},{t:'netanyahu',w:3},
+    ],
   },
+
   sports: {
     heLabel: 'ספורט',
     color: '#3B82F6',
-    keywords: {
-      he: ['כדורגל','כדורסל','ליגה','גול','משחק','שחקן','קבוצה','אליפות','מכבי','הפועל','ביתר','נבחרת'],
-      en: ['football','basketball','soccer','goal','match','game','player','team','championship','nba','fifa','score','league','tournament'],
-    },
+    terms: [
+      {t:'כדורגל',w:3},{t:'בכדורגל',w:3},{t:'לכדורגל',w:3},{t:'כדורגלן',w:3},
+      {t:'כדורסל',w:3},{t:'בכדורסל',w:3},{t:'כדורסלן',w:3},
+      {t:'מכבי',w:3},{t:'הפועל',w:3},{t:'ביתר',w:3},{t:'בית"ר',w:3},
+      {t:'נבחרת',w:3},{t:'הנבחרת',w:3},{t:'ליגה',w:2},{t:'בליגה',w:2},
+      {t:'אליפות',w:2},{t:'גול',w:2},{t:'שחקן',w:1},{t:'קבוצה',w:1},
+      {t:'מגרש',w:2},{t:'ספורט',w:2},{t:'תחרות',w:1},{t:'משחק',w:1},
+      {t:'גמר',w:2},{t:'פלייאוף',w:2},{t:'פינאל',w:2},{t:'דרבי',w:2},
+      {t:'יורופה',w:2},{t:'צמרת',w:1},{t:'אצן',w:2},{t:'שחייה',w:2},
+      {t:'football',w:2},{t:'basketball',w:2},{t:'soccer',w:2},{t:'goal',w:1},
+      {t:'match',w:1},{t:'player',w:1},{t:'team',w:1},{t:'championship',w:2},
+      {t:'nba',w:3},{t:'fifa',w:3},{t:'score',w:1},{t:'league',w:2},
+      {t:'tournament',w:2},{t:'messi',w:3},{t:'ronaldo',w:3},{t:'lebron',w:3},
+    ],
   },
+
   entertainment: {
     heLabel: 'בידור',
     color: '#EC4899',
-    keywords: {
-      he: ['סרט','מוזיקה','שיר','זמר','שחקן','תוכנית','בידור','ריאליטי','סדרה','אלבום','קונצרט'],
-      en: ['movie','music','song','singer','actor','show','film','celebrity','tv','series','netflix','spotify','concert','album','viral'],
-    },
+    terms: [
+      {t:'סרט',w:2},{t:'הסרט',w:2},{t:'בסרט',w:2},{t:'לסרט',w:2},
+      {t:'מוזיקה',w:2},{t:'שיר',w:2},{t:'שירים',w:2},{t:'ביצוע',w:1},
+      {t:'זמר',w:2},{t:'זמרת',w:2},{t:'שחקן',w:1},{t:'שחקנית',w:2},
+      {t:'ריאליטי',w:3},{t:'סדרה',w:2},{t:'בסדרה',w:2},{t:'עונה',w:1},
+      {t:'אלבום',w:2},{t:'קונצרט',w:3},{t:'להקה',w:2},{t:'שידור',w:1},
+      {t:'טלוויזיה',w:2},{t:'בטלוויזיה',w:2},{t:'ערוץ',w:1},{t:'תוכנית',w:1},
+      {t:'קומדיה',w:2},{t:'דרמה',w:1},{t:'קליפ',w:2},{t:'יוטיוב',w:2},
+      {t:'טיקטוק',w:2},{t:'אינסטגרם',w:1},{t:'סלבריטי',w:2},{t:'אופנה',w:2},
+      {t:'movie',w:2},{t:'music',w:2},{t:'song',w:2},{t:'singer',w:2},
+      {t:'actor',w:2},{t:'show',w:1},{t:'film',w:2},{t:'celebrity',w:2},
+      {t:'series',w:2},{t:'netflix',w:3},{t:'spotify',w:3},{t:'concert',w:2},
+      {t:'album',w:2},{t:'viral',w:2},{t:'trending',w:1},{t:'tiktok',w:2},
+    ],
   },
+
   technology: {
     heLabel: 'טכנולוגיה',
     color: '#8B5CF6',
-    keywords: {
-      he: ['בינה מלאכותית','AI','סטארטאפ','אפליקציה','תוכנה','חברת טק','קוד','פיתוח','גוגל','אפל','אמזון','מיקרוסופט'],
-      en: ['ai','artificial intelligence','software','startup','app','coding','programming','tech','google','apple','amazon','meta','openai','chatgpt','github','developer'],
-    },
+    terms: [
+      {t:'בינה מלאכותית',w:3},{t:'AI',w:2},{t:'ai',w:2},{t:'ChatGPT',w:3},
+      {t:'chatgpt',w:3},{t:'GPT',w:3},{t:'סטארטאפ',w:3},{t:'הייטק',w:3},
+      {t:'היי טק',w:3},{t:'אפליקציה',w:2},{t:'תוכנה',w:2},{t:'חברת טק',w:3},
+      {t:'קוד',w:1},{t:'פיתוח',w:2},{t:'מפתח',w:1},{t:'גוגל',w:2},
+      {t:'אפל',w:2},{t:'אמזון',w:2},{t:'מיקרוסופט',w:2},{t:'מטא',w:2},
+      {t:'חדשנות',w:2},{t:'טכנולוגיה',w:3},{t:'דיגיטל',w:2},{t:'רובוט',w:2},
+      {t:'קריפטו',w:2},{t:'בלוקצ\'יין',w:2},{t:'ביטקוין',w:2},
+      {t:'artificial intelligence',w:3},{t:'software',w:2},{t:'startup',w:2},
+      {t:'app',w:1},{t:'coding',w:2},{t:'programming',w:2},{t:'tech',w:1},
+      {t:'google',w:2},{t:'apple',w:2},{t:'amazon',w:2},{t:'meta',w:2},
+      {t:'openai',w:3},{t:'github',w:2},{t:'developer',w:2},{t:'cybersecurity',w:2},
+    ],
   },
+
   news: {
     heLabel: 'חדשות',
     color: '#F97316',
-    keywords: {
-      he: ['מלחמה','שריפה','רעידת אדמה','חדשות','עדכון','פיגוע','תאונה','אסון','מבצע','ירי','נפגע'],
-      en: ['breaking','news','update','war','attack','disaster','earthquake','fire','crisis','alert','urgent','report','killed','injured'],
-    },
+    terms: [
+      {t:'מלחמה',w:3},{t:'במלחמה',w:3},{t:'שריפה',w:2},{t:'בשריפה',w:2},
+      {t:'רעידת אדמה',w:3},{t:'פיגוע',w:3},{t:'מבצע',w:2},{t:'ירי',w:2},
+      {t:'נפגע',w:2},{t:'נפגעים',w:2},{t:'תאונה',w:2},{t:'אסון',w:3},
+      {t:'עדכון',w:1},{t:'פלש',w:2},{t:'כתבה',w:1},{t:'דיווח',w:1},
+      {t:'חדשות',w:2},{t:'החדשות',w:2},{t:'בחדשות',w:2},{t:'ידיעה',w:2},
+      {t:'עצור',w:1},{t:'חיפוש',w:1},{t:'מחסום',w:2},{t:'נוהל',w:1},
+      {t:'הודעה',w:1},{t:'חירום',w:3},{t:'ביטחון',w:2},{t:'גבול',w:2},
+      {t:'breaking',w:2},{t:'news',w:1},{t:'update',w:1},{t:'war',w:2},
+      {t:'attack',w:2},{t:'disaster',w:2},{t:'earthquake',w:2},{t:'fire',w:1},
+      {t:'crisis',w:2},{t:'alert',w:2},{t:'urgent',w:2},{t:'killed',w:2},
+      {t:'injured',w:2},{t:'report',w:1},{t:'conflict',w:2},{t:'bomb',w:3},
+    ],
   },
+
   health: {
     heLabel: 'בריאות',
     color: '#10B981',
-    keywords: {
-      he: ['בריאות','תרופה','רופא','מחלה','פיטנס','דיאטה','תזונה','ויטמין','פסיכולוגיה','נפש','כושר'],
-      en: ['health','medicine','doctor','disease','fitness','diet','nutrition','mental health','therapy','wellness','vaccine','hospital','symptom'],
-    },
+    terms: [
+      {t:'בריאות',w:3},{t:'הבריאות',w:3},{t:'תרופה',w:2},{t:'תרופות',w:2},
+      {t:'רופא',w:2},{t:'רופאים',w:2},{t:'חולה',w:2},{t:'מחלה',w:2},
+      {t:'פיטנס',w:2},{t:'דיאטה',w:2},{t:'תזונה',w:2},{t:'ויטמין',w:2},
+      {t:'פסיכולוגיה',w:3},{t:'נפש',w:2},{t:'כושר',w:2},{t:'אימון',w:2},
+      {t:'בית חולים',w:3},{t:'מרפאה',w:2},{t:'ניתוח',w:2},{t:'חיסון',w:2},
+      {t:'וירוס',w:2},{t:'מגפה',w:2},{t:'סוכרת',w:3},{t:'לחץ דם',w:3},
+      {t:'פסיכיאטריה',w:3},{t:'חרדה',w:2},{t:'דיכאון',w:2},{t:'שינה',w:1},
+      {t:'health',w:2},{t:'medicine',w:2},{t:'doctor',w:2},{t:'disease',w:2},
+      {t:'fitness',w:2},{t:'diet',w:1},{t:'nutrition',w:2},{t:'mental health',w:3},
+      {t:'therapy',w:2},{t:'wellness',w:2},{t:'vaccine',w:2},{t:'hospital',w:2},
+      {t:'symptom',w:2},{t:'exercise',w:1},{t:'weight loss',w:2},
+    ],
   },
+
   economy: {
     heLabel: 'כלכלה',
     color: '#F59E0B',
-    keywords: {
-      he: ['כלכלה','בורסה','מניות','דולר','שקל','אינפלציה','ריבית','השקעה','נדלן','משכנתא','מחיר','יוקר'],
-      en: ['economy','stocks','market','dollar','inflation','investment','bitcoin','crypto','finance','bank','mortgage','price','gdp','recession'],
-    },
+    terms: [
+      {t:'כלכלה',w:3},{t:'הכלכלה',w:3},{t:'בורסה',w:3},{t:'מניות',w:3},
+      {t:'דולר',w:2},{t:'שקל',w:2},{t:'אינפלציה',w:3},{t:'ריבית',w:3},
+      {t:'השקעה',w:2},{t:'נדלן',w:3},{t:'נדל"ן',w:3},{t:'משכנתא',w:3},
+      {t:'מחיר',w:1},{t:'יוקר',w:2},{t:'יוקר המחיה',w:3},{t:'מס',w:1},
+      {t:'תקציב',w:2},{t:'גירעון',w:2},{t:'ייצוא',w:2},{t:'יבוא',w:2},
+      {t:'רווח',w:1},{t:'הפסד',w:1},{t:'חברה',w:1},{t:'שכר',w:2},
+      {t:'שכר מינימום',w:3},{t:'פנסיה',w:2},{t:'ביטוח לאומי',w:3},
+      {t:'economy',w:2},{t:'stocks',w:2},{t:'market',w:1},{t:'dollar',w:2},
+      {t:'inflation',w:2},{t:'investment',w:2},{t:'bitcoin',w:2},{t:'crypto',w:2},
+      {t:'finance',w:2},{t:'bank',w:1},{t:'mortgage',w:2},{t:'price',w:1},
+      {t:'gdp',w:3},{t:'recession',w:2},{t:'nasdaq',w:3},{t:'s&p',w:3},
+      {t:'interest rate',w:3},{t:'housing',w:1},
+    ],
   },
+
   science: {
     heLabel: 'מדע',
     color: '#06B6D4',
-    keywords: {
-      he: ['מדע','חלל','פיזיקה','כימיה','ביולוגיה','מחקר','גילוי','נאסא','כוכב','חיידק','אבולוציה'],
-      en: ['science','space','physics','chemistry','biology','research','discovery','nasa','star','planet','evolution','study','experiment','quantum'],
-    },
+    terms: [
+      {t:'מדע',w:3},{t:'המדע',w:3},{t:'חלל',w:3},{t:'בחלל',w:3},
+      {t:'פיזיקה',w:3},{t:'כימיה',w:3},{t:'ביולוגיה',w:3},{t:'מחקר',w:2},
+      {t:'גילוי',w:2},{t:'נאסא',w:3},{t:'כוכב',w:2},{t:'כוכבים',w:2},
+      {t:'גלקסיה',w:3},{t:'חיידק',w:2},{t:'חיידקים',w:2},{t:'אבולוציה',w:3},
+      {t:'DNA',w:3},{t:'גנטיקה',w:3},{t:'מאובן',w:2},{t:'דינוזאור',w:2},
+      {t:'ניסוי',w:2},{t:'מעבדה',w:2},{t:'חוקר',w:1},{t:'מדען',w:2},
+      {t:'אסטרונומיה',w:3},{t:'גיאוגרפיה',w:2},{t:'אקלים',w:2},
+      {t:'science',w:2},{t:'space',w:2},{t:'physics',w:2},{t:'chemistry',w:2},
+      {t:'biology',w:2},{t:'research',w:1},{t:'discovery',w:2},{t:'nasa',w:3},
+      {t:'star',w:1},{t:'planet',w:2},{t:'evolution',w:2},{t:'study',w:1},
+      {t:'experiment',w:2},{t:'quantum',w:3},{t:'climate',w:2},{t:'species',w:2},
+    ],
   },
+
   religion: {
     heLabel: 'דת ומסורת',
     color: '#A78BFA',
-    keywords: {
-      he: ['תורה','שבת','חג','תפילה','רב','ישיבה','הלכה','כשרות','פסח','ראש השנה','יום כיפור','סוכות','חנוכה'],
-      en: ['torah','shabbat','jewish','prayer','rabbi','religion','faith','church','bible','god','holy','synagogue','kosher'],
-    },
+    terms: [
+      {t:'תורה',w:3},{t:'התורה',w:3},{t:'שבת',w:3},{t:'בשבת',w:3},
+      {t:'לשבת',w:3},{t:'חג',w:2},{t:'בחג',w:2},{t:'תפילה',w:3},
+      {t:'להתפלל',w:3},{t:'רב',w:2},{t:'הרב',w:2},{t:'ישיבה',w:3},
+      {t:'הלכה',w:3},{t:'כשרות',w:3},{t:'כשר',w:3},{t:'פסח',w:3},
+      {t:'ראש השנה',w:3},{t:'יום כיפור',w:3},{t:'סוכות',w:3},
+      {t:'חנוכה',w:3},{t:'פורים',w:3},{t:'שבועות',w:3},
+      {t:'בית כנסת',w:3},{t:'כנסייה',w:3},{t:'מסגד',w:3},
+      {t:'מצווה',w:2},{t:'מצוות',w:2},{t:'ברכה',w:2},{t:'קידוש',w:3},
+      {t:'תשובה',w:2},{t:'אמונה',w:2},{t:'אלוהים',w:2},{t:'דתי',w:2},
+      {t:'חרדי',w:3},{t:'חרדים',w:3},{t:'ציוני דתי',w:3},
+      {t:'torah',w:3},{t:'shabbat',w:3},{t:'jewish',w:2},{t:'prayer',w:2},
+      {t:'rabbi',w:3},{t:'religion',w:2},{t:'faith',w:1},{t:'church',w:2},
+      {t:'bible',w:2},{t:'god',w:1},{t:'holy',w:1},{t:'synagogue',w:3},
+      {t:'kosher',w:3},{t:'islam',w:2},{t:'muslim',w:2},{t:'christian',w:2},
+    ],
   },
+
 }
 
 // רשימת כל המזהים — שימושי לאיטרציה מסודרת
