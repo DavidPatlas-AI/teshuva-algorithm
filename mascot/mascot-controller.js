@@ -106,6 +106,7 @@ export function createMascotController(mascot, brain, options = {}) {
           questions.markAsked(catId)
           playMood(mascot, MOOD.explain)
           mascot.say(q.text)
+          options.onQuestion?.(catId)   // הצג כפתורי 👍/👎
         }
       } else if (canSpeak()) {
         const intent = brain.intent(catId)
@@ -120,6 +121,7 @@ export function createMascotController(mascot, brain, options = {}) {
       if (!pendingQ) return
       brain.positive(pendingQ.categoryId)
       speak(pendingQ.answers.yes, MOOD.positive)
+      options.onAnswered?.()
       pendingQ  = null
       pendingEl = null
     },
@@ -128,6 +130,7 @@ export function createMascotController(mascot, brain, options = {}) {
       if (!pendingQ) return
       brain.negative(pendingQ.categoryId)
       speak(pendingQ.answers.no, MOOD.negative)
+      options.onAnswered?.()
 
       // נסה למחוק את הפוסט מיד
       const elToDismiss  = pendingEl

@@ -7,9 +7,11 @@ import ClippyAgent   from 'clippyjs/agents/clippy'
 import { createBrain }               from '../../brain/brain-api.js'
 import { createChromeAdapter }       from '../../brain/adapters/chrome-adapter.js'
 import { createMascotController }    from '../../mascot/mascot-controller.js'
-import { getSelectorForCurrentSite } from './site-adapters.js'
-import { startFeedObserver }         from './feed-observer.js'
+import { getSelectorForCurrentSite }    from './site-adapters.js'
+import { startFeedObserver }            from './feed-observer.js'
 import { dismissPost, isActionSupported } from './action-engine.js'
+import { createFeedbackUI }             from './feedback-ui.js'
+import { CATEGORIES }                   from '../../brain/categories.js'
 
 ;(async () => {
   // ── Mascot (Clippy) ────────────────────────────────────────
@@ -32,9 +34,19 @@ import { dismissPost, isActionSupported } from './action-engine.js'
   }
 
   // ── Controller — נקודת הכניסה היחידה ללוגיקה ──────────────
-  const brain      = createBrain(createChromeAdapter())
-  const controller = createMascotController(mascot, brain, {
-    onDismiss: isActionSupported() ? dismissPost : null,
+  const brain = createBrain(createChromeAdapter())
+
+  // כפתורי 👍/👎 — נוצרים לפני controller כדי להעביר callbacks
+  let controller
+  const feedbackUI = createFeedbackUI(
+    () => controller?.onPositive(),
+    () => controller?.onNegative(),
+  )
+
+  controller = createMascotController(mascot, brain, {
+    onDismiss:  isActionSupported() ? dismissPost : null,
+    onQuestion: catId => feedbackUI.show(CATEGORIES[catId]?.heLabel ?? catId),
+    onAnswered: ()    => feedbackUI.hide(),
   })
   await controller.start()
 

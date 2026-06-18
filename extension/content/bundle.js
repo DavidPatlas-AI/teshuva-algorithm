@@ -7472,6 +7472,7 @@
             questions.markAsked(catId);
             playMood(mascot, MOOD.explain);
             mascot.say(q.text);
+            options.onQuestion?.(catId);
           }
         } else if (canSpeak()) {
           const intent = brain.intent(catId);
@@ -7484,6 +7485,7 @@
         if (!pendingQ) return;
         brain.positive(pendingQ.categoryId);
         speak(pendingQ.answers.yes, MOOD.positive);
+        options.onAnswered?.();
         pendingQ = null;
         pendingEl = null;
       },
@@ -7491,6 +7493,7 @@
         if (!pendingQ) return;
         brain.negative(pendingQ.categoryId);
         speak(pendingQ.answers.no, MOOD.negative);
+        options.onAnswered?.();
         const elToDismiss = pendingEl;
         const dismissCatId = pendingQ.categoryId;
         pendingQ = null;
@@ -7684,6 +7687,99 @@
     }
   });
 
+  // extension/content/feedback-ui.js
+  function injectStyles() {
+    if (styleEl || document.getElementById("tshuva-styles")) return;
+    styleEl = document.createElement("style");
+    styleEl.id = "tshuva-styles";
+    styleEl.textContent = STYLES;
+    document.head.appendChild(styleEl);
+  }
+  function createFeedbackUI(onPositive, onNegative) {
+    function show(categoryLabel) {
+      hide();
+      injectStyles();
+      barEl = document.createElement("div");
+      barEl.id = "tshuva-feedback";
+      barEl.innerHTML = `
+      <div class="tshuva-label">\u{1F914} \u05DE\u05D4 \u05D3\u05E2\u05EA\u05DA \u05E2\u05DC \u05EA\u05D5\u05DB\u05DF ${categoryLabel}?</div>
+      <div class="tshuva-btns">
+        <button class="tshuva-btn tshuva-no">\u{1F44E} \u05DC\u05D0 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF</button>
+        <button class="tshuva-btn tshuva-yes">\u{1F44D} \u05DB\u05DF, \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF</button>
+      </div>
+    `;
+      barEl.querySelector(".tshuva-yes").onclick = () => {
+        onPositive();
+        hide();
+      };
+      barEl.querySelector(".tshuva-no").onclick = () => {
+        onNegative();
+        hide();
+      };
+      document.body.appendChild(barEl);
+      autoHide = setTimeout(hide, 12e3);
+    }
+    function hide() {
+      clearTimeout(autoHide);
+      barEl?.remove();
+      barEl = null;
+      autoHide = null;
+    }
+    return { show, hide };
+  }
+  var STYLES, styleEl, barEl, autoHide;
+  var init_feedback_ui = __esm({
+    "extension/content/feedback-ui.js"() {
+      STYLES = `
+  #tshuva-feedback {
+    position: fixed;
+    bottom: 160px;
+    right: 24px;
+    z-index: 2147483646;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    animation: tshuva-fadein 0.3s ease;
+  }
+  @keyframes tshuva-fadein {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .tshuva-label {
+    font-size: 11px;
+    color: #a0a0b0;
+    background: #1a1a2e;
+    padding: 4px 10px;
+    border-radius: 99px;
+    direction: rtl;
+  }
+  .tshuva-btns {
+    display: flex;
+    gap: 8px;
+  }
+  .tshuva-btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    direction: rtl;
+  }
+  .tshuva-btn:hover { transform: scale(1.08); }
+  .tshuva-yes { background: #059669; color: white; }
+  .tshuva-no  { background: #dc2626; color: white; }
+`;
+      styleEl = null;
+      barEl = null;
+      autoHide = null;
+    }
+  });
+
   // extension/content/bundle-entry.js
   var require_bundle_entry = __commonJS({
     "extension/content/bundle-entry.js"() {
@@ -7695,6 +7791,8 @@
       init_site_adapters();
       init_feed_observer();
       init_action_engine();
+      init_feedback_ui();
+      init_categories();
       (async () => {
         const agent = await initAgent(Clippy);
         agent.show();
@@ -7710,8 +7808,15 @@
           onClick: (cb) => clippyEl?.addEventListener("click", cb)
         };
         const brain = createBrain(createChromeAdapter());
-        const controller = createMascotController(mascot, brain, {
-          onDismiss: isActionSupported() ? dismissPost : null
+        let controller;
+        const feedbackUI = createFeedbackUI(
+          () => controller?.onPositive(),
+          () => controller?.onNegative()
+        );
+        controller = createMascotController(mascot, brain, {
+          onDismiss: isActionSupported() ? dismissPost : null,
+          onQuestion: (catId) => feedbackUI.show(CATEGORIES[catId]?.heLabel ?? catId),
+          onAnswered: () => feedbackUI.hide()
         });
         await controller.start();
         const selector = getSelectorForCurrentSite();

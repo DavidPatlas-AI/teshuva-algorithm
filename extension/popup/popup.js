@@ -163,18 +163,29 @@
         document.querySelectorAll(".tab-content").forEach((el) => el.classList.toggle("active", el.id === "tab-" + name));
       }
       window.showTab = showTab;
-      function barRow(label, count, max, color) {
+      function barRow(label, count, max, color, weight = null, dismissed = 0) {
         const pct = max > 0 ? Math.round(count / max * 100) : 0;
+        const sentimentEl = weight != null ? weightBadge(weight, dismissed) : "";
         return `<div class="bar-row">
     <span class="bar-label">${label}</span>
     <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
     <span class="bar-count">${count}</span>
+    ${sentimentEl}
   </div>`;
+      }
+      function weightBadge(w, dismissed = 0) {
+        if (dismissed > 0) return `<span class="badge badge-block" title="${dismissed} \u05D4\u05D5\u05E1\u05E8\u05D5">\u{1F6AB} ${dismissed}</span>`;
+        if (w >= 1.5) return `<span class="badge badge-love"  title="\u05E7\u05D8\u05D2\u05D5\u05E8\u05D9\u05D4 \u05D0\u05D4\u05D5\u05D1\u05D4">\u2764\uFE0F</span>`;
+        if (w >= 0.8) return `<span class="badge badge-mid"   title="\u05E0\u05D9\u05D8\u05E8\u05DC\u05D9">\u{1F610}</span>`;
+        if (w >= 0.4) return `<span class="badge badge-low"   title="\u05DC\u05D0 \u05DE\u05DE\u05E9 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF">\u{1F612}</span>`;
+        return `<span class="badge badge-block" title="\u05DE\u05E1\u05D9\u05E8 \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA">\u{1F6AB}</span>`;
       }
       async function loadAll() {
         const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1e3;
         const brainState = await api.getStats().catch(() => ({}));
         const stored = brainState?.allTime ?? {};
+        const weights = brainState?.weights ?? {};
+        const dismissedBy = brainState?.dismissed ?? {};
         const histItems = await new Promise(
           (r) => chrome.history.search({ text: "", maxResults: 5e3, startTime: sevenDaysAgo }, r)
         );
@@ -214,7 +225,14 @@
         const maxSocial = sortedSocial[0]?.[1] ?? 1;
         document.getElementById("social-sites").innerHTML = sortedSocial.length ? sortedSocial.map(([d, c]) => barRow(d, c, maxSocial, "#A78BFA")).join("") : '<div class="empty">\u05DC\u05D0 \u05E0\u05DE\u05E6\u05D0\u05D5 \u05D1\u05D9\u05E7\u05D5\u05E8\u05D9\u05DD \u05D1\u05E8\u05E9\u05EA\u05D5\u05EA \u05D7\u05D1\u05E8\u05EA\u05D9\u05D5\u05EA \u05D1-7 \u05D9\u05DE\u05D9\u05DD \u05D4\u05D0\u05D7\u05E8\u05D5\u05E0\u05D9\u05DD</div>';
         const maxLive = Math.max(...Object.values(stored), 1);
-        document.getElementById("cat-bars-live").innerHTML = liveCats.length ? liveCats.map(([id, cnt]) => barRow(CATEGORIES[id]?.heLabel ?? id, cnt, maxLive, CATEGORIES[id]?.color ?? "#9CA3AF")).join("") : '<div class="empty">\u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D6\u05D5\u05D4\u05D4 \u05EA\u05D5\u05DB\u05DF. \u05D2\u05DC\u05D5\u05DC \u05D1\u05E8\u05E9\u05EA \u05D7\u05D1\u05E8\u05EA\u05D9\u05EA \u05E2\u05DD \u05D4\u05EA\u05D5\u05E1\u05E3 \u05E4\u05E2\u05D9\u05DC.</div>';
+        document.getElementById("cat-bars-live").innerHTML = liveCats.length ? liveCats.map(([id, cnt]) => barRow(
+          CATEGORIES[id]?.heLabel ?? id,
+          cnt,
+          maxLive,
+          CATEGORIES[id]?.color ?? "#9CA3AF",
+          weights[id] ?? null,
+          dismissedBy[id] ?? 0
+        )).join("") : '<div class="empty">\u05E2\u05D3\u05D9\u05D9\u05DF \u05DC\u05D0 \u05D6\u05D5\u05D4\u05D4 \u05EA\u05D5\u05DB\u05DF. \u05D2\u05DC\u05D5\u05DC \u05D1\u05E8\u05E9\u05EA \u05D7\u05D1\u05E8\u05EA\u05D9\u05EA \u05E2\u05DD \u05D4\u05EA\u05D5\u05E1\u05E3 \u05E4\u05E2\u05D9\u05DC.</div>';
         const histCatEntries = Object.entries(histCatCounts).filter(([k]) => k !== "uncategorized").sort((a, b) => b[1] - a[1]);
         const maxHistCat = histCatEntries[0]?.[1] ?? 1;
         document.getElementById("cat-bars-history").innerHTML = histCatEntries.length ? histCatEntries.map(([id, cnt]) => barRow(CATEGORIES[id]?.heLabel ?? id, cnt, maxHistCat, CATEGORIES[id]?.color ?? "#9CA3AF")).join("") : '<div class="empty">\u05DC\u05D0 \u05E0\u05DE\u05E6\u05D0\u05D5 \u05E7\u05D8\u05D2\u05D5\u05E8\u05D9\u05D5\u05EA \u05D1\u05D4\u05D9\u05E1\u05D8\u05D5\u05E8\u05D9\u05D9\u05EA \u05D4\u05D2\u05DC\u05D9\u05E9\u05D4</div>';

@@ -37,13 +37,23 @@ function showTab(name) {
 }
 window.showTab = showTab
 
-function barRow(label, count, max, color) {
-  const pct = max > 0 ? Math.round(count / max * 100) : 0
+function barRow(label, count, max, color, weight = null, dismissed = 0) {
+  const pct        = max > 0 ? Math.round(count / max * 100) : 0
+  const sentimentEl = weight != null ? weightBadge(weight, dismissed) : ''
   return `<div class="bar-row">
     <span class="bar-label">${label}</span>
     <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
     <span class="bar-count">${count}</span>
+    ${sentimentEl}
   </div>`
+}
+
+function weightBadge(w, dismissed = 0) {
+  if (dismissed > 0)  return `<span class="badge badge-block" title="${dismissed} הוסרו">🚫 ${dismissed}</span>`
+  if (w >= 1.5)       return `<span class="badge badge-love"  title="קטגוריה אהובה">❤️</span>`
+  if (w >= 0.8)       return `<span class="badge badge-mid"   title="ניטרלי">😐</span>`
+  if (w >= 0.4)       return `<span class="badge badge-low"   title="לא ממש מעניין">😒</span>`
+  return                     `<span class="badge badge-block" title="מסיר אוטומטית">🚫</span>`
 }
 
 async function loadAll() {
@@ -51,8 +61,10 @@ async function loadAll() {
 
   // ── Data sources ─────────────────────────────────────────────
   // brain state — דרך background (לא ישירות ל-storage)
-  const brainState = await api.getStats().catch(() => ({}))
-  const stored     = brainState?.allTime ?? {}
+  const brainState  = await api.getStats().catch(() => ({}))
+  const stored      = brainState?.allTime    ?? {}
+  const weights     = brainState?.weights    ?? {}
+  const dismissedBy = brainState?.dismissed  ?? {}
 
   // היסטוריית גלישה
   const histItems = await new Promise(r =>
@@ -126,7 +138,12 @@ async function loadAll() {
   const maxLive = Math.max(...Object.values(stored), 1)
   document.getElementById('cat-bars-live').innerHTML = liveCats.length
     ? liveCats.map(([id, cnt]) =>
-        barRow(CATEGORIES[id]?.heLabel ?? id, cnt, maxLive, CATEGORIES[id]?.color ?? '#9CA3AF')).join('')
+        barRow(
+          CATEGORIES[id]?.heLabel ?? id, cnt, maxLive,
+          CATEGORIES[id]?.color ?? '#9CA3AF',
+          weights[id] ?? null,
+          dismissedBy[id] ?? 0,
+        )).join('')
     : '<div class="empty">עדיין לא זוהה תוכן. גלול ברשת חברתית עם התוסף פעיל.</div>'
 
   const histCatEntries = Object.entries(histCatCounts)
