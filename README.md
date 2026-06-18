@@ -3,79 +3,92 @@
 
 > **What if the algorithm stopped hiding and started explaining itself?**
 
----
-
-## The Idea
-
 Every day, social media algorithms decide what you see — and they never tell you why.
 
-This project is a small act of rebellion:  
-A browser extension + desktop agent (Clippy, naturally) that sits with you while you browse, watches what the algorithm shows you, and **tells you the truth**.
+This project is a small act of rebellion: a browser extension + desktop agent (Clippy, naturally) that sits with you while you browse, watches what the algorithm shows you, and **tells you the truth**.
 
-*"You're seeing this because you clicked on politics 43% of the time this week."*  
-*"You've visited YouTube 94 times in the last 7 days."*  
-*"Your peak browsing hour is 11 PM."*
+*"You're seeing this because you clicked on politics 43% of the time this week."*
 
 The algorithm repents. It confesses. It explains.
 
 ---
 
-## Screenshot
-
-> 📸 *Screenshot coming soon — load the extension and Clippy will appear in the bottom-right corner.*
-
----
-
-## What's Inside
-
-```
-📦 teshuva-algorithm/
-├── 🧠 brain/          — Learning engine
-│   ├── categories.js  — Single source of truth for 9 content categories
-│   ├── classifier.js  — Keyword-based text → category classifier
-│   ├── state.js       — Persistent stats (allTime, weights) via storage adapter
-│   ├── explanations.js — Hebrew explanation strings
-│   ├── questions.js   — User-facing questions (shouldAsk / build)
-│   ├── intent.js      — Deep "why" reasoning: dominant / recurring / first-time
-│   └── brain-api.js   — Public facade (the only file you import)
-├── 🎭 mascot/
-│   ├── IMascot.js         — Interface contract
-│   ├── ClippyMascot.js    — Clippy implementation
-│   ├── animations.js      — Mood → animation mapping
-│   └── mascot-controller.js — Brain ↔ mascot bridge (single entry point)
-├── 🔌 extension/
-│   ├── background-entry.js — Service worker source (builds → background.js)
-│   ├── api.js             — Message protocol: popup/content → background
-│   ├── content/
-│   │   ├── bundle-entry.js — Content script source (builds → bundle.js)
-│   │   ├── feed-observer.js — MutationObserver + scroll listener
-│   │   └── site-adapters.js — CSS selectors per social network
-│   └── popup/
-│       ├── popup-entry.js  — Popup source (builds → popup.js)
-│       └── popup.html
-├── 🖥️ desktop/
-│   ├── main.js        — Electron main process
-│   ├── preload.js     — IPC bridge
-│   └── renderer-entry.js — Desktop Clippy (builds → renderer.js)
-└── 📦 shared/
-    ├── constants.js   — STORAGE_KEY, MSG types, EVENTS, timeouts
-    └── event-bus.js   — Lightweight pub/sub
-```
-
-### Features
+## What Actually Works Right Now
 
 | Feature | Status |
 |---------|--------|
-| Clippy mascot on desktop | ✅ |
-| Content category detection | ✅ |
-| Hebrew + English keywords | ✅ |
-| Browsing history analysis | ✅ |
-| Live feed analysis (Twitter, YouTube, TikTok, Instagram, Facebook) | ✅ |
-| Stats popup — 4 tabs (Overview / Categories / History / Insights) | ✅ |
-| Drag to reposition Clippy | ✅ |
-| First-time onboarding message | ✅ |
-| User feedback: 👍 / 👎 per category | ✅ |
-| Intent engine (why you see what you see) | ✅ |
+| Clippy mascot on desktop (Windows) | ✅ Working |
+| Drag to reposition Clippy | ✅ Working |
+| Hebrew greetings by time of day | ✅ Working |
+| System tray (show/hide/quit) | ✅ Working |
+| Content category classifier (brain) | ✅ Working |
+| Intent engine — "why you see what you see" | ✅ Working |
+| User feedback: 👍 / 👎 per category | ✅ Working |
+| Chrome extension (installable) | ✅ Working |
+| Live feed analysis (Twitter, YouTube, Instagram, Facebook, TikTok) | ✅ Working |
+| Stats popup — Overview / Categories / History / Insights | ✅ Working |
+| First-time onboarding message | ✅ Working |
+| Clippy connected to real feed analysis on desktop | 🚧 In progress |
+| AI agent with memory and dialogue | 🚧 In progress |
+| Skin marketplace | 🚧 In progress |
+| Automation rules engine | 🚧 In progress |
+| Cloud sync | 🚧 In progress |
+
+---
+
+## Project Structure
+
+```
+teshuva-algorithm/
+├── brain/              — Content classification + intent engine
+│   ├── brain-api.js   — Public API (the only file you import)
+│   ├── classifier.js  — Keyword → category (9 categories, Hebrew + English)
+│   ├── state.js       — Persistent stats via storage adapter
+│   ├── explanations.js — Hebrew explanation strings
+│   ├── questions.js   — Should Clippy ask? / what to ask
+│   ├── intent.js      — Deep "why": dominant / recurring / first-time
+│   ├── categories.js  — Single source of truth for all categories
+│   └── adapters/      — chrome-adapter, electron-adapter
+│
+├── mascot/             — Clippy animation layer
+│   ├── IMascot.js         — Interface contract (any mascot can replace Clippy)
+│   ├── ClippyMascot.js    — clippyjs wrapper
+│   ├── animations.js      — Mood → animation name mapping
+│   ├── emotions.js        — Brain state → emotional mood
+│   └── mascot-controller.js — Brain ↔ mascot bridge
+│
+├── extension/          — Chrome / Edge browser extension
+│   ├── manifest.json      — MV3
+│   ├── background-entry.js — Service worker source
+│   ├── api.js             — Message protocol
+│   ├── content/           — Feed observer + site adapters
+│   └── popup/             — Stats popup UI
+│
+├── desktop/            — Electron desktop app (קליפי)
+│   ├── main.js        — Transparent window, system tray
+│   ├── preload.js     — IPC bridge
+│   └── renderer-entry.js — Clippy UI logic
+│
+├── shared/             — Shared between all layers
+│   ├── constants.js   — Keys, timeouts, event names
+│   └── event-bus.js   — Lightweight pub/sub
+│
+├── ai/                 — Local vector embeddings + recommendations
+├── agent/              — Conversational agent with memory
+├── analytics/          — Local-only event collection
+├── apps/               — Mini-apps: notes, tasks, insights, settings
+├── assistant/          — Scheduler + skills (weather, news, calendar)
+├── automation/         — Declarative trigger/action rules engine
+├── cloud/              — State export/import for sync
+├── enterprise/         — Audit log, permissions (future)
+├── marketplace/        — Skin + plugin marketplace (future)
+├── os/                 — Desktop OS layer: windows, widgets, launcher
+├── payments/           — License gating (future)
+├── plugins/            — Plugin engine + sandbox
+├── premium/            — Feature flags per tier
+├── profiles/           — User profile engine
+└── skins/              — Skin format + default skin
+```
 
 ---
 
@@ -92,19 +105,21 @@ npm run build
 
 1. Open `chrome://extensions` → enable **Developer mode**
 2. Click **Load unpacked** → select the `extension/` folder
-3. Visit Twitter, YouTube, Instagram — Clippy appears in the bottom-right corner
+3. Visit Twitter / X, YouTube, Instagram — Clippy appears bottom-right
 
 ### Desktop App (Windows)
+
+Double-click **הפעל קליפי.bat** on your desktop, or:
 
 ```bash
 npm start
 ```
 
-Or double-click `הפעל קליפי.bat` on your desktop.
+Clippy appears in the bottom-right corner of your screen. Click him to hear what he has to say. Drag him anywhere.
 
 ---
 
-## How It Works
+## How the Brain Works
 
 ```
 You scroll Twitter / YouTube / Instagram
@@ -117,17 +132,17 @@ brain.observe(text)  →  categoryId
 brain.intent(categoryId)  →  { type, percentage, heText }
         ↓
 Should ask user? (after 5 posts in same category)
-  YES → Clippy asks "מעניין אותך ספורט? + / -"
-  NO  → Clippy explains "אתה רואה ספורט כי 38% מהפיד שלך..."
+  YES → Clippy asks: "מעניין אותך ספורט? 👍 / 👎"
+  NO  → Clippy explains: "אתה רואה ספורט כי 38% מהפיד שלך..."
         ↓
 Stats saved to chrome.storage under key "teshuva_state"
         ↓
-Popup reads stats via background.js message protocol
+Popup reads stats via message protocol (api.js)
 ```
 
 ---
 
-## Using the Brain API
+## Brain API
 
 ```js
 import { createBrain }         from './brain/brain-api.js'
@@ -136,60 +151,46 @@ import { createChromeAdapter } from './brain/adapters/chrome-adapter.js'
 const brain = createBrain(createChromeAdapter())
 await brain.load()
 
-// Classify and record a post
-const categoryId = brain.observe("Netanyahu said today in the Knesset...")
-// → "politics"
-
-// Short explanation
-brain.explain("politics")
-// → "אתה רואה פוליטיקה כי 43% מהתוכן שלך הוא בנושא הזה."
-
-// Deep intent
-brain.intent("politics")
-// → { type: "dominant", percentage: 43, heText: "פוליטיקה שולטת ב-43% מהפיד שלך..." }
-
-// User feedback
-brain.positive("politics")   // increases weight
-brain.negative("politics")   // decreases weight
-
-// Stats
-brain.getStats()
-// → { session, allTime, weights, total, categories, ids }
-```
-
-### Storage Adapters
-
-```js
-// Chrome extension
-import { createChromeAdapter }   from './brain/adapters/chrome-adapter.js'
-
-// Electron desktop
-import { createElectronAdapter } from './brain/adapters/electron-adapter.js'
+brain.observe("Netanyahu said today in the Knesset...")  // → "politics"
+brain.explain("politics")   // → "אתה רואה פוליטיקה כי 43% מהתוכן שלך..."
+brain.intent("politics")    // → { type: "dominant", percentage: 43, heText: "..." }
+brain.positive("politics")  // user liked → increase weight
+brain.negative("politics")  // user disliked → decrease weight
+brain.getStats()             // → { session, allTime, weights, total }
 ```
 
 ---
 
-## 🗺️ Roadmap
+## Content Categories
 
-### v0.2.0 — Smarter Brain
-- Intent-driven explanations (dominant / recurring / first-time / explicit)
-- Animated mood responses (greet / think / excited / confused)
-- Improved onboarding flow
+| ID | Hebrew | Examples |
+|----|--------|---------|
+| `politics` | פוליטיקה | כנסת, ממשלה, בחירות |
+| `sports` | ספורט | כדורגל, ליגה, מונדיאל |
+| `entertainment` | בידור | סרטים, מוזיקה, ריאליטי |
+| `technology` | טכנולוגיה | AI, סטארטאפ, אייפון |
+| `news` | חדשות | פיצוץ, תאונה, שריפה |
+| `health` | בריאות | תזונה, ספורט, מחלה |
+| `economy` | כלכלה | בורסה, אינפלציה, שכר |
+| `science` | מדע | מחקר, חלל, אקלים |
+| `religion` | דת ומסורת | שבת, הלכה, תפילה |
 
-### v0.3.0 — Algorithm Reverse Engineering
-- Detect **promoted content** vs organic
-- Track **virality patterns**
-- Identify suppressed posts
+---
+
+## Roadmap
+
+### v0.3.0 — Connect the dots
+- Wire Clippy desktop to the live brain (extension ↔ desktop)
+- Promoted content detection
+- Weekly digest report
 
 ### v0.4.0 — Community
 - Anonymized dataset export
 - Community dashboard: collective algorithm patterns
-- API for researchers
 
 ### v1.0.0 — Product
 - Chrome Web Store listing
-- More mascot personalities (Merlin, Bonzi Buddy, custom Hebrew character)
-- Multi-language support (Arabic, French, Spanish)
+- More mascots (Merlin, Bonzi Buddy, custom Hebrew character)
 - Local LLM classifier (replace keyword matching)
 
 ---
@@ -199,8 +200,6 @@ import { createElectronAdapter } from './brain/adapters/electron-adapter.js'
 PRs welcome. Issues welcome. Wild ideas especially welcome.
 
 If you build something with this — tell us. Open an issue, share a screenshot, write a blog post.
-
-This project grows when people see it and think: *"I could add ___."*
 
 ---
 

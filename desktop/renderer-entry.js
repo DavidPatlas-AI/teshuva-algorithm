@@ -36,18 +36,21 @@ function getGreeting() {
 
   // Drag to move
   let dragging = false
+  let dragMoved = false
   let lastX, lastY
 
   if (clippyEl) {
     clippyEl.addEventListener('mousedown', e => {
       dragging = true
+      dragMoved = false
       lastX = e.screenX
       lastY = e.screenY
       window.desktopAPI.startDrag()
-      e.preventDefault()
+      // No preventDefault here — it blocks click events in Electron's Chromium
     })
 
     clippyEl.addEventListener('click', () => {
+      if (dragMoved) return  // was a drag, not a pure click
       const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)]
       agent.speak(msg)
       agent.animate()
@@ -66,6 +69,7 @@ function getGreeting() {
     if (!dragging) return
     const dx = e.screenX - lastX
     const dy = e.screenY - lastY
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true
     window.desktopAPI.moveWindow(dx, dy)
     lastX = e.screenX
     lastY = e.screenY

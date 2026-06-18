@@ -4,6 +4,7 @@
 import { createQuestions }                   from '../brain/questions.js'
 import { SPEAK_COOLDOWN_MS, ONBOARDING_KEY } from '../shared/constants.js'
 import { playMood }                           from './animations.js'
+import { createDialogue }                     from '../agent/dialogue.js'
 
 // mapping מדויק: פעולה → mood
 // greeting → greet | explain → think | positive → excited | negative → confused | idle → idle
@@ -17,8 +18,11 @@ const MOOD = {
 
 const IDLE_INTERVAL_MS = 15_000  // אנימציית idle כל 15 שניות
 
-export function createMascotController(mascot, brain) {
+// options.dialogue — optional createDialogue() instance for conversational AI layer
+// options.memory   — optional createMemory() instance for long-term recall
+export function createMascotController(mascot, brain, options = {}) {
   const questions  = createQuestions()
+  const dialogue   = options.dialogue ?? createDialogue(options.memory ?? null)
   let lastSpokenAt = 0
   let pendingQ     = null
   let idleTimer    = null
@@ -114,6 +118,18 @@ export function createMascotController(mascot, brain) {
     onWhyClick(categoryId) {
       const intent = brain.intent(categoryId)
       speak(intent.heText, MOOD.explain)
+    },
+
+    // ── שיחה טקסטואלית (dialogue layer) ─────────────────────
+    onUserText(text) {
+      const intent   = dialogue.addUserTurn(text)
+      const catId    = brain.observe(text)
+      const response = dialogue.buildResponse(catId === 'uncategorized' ? null : catId, brain)
+      if (response) {
+        dialogue.addAgentTurn(response)
+        speak(response, MOOD.explain)
+      }
+      return intent
     },
 
     // ── ניקוי (לשימוש בסביבת test) ───────────────────────────
