@@ -85,7 +85,8 @@ export function createMascotController(mascot, brain, options = {}) {
       const { session, weights } = brain.getStats()
       const weight = weights?.[catId] ?? 1.0
 
-      if (weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
+      const autoDismissEnabled = options.settings?.autoDismiss ?? true
+      if (autoDismissEnabled && weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
         options.onDismiss(el).then(result => {
           if (result.ok) {
             brain.recordDismiss(catId)

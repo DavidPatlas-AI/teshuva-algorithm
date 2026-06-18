@@ -17,10 +17,16 @@ export const EVENTS = {
   ONBOARDING:     'onboarding',      // { isNew: boolean }
 }
 
+// ── Storage ────────────────────────────────────────────────────
+export const SETTINGS_KEY = 'teshuva_settings'
+
 // ── Extension message types (extension/api.js) ────────────────
 export const MSG = {
-  GET_STATS:     'GET_STATS',
-  RESET_STATS:   'RESET_STATS',
-  RECORD_SIGNAL: 'RECORD_SIGNAL',  // { categoryId, type: 'positive'|'negative' }
-  GET_INSIGHTS:  'GET_INSIGHTS',
+  GET_STATS:        'GET_STATS',
+  RESET_STATS:      'RESET_STATS',
+  RECORD_SIGNAL:    'RECORD_SIGNAL',    // { categoryId, type: 'positive'|'negative' }
+  GET_INSIGHTS:     'GET_INSIGHTS',
+  GET_SETTINGS:     'GET_SETTINGS',
+  UPDATE_SETTINGS:  'UPDATE_SETTINGS',  // { autoDismiss: boolean }
+  SETTINGS_CHANGED: 'SETTINGS_CHANGED', // broadcast to content scripts
 }

@@ -99,7 +99,12 @@
         RESET_STATS: "RESET_STATS",
         RECORD_SIGNAL: "RECORD_SIGNAL",
         // { categoryId, type: 'positive'|'negative' }
-        GET_INSIGHTS: "GET_INSIGHTS"
+        GET_INSIGHTS: "GET_INSIGHTS",
+        GET_SETTINGS: "GET_SETTINGS",
+        UPDATE_SETTINGS: "UPDATE_SETTINGS",
+        // { autoDismiss: boolean }
+        SETTINGS_CHANGED: "SETTINGS_CHANGED"
+        // broadcast to content scripts
       };
     }
   });
@@ -127,7 +132,9 @@
         resetStats: () => sendMsg(MSG.RESET_STATS),
         positive: (categoryId) => sendMsg(MSG.RECORD_SIGNAL, { categoryId, type: "positive" }),
         negative: (categoryId) => sendMsg(MSG.RECORD_SIGNAL, { categoryId, type: "negative" }),
-        getInsights: () => sendMsg(MSG.GET_INSIGHTS)
+        getInsights: () => sendMsg(MSG.GET_INSIGHTS),
+        getSettings: () => sendMsg(MSG.GET_SETTINGS),
+        updateSettings: (autoDismiss) => sendMsg(MSG.UPDATE_SETTINGS, { autoDismiss })
       };
     }
   });
@@ -158,7 +165,7 @@
       }
       var SOCIAL_DOMAINS = ["twitter.com", "x.com", "facebook.com", "instagram.com", "youtube.com", "tiktok.com", "linkedin.com", "reddit.com", "threads.net", "snapchat.com"];
       function showTab(name) {
-        const names = ["overview", "categories", "history", "insights"];
+        const names = ["overview", "categories", "history", "insights", "settings"];
         document.querySelectorAll(".tab").forEach((t, i) => t.classList.toggle("active", names[i] === name));
         document.querySelectorAll(".tab-content").forEach((el) => el.classList.toggle("active", el.id === "tab-" + name));
       }
@@ -284,7 +291,33 @@
         await api.resetStats();
         location.reload();
       });
+      async function loadSettings() {
+        const settings = await api.getSettings().catch(() => ({ autoDismiss: true }));
+        const brainState = await api.getStats().catch(() => ({}));
+        const weights = brainState?.weights ?? {};
+        const toggle = document.getElementById("toggle-auto-dismiss");
+        toggle.checked = settings?.autoDismiss ?? true;
+        toggle.addEventListener("change", () => api.updateSettings(toggle.checked));
+        const catList = document.getElementById("settings-cat-list");
+        const rows = CATEGORY_IDS.map((id) => {
+          const w = weights[id] ?? 1;
+          let badge = "\u{1F610}";
+          if (w >= 1.5) badge = "\u2764\uFE0F";
+          else if (w < 0.4) badge = "\u{1F6AB}";
+          else if (w < 0.8) badge = "\u{1F612}";
+          return `<div class="cat-pref-row">
+      <span class="cat-pref-name">${CATEGORIES[id]?.heLabel ?? id}</span>
+      <span class="cat-pref-badge">${badge}</span>
+    </div>`;
+        });
+        catList.innerHTML = rows.join("");
+      }
+      document.getElementById("btn-reset-prefs").addEventListener("click", async () => {
+        await api.resetStats();
+        location.reload();
+      });
       loadAll().catch(console.error);
+      loadSettings().catch(console.error);
     }
   });
   require_popup_entry();

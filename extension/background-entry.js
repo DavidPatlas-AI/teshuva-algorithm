@@ -1,7 +1,7 @@
 // Service worker — background.js הנבנה מקובץ זה
 // מנהל storage ומשמש כ-relay בין popup ↔ content ↔ storage
 
-import { STORAGE_KEY, MSG } from '../shared/constants.js'
+import { STORAGE_KEY, SETTINGS_KEY, MSG } from '../shared/constants.js'
 import { CATEGORY_IDS }     from '../brain/categories.js'
 
 // ── אתחול בהתקנה ─────────────────────────────────────────────
@@ -83,8 +83,26 @@ async function handle(msg) {
     }
 
     case MSG.GET_INSIGHTS: {
-      // placeholder — יורחב ב-v2.1
       return { ok: true, data: [] }
+    }
+
+    case MSG.GET_SETTINGS: {
+      const data = await chrome.storage.local.get(SETTINGS_KEY)
+      return { ok: true, data: data[SETTINGS_KEY] ?? { autoDismiss: true } }
+    }
+
+    case MSG.UPDATE_SETTINGS: {
+      const { autoDismiss } = msg
+      await chrome.storage.local.set({ [SETTINGS_KEY]: { autoDismiss } })
+
+      // שדר לכל טאבי התוסף שהגדרות השתנו
+      const tabs = await chrome.tabs.query({})
+      for (const tab of tabs) {
+        try {
+          await chrome.tabs.sendMessage(tab.id, { type: MSG.SETTINGS_CHANGED, autoDismiss })
+        } catch {}   // tab might not have content script — ignore
+      }
+      return { ok: true }
     }
 
     default:

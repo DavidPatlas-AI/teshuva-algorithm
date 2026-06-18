@@ -29,7 +29,7 @@ function classifyUrl(url) {
 const SOCIAL_DOMAINS = ['twitter.com','x.com','facebook.com','instagram.com','youtube.com','tiktok.com','linkedin.com','reddit.com','threads.net','snapchat.com']
 
 function showTab(name) {
-  const names = ['overview','categories','history','insights']
+  const names = ['overview','categories','history','insights','settings']
   document.querySelectorAll('.tab').forEach((t, i) =>
     t.classList.toggle('active', names[i] === name))
   document.querySelectorAll('.tab-content').forEach(el =>
@@ -225,4 +225,37 @@ document.getElementById('btn-reset').addEventListener('click', async () => {
   location.reload()
 })
 
+// ── Settings tab ──────────────────────────────────────────────
+async function loadSettings() {
+  const settings   = await api.getSettings().catch(() => ({ autoDismiss: true }))
+  const brainState = await api.getStats().catch(() => ({}))
+  const weights    = brainState?.weights ?? {}
+
+  // Toggle
+  const toggle = document.getElementById('toggle-auto-dismiss')
+  toggle.checked = settings?.autoDismiss ?? true
+  toggle.addEventListener('change', () => api.updateSettings(toggle.checked))
+
+  // Per-category preference list
+  const catList = document.getElementById('settings-cat-list')
+  const rows = CATEGORY_IDS.map(id => {
+    const w    = weights[id] ?? 1.0
+    let badge  = '😐'
+    if (w >= 1.5)     badge = '❤️'
+    else if (w < 0.4) badge = '🚫'
+    else if (w < 0.8) badge = '😒'
+    return `<div class="cat-pref-row">
+      <span class="cat-pref-name">${CATEGORIES[id]?.heLabel ?? id}</span>
+      <span class="cat-pref-badge">${badge}</span>
+    </div>`
+  })
+  catList.innerHTML = rows.join('')
+}
+
+document.getElementById('btn-reset-prefs').addEventListener('click', async () => {
+  await api.resetStats()
+  location.reload()
+})
+
 loadAll().catch(console.error)
+loadSettings().catch(console.error)

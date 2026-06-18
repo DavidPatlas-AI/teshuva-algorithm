@@ -6920,7 +6920,7 @@
   });
 
   // shared/constants.js
-  var STORAGE_KEY, ONBOARDING_KEY, SPEAK_COOLDOWN_MS, ASK_AFTER_COUNT, ASK_COOLDOWN_MS;
+  var STORAGE_KEY, ONBOARDING_KEY, SPEAK_COOLDOWN_MS, ASK_AFTER_COUNT, ASK_COOLDOWN_MS, SETTINGS_KEY, MSG;
   var init_constants = __esm({
     "shared/constants.js"() {
       STORAGE_KEY = "teshuva_state";
@@ -6928,6 +6928,19 @@
       SPEAK_COOLDOWN_MS = 9e3;
       ASK_AFTER_COUNT = 5;
       ASK_COOLDOWN_MS = 5 * 6e4;
+      SETTINGS_KEY = "teshuva_settings";
+      MSG = {
+        GET_STATS: "GET_STATS",
+        RESET_STATS: "RESET_STATS",
+        RECORD_SIGNAL: "RECORD_SIGNAL",
+        // { categoryId, type: 'positive'|'negative' }
+        GET_INSIGHTS: "GET_INSIGHTS",
+        GET_SETTINGS: "GET_SETTINGS",
+        UPDATE_SETTINGS: "UPDATE_SETTINGS",
+        // { autoDismiss: boolean }
+        SETTINGS_CHANGED: "SETTINGS_CHANGED"
+        // broadcast to content scripts
+      };
     }
   });
 
@@ -7453,7 +7466,8 @@
         if (catId === "uncategorized") return catId;
         const { session, weights } = brain.getStats();
         const weight = weights?.[catId] ?? 1;
-        if (weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
+        const autoDismissEnabled = options.settings?.autoDismiss ?? true;
+        if (autoDismissEnabled && weight < AUTO_DISMISS_THRESHOLD && el && options.onDismiss) {
           options.onDismiss(el).then((result) => {
             if (result.ok) {
               brain.recordDismiss(catId);
@@ -7793,6 +7807,7 @@
       init_action_engine();
       init_feedback_ui();
       init_categories();
+      init_constants();
       (async () => {
         const agent = await initAgent(Clippy);
         agent.show();
@@ -7807,6 +7822,11 @@
           hide: () => agent.hide(),
           onClick: (cb) => clippyEl?.addEventListener("click", cb)
         };
+        const savedSettings = await new Promise((r) => chrome.storage.local.get(SETTINGS_KEY, r));
+        const settingsRef = { autoDismiss: savedSettings[SETTINGS_KEY]?.autoDismiss ?? true };
+        chrome.runtime.onMessage.addListener((msg) => {
+          if (msg.type === MSG.SETTINGS_CHANGED) settingsRef.autoDismiss = msg.autoDismiss;
+        });
         const brain = createBrain(createChromeAdapter());
         let controller;
         const feedbackUI = createFeedbackUI(
@@ -7815,6 +7835,7 @@
         );
         controller = createMascotController(mascot, brain, {
           onDismiss: isActionSupported() ? dismissPost : null,
+          settings: settingsRef,
           onQuestion: (catId) => feedbackUI.show(CATEGORIES[catId]?.heLabel ?? catId),
           onAnswered: () => feedbackUI.hide()
         });

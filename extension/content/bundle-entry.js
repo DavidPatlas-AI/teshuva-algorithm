@@ -4,14 +4,15 @@
 import { initAgent } from 'clippyjs'
 import ClippyAgent   from 'clippyjs/agents/clippy'
 
-import { createBrain }               from '../../brain/brain-api.js'
-import { createChromeAdapter }       from '../../brain/adapters/chrome-adapter.js'
-import { createMascotController }    from '../../mascot/mascot-controller.js'
-import { getSelectorForCurrentSite }    from './site-adapters.js'
-import { startFeedObserver }            from './feed-observer.js'
-import { dismissPost, isActionSupported } from './action-engine.js'
-import { createFeedbackUI }             from './feedback-ui.js'
-import { CATEGORIES }                   from '../../brain/categories.js'
+import { createBrain }                  from '../../brain/brain-api.js'
+import { createChromeAdapter }           from '../../brain/adapters/chrome-adapter.js'
+import { createMascotController }        from '../../mascot/mascot-controller.js'
+import { getSelectorForCurrentSite }     from './site-adapters.js'
+import { startFeedObserver }             from './feed-observer.js'
+import { dismissPost, isActionSupported }from './action-engine.js'
+import { createFeedbackUI }              from './feedback-ui.js'
+import { CATEGORIES }                    from '../../brain/categories.js'
+import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
 
 ;(async () => {
   // ── Mascot (Clippy) ────────────────────────────────────────
@@ -33,6 +34,15 @@ import { CATEGORIES }                   from '../../brain/categories.js'
     onClick: cb   => clippyEl?.addEventListener('click', cb),
   }
 
+  // ── Settings ─────────────────────────────────────────────────
+  const savedSettings = await new Promise(r => chrome.storage.local.get(SETTINGS_KEY, r))
+  const settingsRef   = { autoDismiss: savedSettings[SETTINGS_KEY]?.autoDismiss ?? true }
+
+  // האזן לשינויי הגדרות מהפופ-אפ
+  chrome.runtime.onMessage.addListener(msg => {
+    if (msg.type === MSG.SETTINGS_CHANGED) settingsRef.autoDismiss = msg.autoDismiss
+  })
+
   // ── Controller — נקודת הכניסה היחידה ללוגיקה ──────────────
   const brain = createBrain(createChromeAdapter())
 
@@ -45,6 +55,7 @@ import { CATEGORIES }                   from '../../brain/categories.js'
 
   controller = createMascotController(mascot, brain, {
     onDismiss:  isActionSupported() ? dismissPost : null,
+    settings:   settingsRef,
     onQuestion: catId => feedbackUI.show(CATEGORIES[catId]?.heLabel ?? catId),
     onAnswered: ()    => feedbackUI.hide(),
   })

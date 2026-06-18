@@ -22,9 +22,11 @@ export function sendMsg(type, payload = {}) {
 
 // קיצורים נוחים
 export const api = {
-  getStats:      ()                        => sendMsg(MSG.GET_STATS),
-  resetStats:    ()                        => sendMsg(MSG.RESET_STATS),
-  positive:      (categoryId)              => sendMsg(MSG.RECORD_SIGNAL, { categoryId, type: 'positive' }),
-  negative:      (categoryId)              => sendMsg(MSG.RECORD_SIGNAL, { categoryId, type: 'negative' }),
-  getInsights:   ()                        => sendMsg(MSG.GET_INSIGHTS),
+  getStats:       ()              => sendMsg(MSG.GET_STATS),
+  resetStats:     ()              => sendMsg(MSG.RESET_STATS),
+  positive:       (categoryId)   => sendMsg(MSG.RECORD_SIGNAL, { categoryId, type: 'positive' }),
+  negative:       (categoryId)   => sendMsg(MSG.RECORD_SIGNAL, { categoryId, type: 'negative' }),
+  getInsights:    ()              => sendMsg(MSG.GET_INSIGHTS),
+  getSettings:    ()              => sendMsg(MSG.GET_SETTINGS),
+  updateSettings: (autoDismiss)  => sendMsg(MSG.UPDATE_SETTINGS, { autoDismiss }),
 }

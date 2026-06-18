@@ -56,6 +56,20 @@ body{width:380px;font-family:'Segoe UI',Arial,sans-serif;background:#FAF5FF;colo
 /* Weight badges */
 .badge{font-size:12px;flex-shrink:0;margin-right:4px}
 .badge-love{opacity:1}.badge-mid{opacity:.7}.badge-low{opacity:.7}.badge-block{opacity:1}
+
+/* Settings tab */
+.setting-row{display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid #EDE9FE;border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.setting-name{font-size:13px;font-weight:600;color:#1F2937;margin-bottom:3px}
+.setting-desc{font-size:11px;color:#6B7280;line-height:1.4}
+.toggle{position:relative;display:inline-block;width:42px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#D1D5DB;border-radius:22px;transition:.3s}
+.slider:before{content:"";position:absolute;height:16px;width:16px;right:3px;bottom:3px;background:white;border-radius:50%;transition:.3s}
+input:checked+.slider{background:#7C3AED}
+input:checked+.slider:before{transform:translateX(-20px)}
+.cat-pref-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F3F4F6}
+.cat-pref-name{font-size:12px;color:#374151}
+.cat-pref-badge{font-size:13px}
 .empty{color:#9CA3AF;text-align:center;padding:16px;font-size:12px}
 .loading{color:#A78BFA;text-align:center;padding:16px;font-size:12px}
 .actions{padding:10px 16px;display:flex;gap:8px;border-top:1px solid #EDE9FE}
@@ -79,6 +93,7 @@ button{flex:1;padding:7px;border-radius:8px;font-size:12px;font-weight:600;curso
   <button class="tab" onclick="showTab('categories')">קטגוריות</button>
   <button class="tab" onclick="showTab('history')">היסטוריה</button>
   <button class="tab" onclick="showTab('insights')">תובנות</button>
+  <button class="tab" onclick="showTab('settings')">⚙️</button>
 </div>
 
 <!-- TAB 1: Overview -->
@@ -117,6 +132,33 @@ button{flex:1;padding:7px;border-radius:8px;font-size:12px;font-weight:600;curso
 <!-- TAB 4: Insights -->
 <div id="tab-insights" class="tab-content">
   <div id="insights-list"><div class="loading">מנתח...</div></div>
+</div>
+
+<!-- TAB 5: Settings -->
+<div id="tab-settings" class="tab-content">
+  <div class="section-title">התנהגות אוטומטית</div>
+  <div class="setting-row">
+    <div class="setting-info">
+      <div class="setting-name">מחיקה אוטומטית</div>
+      <div class="setting-desc">קליפי יסיר פוסטים שלמד שלא מעניינים אותך, בלי לשאול</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="toggle-auto-dismiss" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="section-title" style="margin-top:20px">מצב למידה</div>
+  <div class="setting-desc" style="margin-bottom:12px;font-size:11px;color:#6B7280">
+    קליפי לומד מהעדפות שלך ומשנה התנהגות בהתאם.
+    <b>אדום 🚫</b> = מסיר אוטומטית · <b>ירוק ❤️</b> = מועדף
+  </div>
+  <div id="settings-cat-list"></div>
+
+  <div class="section-title" style="margin-top:20px">אפס העדפות</div>
+  <button class="btn-ghost" id="btn-reset-prefs" style="width:100%;margin-top:4px">
+    אפס את כל ההעדפות שלמדתי
+  </button>
 </div>
 
 <div class="actions">

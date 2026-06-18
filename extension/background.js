@@ -8,17 +8,23 @@
   };
 
   // shared/constants.js
-  var STORAGE_KEY, ASK_COOLDOWN_MS, MSG;
+  var STORAGE_KEY, ASK_COOLDOWN_MS, SETTINGS_KEY, MSG;
   var init_constants = __esm({
     "shared/constants.js"() {
       STORAGE_KEY = "teshuva_state";
       ASK_COOLDOWN_MS = 5 * 6e4;
+      SETTINGS_KEY = "teshuva_settings";
       MSG = {
         GET_STATS: "GET_STATS",
         RESET_STATS: "RESET_STATS",
         RECORD_SIGNAL: "RECORD_SIGNAL",
         // { categoryId, type: 'positive'|'negative' }
-        GET_INSIGHTS: "GET_INSIGHTS"
+        GET_INSIGHTS: "GET_INSIGHTS",
+        GET_SETTINGS: "GET_SETTINGS",
+        UPDATE_SETTINGS: "UPDATE_SETTINGS",
+        // { autoDismiss: boolean }
+        SETTINGS_CHANGED: "SETTINGS_CHANGED"
+        // broadcast to content scripts
       };
     }
   });
@@ -168,6 +174,22 @@
           }
           case MSG.GET_INSIGHTS: {
             return { ok: true, data: [] };
+          }
+          case MSG.GET_SETTINGS: {
+            const data = await chrome.storage.local.get(SETTINGS_KEY);
+            return { ok: true, data: data[SETTINGS_KEY] ?? { autoDismiss: true } };
+          }
+          case MSG.UPDATE_SETTINGS: {
+            const { autoDismiss } = msg;
+            await chrome.storage.local.set({ [SETTINGS_KEY]: { autoDismiss } });
+            const tabs = await chrome.tabs.query({});
+            for (const tab of tabs) {
+              try {
+                await chrome.tabs.sendMessage(tab.id, { type: MSG.SETTINGS_CHANGED, autoDismiss });
+              } catch {
+              }
+            }
+            return { ok: true };
           }
           default:
             return { ok: false, error: `Unknown message type: ${msg.type}` };
