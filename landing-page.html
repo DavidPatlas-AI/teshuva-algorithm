@@ -1,189 +1,233 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>האלגוריתם שחזר בתשובה — Teshuva Algorithm</title>
-  <link rel="stylesheet" href="landing-style.css" />
-</head>
-<body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>האלגוריתם שחזר בתשובה</title>
+<meta name="description" content="תוסף דפדפן שחושף למה ראית כל פוסט, סרטון והמלצה. Clippy חזר — ועכשיו הוא מסביר.">
+<meta property="og:title" content="האלגוריתם שחזר בתשובה">
+<meta property="og:description" content="What if the algorithm stopped hiding and started explaining itself?">
+<meta property="og:url" content="https://github.com/DavidPatlas-AI/teshuva-algorithm">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;900&family=Assistant:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #ff9a1f; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #06090e; }
+  ::selection { background: rgba(255,154,31,.28); }
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-badge">v0.3.0 · קוד פתוח</div>
-      <h1>
-        <span class="clippy-icon">📎</span>
-        האלגוריתם שחזר בתשובה
-      </h1>
-      <p class="hero-sub">
-        הדמות הקטנה שיושבת לידך, צופה במה שהאלגוריתם מציג לך,<br />
-        ו<strong>אומרת לך את האמת</strong>.
-      </p>
-      <div class="hero-quote">
-        <p>״אתה רואה את זה כי 43% מהפיד שלך הוא פוליטיקה.״</p>
-        <p>״ביקרת ב-YouTube 94 פעמים השבוע האחרון.״</p>
-        <p>״השעה הכי אקטיבית שלך היא 23:00.״</p>
+  @keyframes bob        { 0%,100%{ transform:translateY(0) rotate(-1.5deg) } 50%{ transform:translateY(-12px) rotate(1.5deg) } }
+  @keyframes clip-look  { 0%,100%{ transform:translate(0,0) } 30%{ transform:translate(-3px,2px) } 60%{ transform:translate(3px,1px) } }
+  @keyframes fadeup     { from{ opacity:0; transform:translateY(22px) } to{ opacity:1; transform:translateY(0) } }
+  @keyframes blinkcur   { 0%,49%{ opacity:1 } 50%,100%{ opacity:0 } }
+  @keyframes growbar    { from{ transform:scaleX(0) } to{ transform:scaleX(1) } }
+  @keyframes glowpulse  { 0%,100%{ opacity:.45 } 50%{ opacity:.8 } }
+  @keyframes popin      { 0%{ opacity:0; transform:translateY(8px) scale(.94) } 100%{ opacity:1; transform:translateY(0) scale(1) } }
+
+  a { color: inherit; }
+  .clippy-bob  { animation: bob 5.5s ease-in-out infinite; transform-origin: center; }
+  .clippy-eyes { animation: clip-look 5s ease-in-out infinite; }
+</style>
+</head>
+<body style="color:#e8edf4;font-family:'Assistant',sans-serif;min-height:100vh;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased">
+
+  <!-- ambient background -->
+  <div style="position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 520px at 78% -8%,rgba(255,154,31,.16),transparent 60%),radial-gradient(700px 500px at 10% 12%,rgba(38,70,120,.18),transparent 60%);z-index:0"></div>
+  <div style="position:fixed;inset:0;pointer-events:none;opacity:.5;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,#000,transparent 70%);z-index:0"></div>
+
+  <!-- NAV -->
+  <nav style="position:relative;z-index:5;max-width:1180px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,154,31,.1);border:1px solid rgba(255,154,31,.3);display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="24" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" stroke="#ffce8e" stroke-width="14"/><rect x="50" y="22" width="40" height="120" rx="20" stroke="#ffce8e" stroke-width="14"/></svg>
       </div>
-      <div class="hero-actions">
-        <a href="#install" class="btn btn-primary">התקנה חינמית</a>
-        <a href="https://github.com/YOUR_USERNAME/teshuva-algorithm" class="btn btn-outline" target="_blank">GitHub ↗</a>
+      <div style="line-height:1.05">
+        <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.2px">האלגוריתם שחזר בתשובה</div>
+        <div style="font-family:'Space Mono',monospace;font-size:10.5px;color:#7c8698;letter-spacing:.5px;direction:ltr;text-align:right">the algorithm that repented</div>
       </div>
     </div>
-  </section>
+    <div style="display:flex;align-items:center;gap:26px">
+      <a href="#how" style="color:#aab3c2;text-decoration:none;font-size:15px;font-weight:600">איך זה עובד</a>
+      <a href="#features" style="color:#aab3c2;text-decoration:none;font-size:15px;font-weight:600">יכולות</a>
+      <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#aab3c2;text-decoration:none;font-size:15px;font-weight:600;font-family:'Space Mono',monospace">GitHub</a>
+      <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:var(--accent);color:#0a0d12;text-decoration:none;font-weight:800;font-size:14.5px;padding:10px 18px;border-radius:10px;box-shadow:0 6px 22px rgba(255,154,31,.28)">התקן את התוסף</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header style="position:relative;z-index:4;max-width:1180px;margin:0 auto;padding:64px 28px 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center">
+    <div style="animation:fadeup .7s ease both">
+      <div style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);border:1px solid rgba(255,154,31,.28);background:rgba(255,154,31,.06);padding:6px 12px;border-radius:99px;direction:ltr">
+        <span style="width:7px;height:7px;border-radius:99px;background:var(--accent);display:inline-block;animation:glowpulse 2s infinite"></span>v0.2 · BETA · open source
+      </div>
+      <h1 style="font-family:'Rubik',sans-serif;font-weight:900;font-size:58px;line-height:1.04;letter-spacing:-1.2px;margin:22px 0 0">האלגוריתם ניהל אותך<br>שנים. עכשיו הוא<br><span style="color:var(--accent)">חזר בתשובה.</span></h1>
+      <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:16px;color:#9aa4b4;margin:22px 0 0;text-align:right;line-height:1.55;max-width:520px;margin-right:0;margin-left:auto">"What if the algorithm stopped hiding<br>and started explaining itself?"</p>
+      <p style="font-size:18.5px;color:#b7c0cd;line-height:1.65;margin:18px 0 0;max-width:520px">תוסף דפדפן שמלווה אותך בזמן הגלישה — וחושף בקול רם <b style="color:#e8edf4">למה</b> ראית כל פוסט, סרטון והמלצה. בלי קסמים, בלי הסתרות.</p>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap">
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:var(--accent);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:12px;box-shadow:0 10px 30px rgba(255,154,31,.3);display:inline-flex;align-items:center;gap:9px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="#0a0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          התקן ל‑Chrome
+        </a>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:rgba(255,255,255,.04);color:#dfe5ee;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:12px;border:1px solid rgba(255,255,255,.12);font-family:'Space Mono',monospace">צפה בקוד &lt;/&gt;</a>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;color:#6b7588;margin-top:14px;direction:ltr;text-align:right">בקרוב ב‑Web Store · בינתיים: טען כתוסף לא‑ארוז</div>
+    </div>
+
+    <!-- confession terminal -->
+    <div style="animation:fadeup .9s ease both;position:relative">
+      <div style="position:absolute;inset:-30px;background:radial-gradient(closest-side,rgba(255,154,31,.18),transparent);filter:blur(8px);z-index:0"></div>
+      <div style="position:relative;z-index:1;background:linear-gradient(180deg,#0c1320,#0a1018);border:1px solid rgba(255,255,255,.09);border-radius:16px;box-shadow:0 30px 70px rgba(0,0,0,.5);overflow:hidden">
+        <div style="display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)">
+          <span style="width:11px;height:11px;border-radius:99px;background:#ff5f57"></span>
+          <span style="width:11px;height:11px;border-radius:99px;background:#febc2e"></span>
+          <span style="width:11px;height:11px;border-radius:99px;background:#28c840"></span>
+          <span style="margin-right:auto;font-family:'Space Mono',monospace;font-size:11.5px;color:#6b7588;direction:ltr">teshuva.log — confession</span>
+        </div>
+        <div dir="ltr" style="padding:22px 20px;font-family:'Space Mono',monospace;font-size:13.5px;line-height:2.05;text-align:right">
+          <div style="color:#5e6a7d"># וידוי האלגוריתם</div>
+          <div><span style="color:var(--accent)">›</span> <span style="color:#cfd6e2">אני האלגוריתם.</span></div>
+          <div><span style="color:var(--accent)">›</span> <span style="color:#cfd6e2">במשך שנים בחרתי בשבילך — בשקט.</span></div>
+          <div><span style="color:var(--accent)">›</span> <span style="color:#cfd6e2">דירגתי. החבאתי. מיקסמתי זמן מסך.</span></div>
+          <div><span style="color:var(--accent)">›</span> <span style="color:#9aa4b4">מהיום כל החלטה שלי —</span></div>
+          <div><span style="color:var(--accent)">›</span> <span style="color:#e8edf4;font-weight:700">גלויה, מוסברת, ניתנת לערעור.</span><span style="display:inline-block;width:9px;height:17px;background:var(--accent);margin-right:4px;vertical-align:-2px;animation:blinkcur 1.1s step-end infinite"></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <!-- HOW IT WORKS -->
-  <section class="section how">
-    <div class="container">
-      <h2 class="section-title">איך זה עובד?</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h3>גולש כרגיל</h3>
-          <p>אתה פותח Twitter, YouTube, TikTok — כמו תמיד.</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h3>Clippy מזהה</h3>
-          <p>הוא קורא את הפוסטים הגלויים ומסווג אותם: פוליטיקה, ספורט, בידור...</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h3>מסביר בעברית</h3>
-          <p>Clippy מסביר למה אתה רואה את זה — ונותן לך לאמן אותו.</p>
+  <section id="how" style="position:relative;z-index:4;max-width:1180px;margin:0 auto;padding:70px 28px 40px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:12.5px;color:var(--accent);letter-spacing:1px;direction:ltr;text-align:right">// HOW IT WORKS</div>
+        <h2 style="font-family:'Rubik',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.6px;margin:10px 0 0">שלושה צעדים. אפס מאמץ.</h2>
+      </div>
+      <p style="color:#9aa4b4;font-size:16px;max-width:380px;line-height:1.6;margin:0">אתה ממשיך לגלוש בדיוק כרגיל. קליפי עושה את כל העבודה השקופה ברקע.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:26px">
+        <div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--accent)">01</div>
+        <h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:21px;margin:14px 0 8px">אתה גולש</h3>
+        <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#6b7588;margin:0 0 12px;text-align:right">you browse</p>
+        <p style="color:#aeb7c4;font-size:15.5px;line-height:1.6;margin:0">פייסבוק, יוטיוב, אינסטגרם, X. גלוש כרגיל — אל תשנה כלום.</p>
+      </div>
+      <div style="background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:26px">
+        <div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--accent)">02</div>
+        <h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:21px;margin:14px 0 8px">קליפי צופה</h3>
+        <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#6b7588;margin:0 0 12px;text-align:right">clippy watches</p>
+        <p style="color:#aeb7c4;font-size:15.5px;line-height:1.6;margin:0">התוסף קורא את האותות שהאלגוריתם משתמש בהם — מאחורי הקלעים, על המכשיר שלך בלבד.</p>
+      </div>
+      <div style="position:relative;background:linear-gradient(180deg,rgba(255,154,31,.08),rgba(255,154,31,.02));border:1px solid rgba(255,154,31,.22);border-radius:16px;padding:26px;overflow:hidden">
+        <div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--accent)">03</div>
+        <h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:21px;margin:14px 0 8px">קליפי מסביר</h3>
+        <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#9a8460;margin:0 0 12px;text-align:right">clippy explains</p>
+        <p style="color:#d8cdb8;font-size:15.5px;line-height:1.6;margin:0;max-width:170px">בועה קופצת ואומרת בדיוק <b style="color:#fff">למה</b> ראית את זה.</p>
+        <div style="position:absolute;bottom:-14px;left:-6px;width:96px;animation:bob 5s ease-in-out infinite;transform-origin:center">
+          <svg width="96" height="124" viewBox="0 0 140 190" fill="none"><defs><linearGradient id="st3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset=".5" stop-color="#aeb9c7"/><stop offset="1" stop-color="#727e8e"/></linearGradient></defs><rect x="34" y="60" width="72" height="116" rx="34" stroke="url(#st3)" stroke-width="13"/><rect x="50" y="22" width="40" height="120" rx="20" stroke="url(#st3)" stroke-width="13"/><ellipse cx="60" cy="60" rx="12" ry="13" fill="#fff"/><ellipse cx="86" cy="60" rx="12" ry="13" fill="#fff"/><g class="clippy-eyes"><circle cx="60" cy="63" r="5.5" fill="#0b1220"/><circle cx="86" cy="63" r="5.5" fill="#0b1220"/></g><path d="M50 44 Q60 39 71 45" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M77 45 Q88 39 98 46" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M61 82 Q73 92 85 82" stroke="url(#st3)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
         </div>
       </div>
     </div>
   </section>
 
   <!-- FEATURES -->
-  <section class="section features">
-    <div class="container">
-      <h2 class="section-title">מה יש בתוך הקופסה</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feat-icon">🧠</div>
-          <h3>מוח לומד</h3>
-          <p>ה-Brain מסווג תוכן ל-9 קטגוריות, זוכר את ההיסטוריה, ומשקלל את המשוב שלך.</p>
+  <section id="features" style="position:relative;z-index:4;max-width:1180px;margin:0 auto;padding:60px 28px 50px">
+    <div style="text-align:center;margin-bottom:38px">
+      <div style="font-family:'Space Mono',monospace;font-size:12.5px;color:var(--accent);letter-spacing:1px;direction:ltr">// CAPABILITIES</div>
+      <h2 style="font-family:'Rubik',sans-serif;font-weight:800;font-size:40px;letter-spacing:-.7px;margin:10px 0 0">מה שהאלגוריתם הסתיר — עכשיו גלוי</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px">
+      <div style="background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:30px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:8px">
+          <div style="width:42px;height:42px;border-radius:11px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.28);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="var(--accent)" stroke-width="2"/></svg></div>
+          <div><h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:20px;margin:0">שקיפות אלגוריתמית</h3><div dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#6b7588;text-align:right">algorithm transparency</div></div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">💬</div>
-          <h3>Intent Engine</h3>
-          <p>לא "אתה רואה פוליטיקה" — אלא "פוליטיקה שולטת ב-43% מהפיד שלך, כי לחצת לייק על 12 פוסטים כאלה."</p>
+        <p style="color:#aeb7c4;font-size:15.5px;line-height:1.65;margin:6px 0 0">כל פריט בפיד מקבל הסבר אנושי: מה דחף אותו למעלה, אילו אותות הפעילו אותו, וכמה "המלצה" יש כאן לעומת בחירה שלך.</p>
+      </div>
+      <div style="background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:30px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:8px">
+          <div style="width:42px;height:42px;border-radius:11px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.28);display:flex;align-items:center;justify-content:center;font-family:'Rubik';font-weight:800;color:var(--accent);font-size:19px">א</div>
+          <div><h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:20px;margin:0">זיהוי תוכן בעברית</h3><div dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#6b7588;text-align:right">hebrew content detection</div></div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">👍</div>
-          <h3>משוב אישי</h3>
-          <p>לחץ + לאשר, - לדחות. Clippy לומד ממך ומשנה את ההסברים.</p>
+        <p style="color:#aeb7c4;font-size:15.5px;line-height:1.65;margin:6px 0 0">מנוע שמבין עברית באמת — מזהה נושא, סנטימנט והטיה בתוכן ישראלי, גם בסלנג ובכתיב חופשי.</p>
+      </div>
+      <div style="background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:30px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px">
+          <div style="width:42px;height:42px;border-radius:11px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.28);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:20px;margin:0">פילוח קטגוריות</h3><div dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#6b7588;text-align:right">category breakdown</div></div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">📊</div>
-          <h3>4 לשוניות בפופ-אפ</h3>
-          <p>סקירה, קטגוריות, היסטוריה גרפית, ותובנות שבועיות אוטומטיות.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feat-icon">🖥️</div>
-          <h3>גרסת דסקטופ</h3>
-          <p>Clippy יושב על שולחן העבודה שלך — שקוף, תמיד מעל, ניתן לגרירה.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feat-icon">🔒</div>
-          <h3>פרטיות מלאה</h3>
-          <p>כל הנתונים נשארים אצלך. אין שרת, אין שיתוף, אין ענן.</p>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:84px;font-size:14px;color:#cdd4df">פוליטיקה</span><div style="flex:1;height:9px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden"><div style="height:100%;width:47%;background:var(--accent);border-radius:99px;transform-origin:right;animation:growbar 1s ease both"></div></div><span dir="ltr" style="font-family:'Space Mono';font-size:12px;color:#9aa4b4;width:34px;text-align:left">47%</span></div>
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:84px;font-size:14px;color:#cdd4df">ספורט</span><div style="flex:1;height:9px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden"><div style="height:100%;width:21%;background:#e7842a;border-radius:99px;transform-origin:right;animation:growbar 1.1s ease both"></div></div><span dir="ltr" style="font-family:'Space Mono';font-size:12px;color:#9aa4b4;width:34px;text-align:left">21%</span></div>
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:84px;font-size:14px;color:#cdd4df">טכנולוגיה</span><div style="flex:1;height:9px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden"><div style="height:100%;width:18%;background:#b9772f;border-radius:99px;transform-origin:right;animation:growbar 1.2s ease both"></div></div><span dir="ltr" style="font-family:'Space Mono';font-size:12px;color:#9aa4b4;width:34px;text-align:left">18%</span></div>
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:84px;font-size:14px;color:#cdd4df">אחר</span><div style="flex:1;height:9px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden"><div style="height:100%;width:14%;background:#6b7588;border-radius:99px;transform-origin:right;animation:growbar 1.3s ease both"></div></div><span dir="ltr" style="font-family:'Space Mono';font-size:12px;color:#9aa4b4;width:34px;text-align:left">14%</span></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- NETWORKS -->
-  <section class="section networks">
-    <div class="container">
-      <h2 class="section-title">רשתות נתמכות</h2>
-      <div class="network-row">
-        <span class="network-chip">Twitter / X</span>
-        <span class="network-chip">YouTube</span>
-        <span class="network-chip">Instagram</span>
-        <span class="network-chip">Facebook</span>
-        <span class="network-chip">TikTok</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- INSTALL -->
-  <section class="section install" id="install">
-    <div class="container">
-      <h2 class="section-title">התקנה — 3 שלבים</h2>
-      <div class="install-steps">
-        <div class="install-step">
-          <span class="install-num">1</span>
-          <div>
-            <strong>שכפל ובנה</strong>
-            <pre>git clone https://github.com/YOUR_USERNAME/teshuva-algorithm
-cd teshuva-algorithm
-npm install &amp;&amp; npm run build</pre>
-          </div>
+      <div style="background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:30px">
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:8px">
+          <div style="width:42px;height:42px;border-radius:11px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.28);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 11v9H4a1 1 0 01-1-1v-7a1 1 0 011-1h3zm0 0l4-8a2 2 0 012 2v3h5a2 2 0 012 2.3l-1.3 7A2 2 0 0118.7 20H7" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <div><h3 style="font-family:'Rubik',sans-serif;font-weight:700;font-size:20px;margin:0">משוב 👍 / 👎</h3><div dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#6b7588;text-align:right">feedback loop</div></div>
         </div>
-        <div class="install-step">
-          <span class="install-num">2</span>
-          <div>
-            <strong>טען לדפדפן</strong>
-            <p>פתח <code>chrome://extensions</code> ← Developer mode ← Load unpacked ← בחר את <code>extension/</code></p>
-          </div>
+        <p style="color:#aeb7c4;font-size:15.5px;line-height:1.65;margin:6px 0 16px">ההסבר היה מדויק? סמן 👍 או 👎. האלגוריתם החדש לומד ממך — בשקיפות מלאה, בלי מניפולציה.</p>
+        <div style="display:flex;gap:10px">
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.3);color:var(--accent);font-weight:700;font-size:14px;padding:8px 16px;border-radius:10px;cursor:pointer">👍 מדויק</div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#aeb7c4;font-weight:700;font-size:14px;padding:8px 16px;border-radius:10px;cursor:pointer">👎 פספוס</div>
         </div>
-        <div class="install-step">
-          <span class="install-num">3</span>
-          <div>
-            <strong>התחל לגלוש</strong>
-            <p>עבור ל-Twitter או YouTube — Clippy יופיע ויתחיל להסביר.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATEGORIES -->
-  <section class="section categories">
-    <div class="container">
-      <h2 class="section-title">9 קטגוריות מובנות</h2>
-      <div class="cat-grid">
-        <span class="cat-tag" style="--c:#EF4444">פוליטיקה</span>
-        <span class="cat-tag" style="--c:#3B82F6">ספורט</span>
-        <span class="cat-tag" style="--c:#EC4899">בידור</span>
-        <span class="cat-tag" style="--c:#8B5CF6">טכנולוגיה</span>
-        <span class="cat-tag" style="--c:#F97316">חדשות</span>
-        <span class="cat-tag" style="--c:#10B981">בריאות</span>
-        <span class="cat-tag" style="--c:#F59E0B">כלכלה</span>
-        <span class="cat-tag" style="--c:#06B6D4">מדע</span>
-        <span class="cat-tag" style="--c:#A78BFA">דת ומסורת</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section cta">
-    <div class="container cta-inner">
-      <h2>מוכן להבין את הפיד שלך?</h2>
-      <p>קוד פתוח, חינמי לגמרי, פרטיות מלאה.</p>
-      <div class="hero-actions">
-        <a href="#install" class="btn btn-primary btn-lg">התחל עכשיו</a>
-        <a href="https://github.com/YOUR_USERNAME/teshuva-algorithm/blob/main/USAGE-GUIDE.md" class="btn btn-outline" target="_blank">קרא את המדריך ↗</a>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <p>
-        האלגוריתם שחזר בתשובה ·
-        <a href="https://github.com/YOUR_USERNAME/teshuva-algorithm" target="_blank">GitHub</a> ·
-        <a href="docs/index.md">תיעוד</a>
-      </p>
-      <p class="footer-sub">קוד פתוח · MIT License · נבנה עם clippyjs</p>
+  <footer style="position:relative;z-index:4;border-top:1px solid rgba(255,255,255,.08);margin-top:30px">
+    <div style="max-width:1180px;margin:0 auto;padding:40px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg width="16" height="22" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" stroke="#8893a6" stroke-width="14"/><rect x="50" y="22" width="40" height="120" rx="20" stroke="#8893a6" stroke-width="14"/></svg>
+        <div>
+          <div style="font-family:'Rubik';font-weight:700;font-size:15px">האלגוריתם שחזר בתשובה</div>
+          <div style="font-size:13px;color:#6b7588">נבנה בתשובה שלמה · קוד פתוח · MIT</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:22px;font-family:'Space Mono',monospace;font-size:13.5px">
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#aab3c2;text-decoration:none;display:inline-flex;align-items:center;gap:7px;direction:ltr">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#aab3c2"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"/></svg>
+          GitHub
+        </a>
+        <span style="color:#4f5a6d">·</span>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/blob/master/LICENSE" style="color:#aab3c2;text-decoration:none;direction:ltr">MIT License</a>
+      </div>
     </div>
   </footer>
 
+  <!-- FIXED CLIPPY -->
+  <div style="position:fixed;bottom:24px;left:24px;z-index:30;display:flex;align-items:flex-end;gap:12px;flex-direction:row-reverse">
+    <div class="clippy-bob" style="width:118px;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5))">
+      <svg width="118" height="152" viewBox="0 0 140 190" fill="none"><defs><linearGradient id="stmain" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f7fa"/><stop offset=".5" stop-color="#b2bdcb"/><stop offset="1" stop-color="#6f7a8a"/></linearGradient></defs><rect x="34" y="60" width="72" height="116" rx="34" stroke="url(#stmain)" stroke-width="13"/><rect x="50" y="22" width="40" height="120" rx="20" stroke="url(#stmain)" stroke-width="13"/><ellipse cx="60" cy="60" rx="12.5" ry="13.5" fill="#fff"/><ellipse cx="86" cy="60" rx="12.5" ry="13.5" fill="#fff"/><g class="clippy-eyes"><circle cx="60" cy="63" r="5.6" fill="#0b1220"/><circle cx="86" cy="63" r="5.6" fill="#0b1220"/></g><path d="M50 44 Q60 38 71 45" stroke="var(--accent)" stroke-width="4.6" stroke-linecap="round" fill="none"/><path d="M77 45 Q88 38 98 46" stroke="var(--accent)" stroke-width="4.6" stroke-linecap="round" fill="none"/><path d="M60 82 Q73 93 86 82" stroke="url(#stmain)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:relative;max-width:230px;background:#fff;color:#0c1320;border-radius:14px;border-bottom-right-radius:4px;padding:13px 15px;font-size:14.5px;font-weight:600;line-height:1.45;box-shadow:0 16px 34px rgba(0,0,0,.45)">
+      <div style="font-family:'Space Mono';font-size:10px;color:var(--accent);margin-bottom:3px;direction:ltr;text-align:right">CLIPPY</div>
+      <div id="clippy-msg">היי! שמת לב שהפיד שלך היום מלא בפוליטיקה? אני אגיד לך למה.</div>
+      <div style="position:absolute;bottom:10px;right:-7px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:9px solid #fff"></div>
+    </div>
+  </div>
+
+<script>
+  const msgs = [
+    "היי! שמת לב שהפיד שלך היום מלא בפוליטיקה? אני אגיד לך למה.",
+    "הסרטון הזה עלה כי צפית ב‑3 דומים אתמול. זהו. בלי קסמים.",
+    "פעם הסתרתי ממך. עכשיו אני מתוודה — על כל החלטה.",
+    "47% מהפיד שלך זה פוליטיקה. צירפתי לך גרף.",
+    "נראה שאתה עובד קשה. הפסקה?",
+    "אל תשכח לשתות מים! 💧",
+  ];
+  let i = 0;
+  const el = document.getElementById('clippy-msg');
+  setInterval(() => {
+    i = (i + 1) % msgs.length;
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.textContent = msgs[i];
+    el.style.animation = 'popin .35s ease both';
+  }, 4400);
+</script>
 </body>
 </html>
