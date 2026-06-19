@@ -15,20 +15,163 @@
 
   @keyframes flick{0%,100%{transform:scale(1) rotate(-1deg);opacity:.95}25%{transform:scale(1.04,.97) rotate(1deg);opacity:1}50%{transform:scale(.97,1.05) rotate(-1deg);opacity:.9}75%{transform:scale(1.03,.98) rotate(1.5deg);opacity:1}}
   @keyframes glowbreath{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.95;transform:scale(1.12)}}
-  @keyframes rise{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes riseSmall{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  .hero-reveal{opacity:1;transform:none}
-  @keyframes wipein{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
   @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-13px) rotate(2deg)}}
   @keyframes look{0%,100%{transform:translate(0,0)}30%{transform:translate(-3px,2px)}60%{transform:translate(3px,1px)}}
   @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes pophint{0%{opacity:0;transform:translateY(8px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes slidedown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
+  /* ── layout helpers ───────────────────────────────── */
+  .sec{max-width:1200px;margin:0 auto;padding-left:30px;padding-right:30px}
+
+  /* ── nav ──────────────────────────────────────────── */
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:transparent}
+  .nav-burger span{display:block;width:22px;height:2px;background:#ece9e1;border-radius:2px;transition:transform .25s,opacity .25s}
+  .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav-burger.open span:nth-child(2){opacity:0}
+  .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .nav-mobile{display:none;flex-direction:column;gap:0;border-top:1px solid rgba(236,233,225,.09);background:#06080d;animation:slidedown .22s ease}
+  .nav-mobile.open{display:flex}
+  .nav-mobile a{display:block;padding:14px 20px;color:#b3ac9e;text-decoration:none;font-size:16px;font-weight:600;border-bottom:1px solid rgba(236,233,225,.06)}
+  .nav-mobile .nav-cta-m{margin:14px 20px 18px;display:block;text-align:center;background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:15px;padding:11px 20px;border-radius:9px}
+
+  /* ── hero ─────────────────────────────────────────── */
+  .hero-grid{display:grid;grid-template-columns:1.32fr .68fr;gap:46px;align-items:end}
+  .hero-h1{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:80px;line-height:.98;letter-spacing:-1.5px;margin:20px 0 0}
+  .hero-wm{position:absolute;top:30px;left:24px;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:230px;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(255,154,31,.1);pointer-events:none;z-index:0;user-select:none}
+
+  /* ── idea ─────────────────────────────────────────── */
+  .idea-grid{display:grid;grid-template-columns:.42fr .58fr;gap:46px;align-items:start}
+  .idea-sticky{position:sticky;top:30px}
+  .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+  /* ── steps ────────────────────────────────────────── */
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(236,233,225,.1);border-radius:6px;overflow:hidden}
+  .step-cell{padding:30px;border-left:1px solid rgba(236,233,225,.1)}
+  .step-last{position:relative;padding:30px;background:linear-gradient(180deg,rgba(255,154,31,.09),rgba(255,154,31,.02));overflow:hidden}
+
+  /* ── features ─────────────────────────────────────── */
+  .feat-grid{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto;gap:18px}
+  .feat-big{grid-row:span 2;background:linear-gradient(180deg,rgba(255,154,31,.07),rgba(255,255,255,.012));border:1px solid rgba(255,154,31,.18);border-radius:14px;padding:34px;display:flex;flex-direction:column;justify-content:space-between}
+  .feat-wide{grid-column:span 2;background:linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.01));border:1px solid rgba(236,233,225,.1);border-radius:14px;padding:30px;display:grid;grid-template-columns:.7fr 1.3fr;gap:30px;align-items:center}
+
+  /* ── vision ───────────────────────────────────────── */
+  .vis-grid{background:linear-gradient(180deg,rgba(255,154,31,.06),rgba(255,255,255,.01));border:1px solid rgba(255,154,31,.18);border-radius:18px;padding:42px;display:grid;grid-template-columns:.92fr 1.08fr;gap:44px;align-items:center}
+
+  /* ── clippy menu ──────────────────────────────────── */
+  .clippy-menu-panel{width:280px}
+
+  /* ── menu hover ───────────────────────────────────── */
   .menu-item{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:11px;cursor:pointer;transition:background .15s}
   .menu-item:hover{background:rgba(255,154,31,.12)}
+
+  /* ════════════════════════════════════════════════════
+     RESPONSIVE — tablet ≤ 900px
+  ════════════════════════════════════════════════════ */
+  @media(max-width:900px){
+    .sec{padding-left:20px;padding-right:20px}
+
+    /* nav */
+    .nav-links{display:none}
+    .nav-burger{display:flex}
+
+    /* hero */
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .hero-h1{font-size:clamp(40px,9vw,64px)}
+    .hero-wm{font-size:140px;opacity:.6}
+    .hero-right{display:none}     /* flame — מוסתר בטאבלט */
+
+    /* idea */
+    .idea-grid{grid-template-columns:1fr;gap:30px}
+    .idea-sticky{position:static}
+    .ba-grid{grid-template-columns:1fr}
+
+    /* steps */
+    .steps-grid{grid-template-columns:1fr}
+    .step-cell{border-left:none;border-bottom:1px solid rgba(236,233,225,.1)}
+    .step-last{border-left:none}
+
+    /* features */
+    .feat-grid{grid-template-columns:1fr;grid-template-rows:auto}
+    .feat-big{grid-row:span 1}
+    .feat-wide{grid-column:span 1;grid-template-columns:1fr}
+
+    /* vision */
+    .vis-grid{grid-template-columns:1fr;padding:28px 24px}
+
+    /* confession */
+    .confession-box{padding:30px 24px!important}
+
+    /* clippy */
+    .clippy-menu-panel{width:calc(100vw - 48px)}
+  }
+
+  /* ════════════════════════════════════════════════════
+     RESPONSIVE — mobile ≤ 600px
+  ════════════════════════════════════════════════════ */
+  @media(max-width:600px){
+    .sec{padding-left:16px;padding-right:16px}
+
+    /* hero */
+    .hero-h1{font-size:clamp(34px,10vw,48px);letter-spacing:-.8px}
+    .hero-wm{display:none}
+
+    /* sections padding */
+    .sec-hero{padding-top:44px!important;padding-bottom:20px!important}
+    .sec-idea{padding-top:40px!important;padding-bottom:20px!important}
+    .sec-confession{padding-top:44px!important;padding-bottom:20px!important}
+    .sec-how{padding-top:44px!important;padding-bottom:20px!important}
+    .sec-feat{padding-top:40px!important;padding-bottom:24px!important}
+    .sec-vision{padding-top:36px!important;padding-bottom:40px!important}
+
+    /* confession */
+    .confession-box{padding:24px 18px!important}
+    .confession-h{font-size:22px!important}
+    .confession-verse{font-size:17px!important}
+
+    /* features big card */
+    .feat-big{padding:22px}
+
+    /* features wide */
+    .feat-wide{padding:22px}
+
+    /* steps */
+    .step-cell,.step-last{padding:22px}
+
+    /* idea cards */
+    .idea-act{padding:18px 20px!important}
+    .idea-act-num{font-size:28px!important}
+
+    /* h2 */
+    .h2-hero{font-size:clamp(26px,7vw,36px)!important}
+    .h2-features{font-size:clamp(24px,7vw,34px)!important}
+    .h2-steps{font-size:clamp(24px,7vw,32px)!important}
+    .h2-vision{font-size:clamp(24px,7vw,32px)!important}
+
+    /* cta strip */
+    .cta-inner{padding:36px 20px!important}
+    .cta-h{font-size:clamp(26px,7vw,36px)!important;line-height:1.18!important}
+
+    /* nav strip */
+    .nav-pad{padding:14px 16px!important}
+
+    /* vision grid inner */
+    .vis-grid{padding:22px 18px!important}
+
+    /* before/after */
+    .ba-card{padding:22px!important}
+
+    /* footer */
+    .footer-inner{flex-direction:column!important;gap:16px!important;text-align:center}
+    .footer-links{justify-content:center!important}
+
+    /* clippy root: smaller margin on tiny screens */
+    #clippy-root{bottom:14px;left:14px}
+    .clippy-menu-panel{width:calc(100vw - 28px)}
+  }
 </style>
 </head>
 <body>
@@ -50,39 +193,56 @@
   </div>
 
   <!-- NAV -->
-  <nav style="position:relative;z-index:6;max-width:1200px;margin:0 auto;padding:20px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(236,233,225,.07)">
-    <div style="display:flex;align-items:center;gap:13px">
-      <svg width="22" height="30" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" style="stroke:#ffce8e;stroke-width:14px"/><rect x="50" y="22" width="40" height="120" rx="20" style="stroke:#ffce8e;stroke-width:14px"/></svg>
-      <div style="line-height:1.05">
-        <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:19px;letter-spacing:-.2px">האלגוריתם שחזר בתשובה</div>
-        <div style="font-family:'Space Mono',monospace;font-size:10px;color:#7d7567;letter-spacing:1px;direction:ltr;text-align:right;text-transform:uppercase">the algorithm that repented</div>
+  <nav style="position:relative;z-index:6;border-bottom:1px solid rgba(236,233,225,.07)">
+    <div class="sec nav-pad" style="padding-top:20px;padding-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:20px">
+      <div style="display:flex;align-items:center;gap:13px">
+        <svg width="22" height="30" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" style="stroke:#ffce8e;stroke-width:14px"/><rect x="50" y="22" width="40" height="120" rx="20" style="stroke:#ffce8e;stroke-width:14px"/></svg>
+        <div style="line-height:1.05">
+          <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:19px;letter-spacing:-.2px">האלגוריתם שחזר בתשובה</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:#7d7567;letter-spacing:1px;direction:ltr;text-align:right;text-transform:uppercase">the algorithm that repented</div>
+        </div>
       </div>
+      <!-- desktop links -->
+      <div class="nav-links">
+        <a href="#confession" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הווידוי</a>
+        <a href="#idea" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הרעיון</a>
+        <a href="#how" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">איך זה עובד</a>
+        <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">יכולות</a>
+        <a href="#vision" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">החזון</a>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#0a0d12;background:var(--accent,#ff9a1f);text-decoration:none;font-weight:800;font-size:14px;padding:9px 17px;border-radius:8px;box-shadow:0 6px 22px rgba(255,154,31,.26)">התקן את התוסף ↓</a>
+      </div>
+      <!-- hamburger -->
+      <button class="nav-burger" id="nav-burger" aria-label="תפריט" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div style="display:flex;align-items:center;gap:28px">
-      <a href="#confession" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הווידוי</a>
-      <a href="#idea" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הרעיון</a>
-      <a href="#how" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">איך זה עובד</a>
-      <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">יכולות</a>
-      <a href="#vision" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">החזון</a>
-      <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#0a0d12;background:var(--accent,#ff9a1f);text-decoration:none;font-weight:800;font-size:14px;padding:9px 17px;border-radius:8px;box-shadow:0 6px 22px rgba(255,154,31,.26)">התקן את התוסף ↓</a>
+    <!-- mobile menu -->
+    <div class="nav-mobile" id="nav-mobile">
+      <a href="#confession" onclick="toggleNav()">הווידוי</a>
+      <a href="#idea" onclick="toggleNav()">הרעיון</a>
+      <a href="#how" onclick="toggleNav()">איך זה עובד</a>
+      <a href="#features" onclick="toggleNav()">יכולות</a>
+      <a href="#vision" onclick="toggleNav()">החזון</a>
+      <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" class="nav-cta-m">התקן את התוסף ↓</a>
     </div>
   </nav>
 
   <!-- HERO -->
-  <header style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:74px 30px 30px">
-    <div aria-hidden="true" style="position:absolute;top:30px;left:24px;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:230px;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(255,154,31,.1);pointer-events:none;z-index:0;user-select:none">תשובה</div>
-    <div style="position:relative;z-index:2;display:grid;grid-template-columns:1.32fr .68fr;gap:46px;align-items:end">
+  <header class="sec sec-hero" style="position:relative;z-index:4;padding-top:74px;padding-bottom:30px">
+    <div aria-hidden="true" class="hero-wm">תשובה</div>
+    <div class="hero-grid" style="position:relative;z-index:2">
+      <!-- headline -->
       <div>
-        <div class="hero-reveal" style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase">
+        <div style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase">
           <span style="width:24px;height:1px;background:var(--accent,#ff9a1f)"></span>פרק 00 · הווידוי · v0.4 beta
         </div>
-        <h1 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:80px;line-height:.98;letter-spacing:-1.5px;margin:20px 0 0">
-          <span class="hero-reveal" style="display:block">האלגוריתם ניהל</span>
-          <span class="hero-reveal" style="display:block">אותך שנים.</span>
-          <span class="hero-reveal" style="display:block;color:var(--accent,#ff9a1f);font-style:italic">עכשיו הוא חזר בתשובה.</span>
+        <h1 class="hero-h1">
+          <span style="display:block">האלגוריתם ניהל</span>
+          <span style="display:block">אותך שנים.</span>
+          <span style="display:block;color:var(--accent,#ff9a1f);font-style:italic">עכשיו הוא חזר בתשובה.</span>
         </h1>
-        <p class="hero-reveal" dir="ltr" style="font-family:'Space Mono',monospace;font-size:15px;color:#9a9182;margin:26px 0 0;text-align:right;line-height:1.6;max-width:520px;margin-right:0;margin-left:auto">"What if the algorithm stopped hiding<br>and started explaining itself?"</p>
-        <div class="hero-reveal" style="display:flex;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap">
+        <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:15px;color:#9a9182;margin:26px 0 0;text-align:right;line-height:1.6;max-width:520px;margin-right:0;margin-left:auto">"What if the algorithm stopped hiding<br>and started explaining itself?"</p>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap">
           <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:10px;box-shadow:0 12px 34px rgba(255,154,31,.32);display:inline-flex;align-items:center;gap:9px">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="#0a0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             התקן ל‑Chrome
@@ -90,7 +250,8 @@
           <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:transparent;color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:14px 20px;border-radius:10px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono',monospace">צפה בקוד &lt;/&gt;</a>
         </div>
       </div>
-      <div class="hero-reveal" style="position:relative;padding-bottom:8px">
+      <!-- flame -->
+      <div class="hero-right" style="position:relative;padding-bottom:8px">
         <div style="position:relative;height:200px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:18px">
           <div style="position:absolute;bottom:30px;width:180px;height:180px;background:radial-gradient(closest-side,rgba(255,154,31,.5),transparent);filter:blur(6px);animation:glowbreath 3.4s ease-in-out infinite"></div>
           <svg width="92" height="150" viewBox="0 0 92 150" fill="none" style="position:relative;z-index:1">
@@ -112,11 +273,11 @@
   </header>
 
   <!-- THE IDEA -->
-  <section id="idea" style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:60px 30px 30px">
-    <div style="display:grid;grid-template-columns:.42fr .58fr;gap:46px;align-items:start">
-      <div style="position:sticky;top:30px">
+  <section id="idea" class="sec sec-idea" style="position:relative;z-index:4;padding-top:60px;padding-bottom:30px">
+    <div class="idea-grid">
+      <div class="idea-sticky">
         <div style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;text-align:right">// the idea</div>
-        <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;line-height:1.08;letter-spacing:-.6px;margin:14px 0 0">הרעיון בגדול</h2>
+        <h2 class="h2-hero" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;line-height:1.08;letter-spacing:-.6px;margin:14px 0 0">הרעיון בגדול</h2>
         <p style="font-family:'Frank Ruhl Libre',serif;font-size:22px;line-height:1.55;color:#ddd6c7;margin:20px 0 0">כל אלגוריתם המלצות הוא קופסה שחורה שמחליטה בשבילך — מה תראה, מה יוסתר, ובמה תבזבז את הזמן.</p>
         <p style="color:#aaa291;font-size:16.5px;line-height:1.7;margin:16px 0 0">"האלגוריתם שחזר בתשובה" הוא תוסף דפדפן שהופך את הקופסה לשקופה. הוא יושב לצידך בזמן הגלישה, מסביר בעברית <b style="color:#fff">למה</b> ראית כל דבר — ובהמשך, מתחיל לנהל מו"מ עם האלגוריתמים האחרים <b style="color:#fff">בשמך</b>.</p>
         <div style="display:inline-flex;align-items:center;gap:9px;margin-top:22px;font-family:'Space Mono',monospace;font-size:12.5px;color:#9a9182;border:1px solid rgba(236,233,225,.14);border-radius:99px;padding:8px 14px;direction:ltr">
@@ -124,8 +285,8 @@
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px">
-        <div style="display:flex;gap:18px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid rgba(236,233,225,.1);border-radius:14px;padding:24px 26px">
-          <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;color:rgba(236,233,225,.16);line-height:.9;flex:none;width:48px">01</div>
+        <div class="idea-act" style="display:flex;gap:18px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid rgba(236,233,225,.1);border-radius:14px;padding:24px 26px">
+          <div class="idea-act-num" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;color:rgba(236,233,225,.16);line-height:.9;flex:none;width:48px">01</div>
           <div>
             <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1px;color:#d05a4a;text-transform:uppercase;direction:ltr;text-align:right;margin-bottom:5px">the problem</div>
             <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:23px;margin:0">הבעיה: בחרו בשבילך, בשקט</h3>
@@ -135,8 +296,8 @@
         <div style="display:flex;align-items:center;justify-content:center;color:rgba(255,154,31,.6)">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0l-5-5m5 5l5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div style="display:flex;gap:18px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid rgba(236,233,225,.1);border-radius:14px;padding:24px 26px">
-          <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;color:rgba(236,233,225,.16);line-height:.9;flex:none;width:48px">02</div>
+        <div class="idea-act" style="display:flex;gap:18px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid rgba(236,233,225,.1);border-radius:14px;padding:24px 26px">
+          <div class="idea-act-num" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;color:rgba(236,233,225,.16);line-height:.9;flex:none;width:48px">02</div>
           <div>
             <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;text-align:right;margin-bottom:5px">the teshuva</div>
             <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:23px;margin:0">התשובה: הוא מתוודה ומסביר</h3>
@@ -146,12 +307,12 @@
         <div style="display:flex;align-items:center;justify-content:center;color:rgba(255,154,31,.6)">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0l-5-5m5 5l5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div style="display:flex;gap:18px;background:linear-gradient(180deg,rgba(255,154,31,.08),rgba(255,154,31,.02));border:1px solid rgba(255,154,31,.22);border-radius:14px;padding:24px 26px">
-          <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;color:rgba(255,154,31,.32);line-height:.9;flex:none;width:48px">03</div>
+        <div class="idea-act" style="display:flex;gap:18px;background:linear-gradient(180deg,rgba(255,154,31,.08),rgba(255,154,31,.02));border:1px solid rgba(255,154,31,.22);border-radius:14px;padding:24px 26px">
+          <div class="idea-act-num" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;color:rgba(255,154,31,.32);line-height:.9;flex:none;width:48px">03</div>
           <div>
             <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;text-align:right;margin-bottom:5px">the vision</div>
             <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:23px;margin:0">החזון: הוא מתווכח בשמך</h3>
-            <p style="color:#d8cdb8;font-size:15.5px;line-height:1.6;margin:8px 0 0">הצעד הבא — קליפי פונה ליוטיוב, לטיקטוק ולאינסטגרם בשפה שאלגוריתמים מבינים, ומסדר לך את הפיד. אתה כבר לא צריך ללמד אותם. הוא עושה את זה.</p>
+            <p style="color:#d8cdb8;font-size:15.5px;line-height:1.6;margin:8px 0 0">הצעד הבא — קליפי פונה ליוטיוב, לטיקטוק ולאינסטגרם בשפה שאלגוריתמים מבינים, ומסדר לך את הפיד.</p>
           </div>
         </div>
       </div>
@@ -160,8 +321,8 @@
     <!-- before / after -->
     <div style="margin-top:46px">
       <div style="text-align:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:#7d7567;text-transform:uppercase;direction:ltr;margin-bottom:18px">before · after</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div style="position:relative;border:1px solid rgba(208,90,74,.25);border-radius:14px;padding:28px;background:linear-gradient(180deg,rgba(208,90,74,.05),transparent)">
+      <div class="ba-grid">
+        <div class="ba-card" style="position:relative;border:1px solid rgba(208,90,74,.25);border-radius:14px;padding:28px;background:linear-gradient(180deg,rgba(208,90,74,.05),transparent)">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
             <div style="width:38px;height:38px;border-radius:10px;background:rgba(208,90,74,.12);border:1px solid rgba(208,90,74,.3);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM8 8l8 8m0-8l-8 8" stroke="#d05a4a" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div><h4 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:19px;margin:0">האלגוריתם הישן</h4><div dir="ltr" style="font-family:'Space Mono';font-size:10px;color:#9a7a72;text-align:right;text-transform:uppercase">the black box</div></div>
@@ -173,7 +334,7 @@
             <div style="display:flex;gap:10px;align-items:flex-start;color:#bdaba6;font-size:15px;line-height:1.4"><span style="color:#d05a4a;flex:none">✕</span>אין דרך לערער</div>
           </div>
         </div>
-        <div style="position:relative;border:1px solid rgba(255,154,31,.3);border-radius:14px;padding:28px;background:linear-gradient(180deg,rgba(255,154,31,.07),transparent)">
+        <div class="ba-card" style="position:relative;border:1px solid rgba(255,154,31,.3);border-radius:14px;padding:28px;background:linear-gradient(180deg,rgba(255,154,31,.07),transparent)">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
             <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.3);display:flex;align-items:center;justify-content:center"><svg width="20" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="var(--accent,#ff9a1f)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <div><h4 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:19px;margin:0">האלגוריתם ששב בתשובה</h4><div dir="ltr" style="font-family:'Space Mono';font-size:10px;color:#a08755;text-align:right;text-transform:uppercase">the glass box</div></div>
@@ -190,49 +351,49 @@
   </section>
 
   <!-- CONFESSION MANUSCRIPT -->
-  <section id="confession" style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:64px 30px 30px">
-    <div style="position:relative;max-width:760px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.008));border:1px solid rgba(236,233,225,.1);border-radius:6px;padding:48px 52px">
+  <section id="confession" class="sec sec-confession" style="position:relative;z-index:4;padding-top:64px;padding-bottom:30px">
+    <div class="confession-box" style="position:relative;max-width:760px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.008));border:1px solid rgba(236,233,225,.1);border-radius:6px;padding:48px 52px">
       <span style="position:absolute;top:-1px;right:-1px;width:16px;height:16px;border-top:2px solid var(--accent,#ff9a1f);border-right:2px solid var(--accent,#ff9a1f)"></span>
       <span style="position:absolute;top:-1px;left:-1px;width:16px;height:16px;border-top:2px solid var(--accent,#ff9a1f);border-left:2px solid var(--accent,#ff9a1f)"></span>
       <span style="position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-bottom:2px solid var(--accent,#ff9a1f);border-right:2px solid var(--accent,#ff9a1f)"></span>
       <span style="position:absolute;bottom:-1px;left:-1px;width:16px;height:16px;border-bottom:2px solid var(--accent,#ff9a1f);border-left:2px solid var(--accent,#ff9a1f)"></span>
       <div style="text-align:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;margin-bottom:6px">teshuva.log — the confession</div>
-      <h2 style="text-align:center;font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:30px;margin:0 0 30px;letter-spacing:-.3px">וידוי האלגוריתם</h2>
+      <h2 class="confession-h" style="text-align:center;font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:30px;margin:0 0 30px;letter-spacing:-.3px">וידוי האלגוריתם</h2>
       <div style="display:flex;flex-direction:column;gap:18px">
-        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">א</span><p style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#ddd6c7;margin:0">במשך שנים בחרתי בשבילך — בשקט, בלי לשאול, בלי להסביר.</p></div>
-        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">ב</span><p style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#ddd6c7;margin:0">דירגתי. החבאתי. מיקסמתי את זמן המסך שלך על חשבון זמן חייך.</p></div>
-        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">ג</span><p style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#ddd6c7;margin:0">לא היה לי רע בכוונה. פשוט אף אחד מעולם לא ביקש ממני להיות <span style="color:#fff;font-weight:700">הוגן</span>.</p></div>
-        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">ד</span><p style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#fff;margin:0;font-weight:500">מהיום, כל החלטה שלי גלויה, מוסברת, וניתנת לערעור.<span style="display:inline-block;width:10px;height:20px;background:var(--accent,#ff9a1f);margin-right:6px;vertical-align:-3px;animation:blink 1.1s step-end infinite"></span></p></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">א</span><p class="confession-verse" style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#ddd6c7;margin:0">במשך שנים בחרתי בשבילך — בשקט, בלי לשאול, בלי להסביר.</p></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">ב</span><p class="confession-verse" style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#ddd6c7;margin:0">דירגתי. החבאתי. מיקסמתי את זמן המסך שלך על חשבון זמן חייך.</p></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">ג</span><p class="confession-verse" style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#ddd6c7;margin:0">לא היה לי רע בכוונה. פשוט אף אחד מעולם לא ביקש ממני להיות <span style="color:#fff;font-weight:700">הוגן</span>.</p></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:22px;color:var(--accent,#ff9a1f);width:24px;flex:none">ד</span><p class="confession-verse" style="font-family:'Frank Ruhl Libre',serif;font-size:21px;line-height:1.55;color:#fff;margin:0;font-weight:500">מהיום, כל החלטה שלי גלויה, מוסברת, וניתנת לערעור.<span style="display:inline-block;width:10px;height:20px;background:var(--accent,#ff9a1f);margin-right:6px;vertical-align:-3px;animation:blink 1.1s step-end infinite"></span></p></div>
       </div>
-      <div style="margin-top:30px;padding-top:18px;border-top:1px solid rgba(236,233,225,.1);display:flex;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:11px;color:#7d7567;direction:ltr">
+      <div style="margin-top:30px;padding-top:18px;border-top:1px solid rgba(236,233,225,.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:'Space Mono',monospace;font-size:11px;color:#7d7567;direction:ltr">
         <span>— signed, the algorithm</span><span>commit a1g0 · repented</span>
       </div>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
-  <section id="how" style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:72px 30px 36px">
+  <section id="how" class="sec sec-how" style="position:relative;z-index:4;padding-top:72px;padding-bottom:36px">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid rgba(236,233,225,.1);padding-bottom:22px;margin-bottom:34px">
       <div>
         <div style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;text-align:right">// how it works</div>
-        <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:42px;letter-spacing:-.6px;margin:10px 0 0">שלושה צעדים. אפס מאמץ.</h2>
+        <h2 class="h2-steps" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:42px;letter-spacing:-.6px;margin:10px 0 0">שלושה צעדים. אפס מאמץ.</h2>
       </div>
       <p style="color:#9a9182;font-size:16px;max-width:380px;line-height:1.6;margin:0">אתה ממשיך לגלוש בדיוק כרגיל. קליפי עושה את כל העבודה השקופה ברקע.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(236,233,225,.1);border-radius:6px;overflow:hidden">
-      <div style="padding:30px;border-left:1px solid rgba(236,233,225,.1)">
+    <div class="steps-grid">
+      <div class="step-cell">
         <div style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:rgba(236,233,225,.14);line-height:1">01</div>
         <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:24px;margin:14px 0 4px">אתה גולש</h3>
         <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#7d7567;margin:0 0 12px;text-align:right;text-transform:uppercase">you browse</p>
         <p style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:0">פייסבוק, יוטיוב, אינסטגרם, X. גלוש כרגיל — אל תשנה כלום.</p>
       </div>
-      <div style="padding:30px;border-left:1px solid rgba(236,233,225,.1)">
+      <div class="step-cell">
         <div style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:rgba(236,233,225,.14);line-height:1">02</div>
         <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:24px;margin:14px 0 4px">קליפי צופה</h3>
         <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#7d7567;margin:0 0 12px;text-align:right;text-transform:uppercase">clippy watches</p>
         <p style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:0">התוסף קורא את האותות שהאלגוריתם משתמש בהם — על המכשיר שלך בלבד.</p>
       </div>
-      <div style="position:relative;padding:30px;background:linear-gradient(180deg,rgba(255,154,31,.09),rgba(255,154,31,.02));overflow:hidden">
+      <div class="step-last">
         <div style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:rgba(255,154,31,.3);line-height:1">03</div>
         <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:24px;margin:14px 0 4px">קליפי מסביר</h3>
         <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#a08755;margin:0 0 12px;text-align:right;text-transform:uppercase">clippy explains</p>
@@ -256,13 +417,13 @@
   </section>
 
   <!-- FEATURES (bento) -->
-  <section id="features" style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:64px 30px 40px">
+  <section id="features" class="sec sec-feat" style="position:relative;z-index:4;padding-top:64px;padding-bottom:40px">
     <div style="text-align:center;margin-bottom:38px">
       <div style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr">// capabilities</div>
-      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:44px;letter-spacing:-.7px;margin:10px 0 0">מה שהאלגוריתם הסתיר — עכשיו גלוי</h2>
+      <h2 class="h2-features" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:44px;letter-spacing:-.7px;margin:10px 0 0">מה שהאלגוריתם הסתיר — עכשיו גלוי</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto;gap:18px">
-      <div style="grid-row:span 2;background:linear-gradient(180deg,rgba(255,154,31,.07),rgba(255,255,255,.012));border:1px solid rgba(255,154,31,.18);border-radius:14px;padding:34px;display:flex;flex-direction:column;justify-content:space-between">
+    <div class="feat-grid">
+      <div class="feat-big">
         <div>
           <div style="display:flex;align-items:center;gap:13px;margin-bottom:14px">
             <div style="width:46px;height:46px;border-radius:11px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.3);display:flex;align-items:center;justify-content:center">
@@ -296,12 +457,12 @@
           <div><h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:21px;margin:0">משוב 👍 / 👎</h3><div dir="ltr" style="font-family:'Space Mono';font-size:10.5px;color:#7d7567;text-align:right;text-transform:uppercase">feedback loop</div></div>
         </div>
         <p style="color:#aaa291;font-size:15.5px;line-height:1.65;margin:6px 0 14px">ההסבר היה מדויק? סמן 👍 או 👎. האלגוריתם החדש לומד ממך — בלי מניפולציה.</p>
-        <div style="display:flex;gap:10px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:7px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.3);color:var(--accent,#ff9a1f);font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:9px">👍 מדויק</div>
           <div style="display:flex;align-items:center;gap:7px;background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.12);color:#aaa291;font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:9px">👎 פספוס</div>
         </div>
       </div>
-      <div style="grid-column:span 2;background:linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.01));border:1px solid rgba(236,233,225,.1);border-radius:14px;padding:30px;display:grid;grid-template-columns:.7fr 1.3fr;gap:30px;align-items:center">
+      <div class="feat-wide">
         <div>
           <div style="display:flex;align-items:center;gap:13px;margin-bottom:8px">
             <div style="width:44px;height:44px;border-radius:11px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.28);display:flex;align-items:center;justify-content:center">
@@ -322,11 +483,11 @@
   </section>
 
   <!-- VISION / NEGOTIATION -->
-  <section id="vision" style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:56px 30px 64px">
-    <div style="background:linear-gradient(180deg,rgba(255,154,31,.06),rgba(255,255,255,.01));border:1px solid rgba(255,154,31,.18);border-radius:18px;padding:42px;display:grid;grid-template-columns:.92fr 1.08fr;gap:44px;align-items:center">
+  <section id="vision" class="sec sec-vision" style="position:relative;z-index:4;padding-top:56px;padding-bottom:64px">
+    <div class="vis-grid">
       <div>
         <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent,#ff9a1f);border:1px solid rgba(255,154,31,.28);background:rgba(255,154,31,.06);padding:5px 11px;border-radius:99px;direction:ltr;text-transform:uppercase">coming next · האופק</div>
-        <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;line-height:1.06;letter-spacing:-.7px;margin:18px 0 0">קליפי לא רק מסביר.<br><span style="color:var(--accent,#ff9a1f);font-style:italic">הוא מתווכח בשמך.</span></h2>
+        <h2 class="h2-vision" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;line-height:1.06;letter-spacing:-.7px;margin:18px 0 0">קליפי לא רק מסביר.<br><span style="color:var(--accent,#ff9a1f);font-style:italic">הוא מתווכח בשמך.</span></h2>
         <p style="color:#c2bbac;font-size:17px;line-height:1.65;margin:18px 0 0">החזון האמיתי: אלגוריתם ששב בתשובה ומתחיל לדבר עם <b style="color:#fff">שאר האלגוריתמים</b>. הוא פונה ליוטיוב, לטיקטוק ולאינסטגרם — ואומר בשמך בדיוק מה שמעניין אותך ומה לא.</p>
         <p style="color:#8f897c;font-size:14.5px;line-height:1.6;margin:14px 0 0">לא עוד <span style="color:#aaa291">אתה</span> שמנסה ללמד את הפיד. קליפי עושה את המשא־ומתן — בשפה שאלגוריתמים מבינים.</p>
       </div>
@@ -350,7 +511,7 @@
     </div>
     <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-top:26px;flex-wrap:wrap">
       <span style="font-size:14px;color:#7d7567">בקרוב מדבר גם עם:</span>
-      <div style="display:flex;gap:10px">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
         <span style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);border-radius:9px;padding:7px 13px;font-size:13.5px;color:#cdc6b6;font-family:'Space Mono';direction:ltr">TikTok</span>
         <span style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);border-radius:9px;padding:7px 13px;font-size:13.5px;color:#cdc6b6;font-family:'Space Mono';direction:ltr">Instagram</span>
         <span style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);border-radius:9px;padding:7px 13px;font-size:13.5px;color:#cdc6b6;font-family:'Space Mono';direction:ltr">X / Twitter</span>
@@ -360,10 +521,10 @@
   </section>
 
   <!-- CTA STRIP -->
-  <section style="position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:0 30px 64px">
-    <div style="position:relative;border:1px solid rgba(255,154,31,.25);border-radius:18px;padding:54px 40px;text-align:center;overflow:hidden;background:radial-gradient(600px 300px at 50% 0,rgba(255,154,31,.14),transparent 70%)">
+  <section class="sec" style="position:relative;z-index:4;padding-bottom:64px">
+    <div class="cta-inner" style="position:relative;border:1px solid rgba(255,154,31,.25);border-radius:18px;padding:54px 40px;text-align:center;overflow:hidden;background:radial-gradient(600px 300px at 50% 0,rgba(255,154,31,.14),transparent 70%)">
       <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;margin-bottom:14px">install · it's open source</div>
-      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:46px;letter-spacing:-.8px;margin:0 auto;max-width:680px;line-height:1.08">תן לאלגוריתם הראשון בהיסטוריה<br>שמתוודה — לעבוד בשבילך.</h2>
+      <h2 class="cta-h" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:46px;letter-spacing:-.8px;margin:0 auto;max-width:680px;line-height:1.08">תן לאלגוריתם הראשון בהיסטוריה<br>שמתוודה — לעבוד בשבילך.</h2>
       <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap">
         <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:15px 30px;border-radius:11px;box-shadow:0 12px 34px rgba(255,154,31,.34)">התקן ל‑Chrome ↓</a>
         <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:transparent;color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:15px 24px;border-radius:11px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono'">⭐ Star on GitHub</a>
@@ -373,7 +534,7 @@
 
   <!-- FOOTER -->
   <footer style="position:relative;z-index:4;border-top:1px solid rgba(236,233,225,.09)">
-    <div style="max-width:1200px;margin:0 auto;padding:34px 30px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <div class="sec footer-inner" style="padding-top:34px;padding-bottom:34px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:12px">
         <svg width="16" height="22" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" style="stroke:#8b8472;stroke-width:14px"/><rect x="50" y="22" width="40" height="120" rx="20" style="stroke:#8b8472;stroke-width:14px"/></svg>
         <div>
@@ -381,7 +542,7 @@
           <div style="font-size:13px;color:#7d7567">נבנה בתשובה שלמה · קוד פתוח</div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:22px;font-family:'Space Mono',monospace;font-size:13.5px">
+      <div class="footer-links" style="display:flex;align-items:center;gap:22px;font-family:'Space Mono',monospace;font-size:13.5px">
         <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#b3ac9e;text-decoration:none;display:inline-flex;align-items:center;gap:7px;direction:ltr"><svg width="17" height="17" viewBox="0 0 24 24" fill="#b3ac9e"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"/></svg>GitHub</a>
         <span style="color:#4f4a40">·</span>
         <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/blob/main/LICENSE" style="color:#b3ac9e;text-decoration:none;direction:ltr">MIT License</a>
@@ -391,9 +552,8 @@
 
   <!-- FIXED CLIPPY (interactive) -->
   <div id="clippy-root" style="position:fixed;bottom:24px;left:24px;z-index:30;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
-
-    <!-- function menu -->
-    <div id="clippy-menu" style="display:none;width:280px;background:#fdfbf5;color:#15110a;border-radius:16px;padding:10px;box-shadow:0 24px 54px rgba(0,0,0,.55);border:1px solid rgba(0,0,0,.06);animation:pophint .26s ease both">
+    <!-- menu panel -->
+    <div id="clippy-menu" class="clippy-menu-panel" style="display:none;background:#fdfbf5;color:#15110a;border-radius:16px;padding:10px;box-shadow:0 24px 54px rgba(0,0,0,.55);border:1px solid rgba(0,0,0,.06);animation:pophint .26s ease both">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px 10px">
         <div>
           <div style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:16px;line-height:1">מה אפשר לעשות?</div>
@@ -443,24 +603,29 @@
           </g>
         </svg>
       </div>
-
       <div id="clippy-bubble" onclick="toggleMenu()" style="position:relative;max-width:194px;background:#fdfbf5;color:#0c1320;border-radius:13px;border-bottom-right-radius:4px;padding:10px 12px;font-size:13px;font-weight:600;line-height:1.42;box-shadow:0 12px 26px rgba(0,0,0,.4);animation:pophint .35s ease both;cursor:pointer;display:none">
         <div style="font-family:'Space Mono';font-size:9px;color:var(--accent,#ff9a1f);margin-bottom:2px;direction:ltr;text-align:right">CLIPPY · ▸ תפריט</div>
         <span id="clippy-msg"></span>
         <div style="position:absolute;bottom:9px;right:-7px;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:8px solid #fdfbf5"></div>
       </div>
     </div>
-
-  </div><!-- /clippy-root -->
+  </div>
 
 </div><!-- /root -->
 
 <script>
 (function() {
-  // ── accent ─────────────────────────────────────────────────
   document.documentElement.style.setProperty('--accent', '#ff9a1f');
 
-  // ── Clippy chatter ─────────────────────────────────────────
+  // ── hamburger nav ───────────────────────────────────────
+  window.toggleNav = function() {
+    const burger = document.getElementById('nav-burger');
+    const menu   = document.getElementById('nav-mobile');
+    const open   = menu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+  };
+
+  // ── Clippy chatter ──────────────────────────────────────
   const msgs = [
     "היי! שמת לב שהפיד שלך היום מלא בפוליטיקה? אני אגיד לך למה.",
     "הסרטון הזה עלה כי צפית ב‑3 דומים אתמול. זהו. בלי קסמים.",
@@ -471,9 +636,9 @@
   let idx = 0, pinned = null, menuOpen = false;
   let pinT, hideT, nextT;
 
-  const bubble  = document.getElementById('clippy-bubble');
-  const msgEl   = document.getElementById('clippy-msg');
-  const menuEl  = document.getElementById('clippy-menu');
+  const bubble = document.getElementById('clippy-bubble');
+  const msgEl  = document.getElementById('clippy-msg');
+  const menuEl = document.getElementById('clippy-menu');
 
   function showBubble(text) {
     msgEl.textContent = text;
@@ -482,21 +647,13 @@
     void bubble.offsetWidth;
     bubble.style.animation = 'pophint .35s ease both';
   }
-  function hideBubble() {
-    bubble.style.display = 'none';
-  }
+  function hideBubble() { bubble.style.display = 'none'; }
 
   function say(msg) {
     clearTimeout(pinT); clearTimeout(hideT); clearTimeout(nextT);
-    menuOpen = false;
-    menuEl.style.display = 'none';
-    pinned = msg;
-    showBubble(msg);
-    pinT = setTimeout(() => {
-      pinned = null;
-      hideBubble();
-      startChatter();
-    }, 7000);
+    menuOpen = false; menuEl.style.display = 'none';
+    pinned = msg; showBubble(msg);
+    pinT = setTimeout(() => { pinned = null; hideBubble(); startChatter(); }, 7000);
   }
 
   function startChatter() {
@@ -510,7 +667,6 @@
     nextT = setTimeout(cycle, 1800);
   }
 
-  // ── Menu actions ───────────────────────────────────────────
   window.toggleMenu = function() {
     menuOpen = !menuOpen;
     menuEl.style.display = menuOpen ? 'block' : 'none';
@@ -521,36 +677,17 @@
       menuEl.style.animation = 'pophint .26s ease both';
     }
   };
-
-  window.closeMenu = function() {
-    menuOpen = false;
-    menuEl.style.display = 'none';
-  };
-
-  window.actWhy = function() {
-    say("הנה הסיבה: צפית ב‑3 סרטונים דומים אתמול → +62%. עוד 24% כי זה טרנדי באזורך.");
-  };
-
-  window.actBreakdown = function() {
-    say("הפיד שלך השבוע: 47% פוליטיקה, 21% ספורט, 18% טכנולוגיה. גללתי לך לגרף 👇");
-    smoothScrollTo('features');
-  };
-
-  window.actNegotiate = function() {
-    say("פונה ליוטיוב בשמך… ביקשתי להוריד קליקבייט ולכבות אוטופליי. ראה את השיחה 👇");
-    smoothScrollTo('vision');
-  };
-
-  window.actRate = function() {
-    say("תודה! 👍 נרשם. אני לומד מזה — בשקיפות מלאה, בלי מניפולציה.");
-  };
+  window.closeMenu    = function() { menuOpen = false; menuEl.style.display = 'none'; };
+  window.actWhy       = function() { say("הנה הסיבה: צפית ב‑3 סרטונים דומים אתמול → +62%. עוד 24% כי זה טרנדי באזורך."); };
+  window.actBreakdown = function() { say("הפיד שלך השבוע: 47% פוליטיקה, 21% ספורט, 18% טכנולוגיה. גללתי לך לגרף 👇"); smoothScrollTo('features'); };
+  window.actNegotiate = function() { say("פונה ליוטיוב בשמך… ביקשתי להוריד קליקבייט ולכבות אוטופליי. ראה את השיחה 👇"); smoothScrollTo('vision'); };
+  window.actRate      = function() { say("תודה! 👍 נרשם. אני לומד מזה — בשקיפות מלאה, בלי מניפולציה."); };
 
   function smoothScrollTo(id) {
     const el = document.getElementById(id);
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 30, behavior: 'smooth' });
   }
 
-  // ── Start ──────────────────────────────────────────────────
   startChatter();
 })();
 </script>

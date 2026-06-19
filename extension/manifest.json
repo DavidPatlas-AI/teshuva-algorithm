@@ -1,12 +1,41 @@
 {
   "manifest_version": 3,
-  "name": "Teshuva Algorithm — האלגוריתם שחזר בתשובה",
+  "name": "האלגוריתם שחזר בתשובה",
   "version": "1.3.0",
-  "description": "קליפי מסביר למה אתה רואה מה שאתה רואה — מנתח היסטוריית גלישה ותוכן ברשתות",
+  "description": "קליפי מסביר למה אתה רואה מה שאתה רואה — מנתח תוכן ברשתות חברתיות ומאפשר שליטה מלאה על האלגוריתם",
   "icons": {
-    "48": "icons/icon48.png",
+    "16":  "icons/icon16.png",
+    "32":  "icons/icon32.png",
+    "48":  "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "האלגוריתם שחזר בתשובה",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "32":  "icons/icon32.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://twitter.com/*",
+        "https://x.com/*",
+        "https://www.facebook.com/*",
+        "https://www.instagram.com/*",
+        "https://www.youtube.com/*",
+        "https://www.tiktok.com/*"
+      ],
+      "js": ["content/bundle.js"],
+      "run_at": "document_idle"
+    }
+  ],
   "permissions": [
     "storage",
     "history",
@@ -18,29 +47,6 @@
     "https://www.facebook.com/*",
     "https://www.instagram.com/*",
     "https://www.youtube.com/*",
-    "https://www.tiktok.com/*",
-    "http://localhost/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "https://twitter.com/*",
-        "https://x.com/*",
-        "https://www.facebook.com/*",
-        "https://www.instagram.com/*",
-        "https://www.youtube.com/*",
-        "https://www.tiktok.com/*",
-        "http://localhost/*"
-      ],
-      "js": ["content/bundle.js"],
-      "run_at": "document_idle"
-    }
-  ],
-  "action": {
-    "default_popup": "popup/popup.html",
-    "default_title": "Teshuva Algorithm"
-  },
-  "background": {
-    "service_worker": "background.js"
-  }
+    "https://www.tiktok.com/*"
+  ]
 }

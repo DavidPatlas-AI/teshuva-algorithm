@@ -1,0 +1,7 @@
+{
+  "brain_api": "http://localhost:3000/api",
+  "clippy_messages_interval_ms": 5000,
+  "auto_dismiss_threshold": 0.4,
+  "bubble_initial_x": 20,
+  "bubble_initial_y": 100
+}

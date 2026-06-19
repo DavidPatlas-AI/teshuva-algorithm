@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<title>Store Screenshot — 1280×800</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  width: 1280px;
+  height: 800px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f0a1e 0%, #1a0a3d 50%, #06080d 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  direction: rtl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
+/* Left panel: hero text */
+.hero {
+  flex: 1;
+  padding: 40px;
+  color: white;
+  max-width: 580px;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(124,58,237,0.3);
+  border: 1px solid #7C3AED;
+  color: #c4b5fd;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: white;
+  margin-bottom: 16px;
+}
+.hero h1 span { color: #a78bfa; }
+.hero p {
+  font-size: 18px;
+  color: #c4b5fd;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+.features { list-style: none; }
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #e9d5ff;
+  margin-bottom: 14px;
+}
+.features li span.icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.hero-cta {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.btn-store {
+  background: #7C3AED;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+.btn-ghost-sm {
+  color: #c4b5fd;
+  font-size: 14px;
+}
+
+/* Right panel: popup mockup */
+.popup-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.browser-chrome {
+  background: #1f1a2e;
+  border-radius: 12px 12px 0 0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #3b2d6e;
+  border-bottom: none;
+}
+.browser-dots { display: flex; gap: 6px; }
+.browser-dots span {
+  width: 12px; height: 12px; border-radius: 50%;
+}
+.dot-r { background: #ef4444; }
+.dot-y { background: #f59e0b; }
+.dot-g { background: #22c55e; }
+.browser-url {
+  flex: 1;
+  background: #2d1b69;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #c4b5fd;
+  text-align: left;
+  direction: ltr;
+}
+.popup {
+  width: 380px;
+  background: #FAF5FF;
+  border: 1px solid #3b2d6e;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  direction: rtl;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #1F2937;
+  font-size: 13px;
+}
+.popup-header {
+  background: linear-gradient(135deg,#7C3AED,#A78BFA);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.popup-clippy { font-size: 38px; }
+.popup-header h1 { font-size: 15px; font-weight: 700; color: white; }
+.popup-header p  { font-size: 11px; color: #E9D5FF; margin-top: 2px; }
+
+.popup-tabs {
+  display: flex;
+  border-bottom: 2px solid #EDE9FE;
+  background: white;
+}
+.ptab {
+  flex: 1; padding: 9px 0; text-align: center;
+  font-size: 12px; font-weight: 600; color: #6B7280;
+}
+.ptab.active { color: #7C3AED; border-bottom: 2px solid #7C3AED; margin-bottom: -2px; }
+
+.popup-body { padding: 14px 16px; }
+
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;
+}
+.stat-card {
+  background: white; border: 1.5px solid #EDE9FE;
+  border-radius: 10px; padding: 10px 12px; text-align: center;
+}
+.stat-num { font-size: 22px; font-weight: 700; color: #7C3AED; }
+.stat-label { font-size: 10px; color: #9CA3AF; margin-top: 2px; }
+
+.section-title {
+  font-size: 11px; font-weight: 700; color: #7C3AED;
+  text-transform: uppercase; letter-spacing:.05em;
+  margin-bottom: 10px;
+}
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.bar-label { width: 88px; color: #374151; flex-shrink: 0; font-size: 12px; }
+.bar-track { flex: 1; background: #EDE9FE; border-radius: 99px; height: 9px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 99px; }
+.bar-count { font-size: 11px; color: #6B7280; min-width: 28px; text-align: left; }
+
+.dismiss-banner {
+  background: linear-gradient(135deg,#064e3b,#065f46);
+  border: 1.5px solid #059669; border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+  color: #d1fae5; font-size: 12px;
+}
+
+/* Floating annotation arrows */
+.annotation {
+  position: absolute;
+  background: #FCD34D;
+  color: #1a0a3d;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.annotation::after {
+  content: '';
+  position: absolute;
+  border: 8px solid transparent;
+  border-top-color: #FCD34D;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Glow around popup */
+.popup-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse, rgba(124,58,237,0.3) 0%, transparent 70%);
+  z-index: -1;
+  border-radius: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left: hero text -->
+<div class="hero">
+  <div class="hero-badge">📎 Clippy is back</div>
+  <h1>האלגוריתם<br><span>שחזר בתשובה</span></h1>
+  <p>
+    קליפי מסביר למה אתה רואה מה שאתה רואה —<br>
+    ונותן לך שליטה מלאה על הפיד שלך.
+  </p>
+  <ul class="features">
+    <li><span class="icon">📊</span> מנתח קטגוריות תוכן בזמן אמת</li>
+    <li><span class="icon">🔍</span> מסביר את ההחלטות של האלגוריתם</li>
+    <li><span class="icon">🗑️</span> מסיר פוסטים שלא מעניינים אותך</li>
+    <li><span class="icon">🔒</span> כל הנתונים — רק אצלך, אף פעם לא בשרת</li>
+  </ul>
+  <div class="hero-cta">
+    <button class="btn-store">הוסף לכרום — חינם</button>
+    <span class="btn-ghost-sm">ללא הרשמה • ללא תשלום</span>
+  </div>
+</div>
+
+<!-- Right: popup mockup -->
+<div class="popup-wrap">
+  <div class="browser-chrome">
+    <div class="browser-dots">
+      <span class="dot-r"></span>
+      <span class="dot-y"></span>
+      <span class="dot-g"></span>
+    </div>
+    <div class="browser-url">twitter.com/home</div>
+  </div>
+  <div class="popup">
+    <div class="popup-header">
+      <div class="popup-clippy">📎</div>
+      <div>
+        <h1>האלגוריתם שחזר בתשובה</h1>
+        <p>3 קטגוריות זוהו השבוע</p>
+      </div>
+    </div>
+    <div class="popup-tabs">
+      <div class="ptab active">סקירה</div>
+      <div class="ptab">קטגוריות</div>
+      <div class="ptab">היסטוריה</div>
+      <div class="ptab">תובנות</div>
+      <div class="ptab">⚙️</div>
+    </div>
+    <div class="popup-body">
+      <div class="dismiss-banner">
+        <span>📎</span>
+        <span>קליפי הסיר <b>12</b> פוסטים לא רלוונטיים</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num">142</div><div class="stat-label">ביקורים 7 ימים</div></div>
+        <div class="stat-card"><div class="stat-num">89</div><div class="stat-label">ברשתות חברתיות</div></div>
+        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">קטגוריות זוהו</div></div>
+        <div class="stat-card"><div class="stat-num">ספורט</div><div class="stat-label">קטגוריה מובילה</div></div>
+      </div>
+      <div class="section-title">קטגוריות מובילות</div>
+      <div class="bar-row">
+        <div class="bar-label">ספורט</div>
+        <div class="bar-track"><div class="bar-fill" style="width:72%;background:#7C3AED"></div></div>
+        <div class="bar-count">72%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">טכנולוגיה</div>
+        <div class="bar-track"><div class="bar-fill" style="width:48%;background:#A78BFA"></div></div>
+        <div class="bar-count">48%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">בידור</div>
+        <div class="bar-track"><div class="bar-fill" style="width:31%;background:#C4B5FD"></div></div>
+        <div class="bar-count">31%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

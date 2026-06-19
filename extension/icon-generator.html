@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Icon Generator — Teshuva Algorithm</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 24px; background: #0f0a1e; color: #e9d5ff; }
+  h2 { color: #a78bfa; margin-bottom: 16px; }
+  .row { display: flex; gap: 24px; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; }
+  canvas { border: 1px solid #5b21b6; border-radius: 4px; }
+  button { margin-top: 8px; display: block; background: #7C3AED; color: white; border: none;
+           padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  button:hover { background: #6d28d9; }
+  .size-group { text-align: center; }
+  .size-label { font-size: 12px; color: #c4b5fd; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<h2>🔧 Generate Extension Icons</h2>
+<p style="font-size:13px;color:#c4b5fd;margin-bottom:20px">
+  לחץ על כל כפתור להורדת האייקון. שמור את כל הקבצים בתיקייה <code>extension/icons/</code>.
+</p>
+
+<div class="row" id="canvases"></div>
+
+<button onclick="downloadAll()" style="font-size:15px;padding:12px 24px;margin-top:8px">
+  ⬇️ הורד את כל האייקונים (16, 32, 48, 128)
+</button>
+
+<script>
+const SIZES = [16, 32, 48, 128];
+
+function drawIcon(ctx, size) {
+  const s = size / 128; // scale factor relative to 128px master
+
+  ctx.clearRect(0, 0, size, size);
+
+  // Background circle
+  const grad = ctx.createRadialGradient(size*0.5, size*0.42, 0, size*0.5, size*0.5, size*0.6);
+  grad.addColorStop(0, '#a78bfa');
+  grad.addColorStop(1, '#5b21b6');
+
+  ctx.beginPath();
+  ctx.roundRect(size*0.06, size*0.06, size*0.88, size*0.88, size*0.22);
+  ctx.fillStyle = '#0f0a1e';
+  ctx.fill();
+
+  // Body (rounded rect)
+  ctx.beginPath();
+  ctx.roundRect(size*0.13, size*0.24, size*0.74, size*0.62, size*0.16);
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Halo
+  ctx.beginPath();
+  ctx.ellipse(size*0.5, size*0.14, size*0.26, size*0.08, 0, 0, Math.PI*2);
+  ctx.strokeStyle = '#FCD34D';
+  ctx.lineWidth = size * 0.04;
+  ctx.setLineDash([size*0.07, size*0.04]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Antenna ball
+  ctx.beginPath();
+  ctx.arc(size*0.5, size*0.14, size*0.05, 0, Math.PI*2);
+  ctx.fillStyle = '#FCD34D';
+  ctx.fill();
+
+  // Antenna line
+  ctx.beginPath();
+  ctx.moveTo(size*0.5, size*0.19);
+  ctx.lineTo(size*0.5, size*0.28);
+  ctx.strokeStyle = '#7C3AED';
+  ctx.lineWidth = size * 0.035;
+  ctx.stroke();
+
+  if (size >= 32) {
+    // Eyes (white)
+    ctx.beginPath();
+    ctx.ellipse(size*0.36, size*0.45, size*0.12, size*0.12, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.ellipse(size*0.64, size*0.45, size*0.12, size*0.12, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    // Pupils
+    ctx.beginPath();
+    ctx.arc(size*0.36, size*0.45, size*0.055, 0, Math.PI*2);
+    ctx.fillStyle = '#1e1b4b';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(size*0.64, size*0.45, size*0.055, 0, Math.PI*2);
+    ctx.fillStyle = '#1e1b4b';
+    ctx.fill();
+
+    // Shine dots
+    ctx.beginPath();
+    ctx.arc(size*0.345, size*0.43, size*0.02, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(size*0.625, size*0.43, size*0.02, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    // Smile
+    ctx.beginPath();
+    ctx.moveTo(size*0.35, size*0.64);
+    ctx.quadraticCurveTo(size*0.5, size*0.74, size*0.65, size*0.64);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = size * 0.035;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    // Blush
+    ctx.beginPath();
+    ctx.ellipse(size*0.22, size*0.54, size*0.07, size*0.04, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(249,168,212,0.55)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(size*0.78, size*0.54, size*0.07, size*0.04, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(249,168,212,0.55)';
+    ctx.fill();
+  } else {
+    // 16px: just dots for eyes
+    ctx.beginPath();
+    ctx.arc(size*0.37, size*0.47, size*0.09, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(size*0.63, size*0.47, size*0.09, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+  }
+}
+
+function downloadCanvas(canvas, filename) {
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// Build canvas elements
+const row = document.getElementById('canvases');
+const canvasMap = {};
+
+SIZES.forEach(size => {
+  const div = document.createElement('div');
+  div.className = 'size-group';
+  div.innerHTML = `<div class="size-label">${size}×${size}</div>`;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  canvas.style.width = Math.max(size, 64) + 'px';
+  canvas.style.height = Math.max(size, 64) + 'px';
+  canvas.style.imageRendering = 'pixelated';
+
+  const ctx = canvas.getContext('2d');
+  drawIcon(ctx, size);
+
+  const btn = document.createElement('button');
+  btn.textContent = `⬇️ icon${size}.png`;
+  btn.onclick = () => downloadCanvas(canvas, `icon${size}.png`);
+
+  div.appendChild(canvas);
+  div.appendChild(btn);
+  row.appendChild(div);
+  canvasMap[size] = canvas;
+});
+
+function downloadAll() {
+  SIZES.forEach((size, i) => {
+    setTimeout(() => downloadCanvas(canvasMap[size], `icon${size}.png`), i * 300);
+  });
+}
+</script>
+</body>
+</html>
