@@ -1,5 +1,5 @@
 // מנוע הפעולות — לוחץ "Not interested" / "Hide" בשם המשתמש
-// תומך: YouTube, X/Twitter, Facebook, Instagram
+// תומך: YouTube, X/Twitter, Facebook, Instagram, TikTok
 
 const DELAY = { reveal: 250, menu: 450, option: 350 }
 
@@ -68,9 +68,39 @@ const PLATFORMS = {
         [/not interested/i, /לא מעוניין/i, /don.t suggest/i]),
   },
 
+  'tiktok.com': {
+    container: el =>
+      el.closest('[data-e2e="recommend-list-item-container"]') ||
+      el.closest('div[class*="DivItemContainer"]') ||
+      el.closest('article'),
+
+    reveal: c => {
+      c.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      c.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
+    },
+
+    menuBtn: c => {
+      // Direct "Not interested" button (newer TikTok layouts)
+      const direct = c.querySelector('[data-e2e="not-interested"]') ||
+                     c.querySelector('[data-e2e="video-more"]')
+      if (direct) return direct
+      // Fallback: overflow / more-options button
+      return [...c.querySelectorAll('button')].find(b =>
+        /more|options/i.test(b.getAttribute('data-e2e') ?? '') ||
+        /more|options/i.test(b.getAttribute('aria-label') ?? '')
+      )
+    },
+
+    option: () =>
+      findText(
+        '[role="menuitem"], [data-e2e="not-interested-text"], [class*="DivMenuItem"] span',
+        [/not interested/i, /לא מעוניין/i, /don.t recommend/i, /uninterested/i]
+      ),
+  },
+
 }
 
-// twitter.com = x.com
+// aliases
 PLATFORMS['twitter.com'] = PLATFORMS['x.com']
 
 // ── Public API ────────────────────────────────────────────────────────────────

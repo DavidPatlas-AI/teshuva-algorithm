@@ -1,5 +1,5 @@
 # 📎 האלגוריתם שחזר בתשובה
-### *The Algorithm That Repented — v0.3.0*
+### *The Algorithm That Repented — v0.4.0*
 
 > **What if the algorithm stopped hiding and started explaining itself?**
 
@@ -37,9 +37,9 @@ This project is a small act of rebellion: a browser extension + desktop agent (C
 | Weight badges per category (❤️/😐/😒/🚫) | ✅ Working |
 | Chrome extension icons | ✅ Present |
 | Landing page | ✅ Working |
-| AI-powered dialogue layer | 🚧 Stub |
-| TikTok action adapter | 🚧 Planned |
-| YouTube InnerTube API integration | 🚧 Planned |
+| AI-powered dialogue layer (click Clippy to chat) | ✅ Working |
+| TikTok action adapter | ✅ Working |
+| YouTube InnerTube API integration | ✅ Working |
 
 ---
 

@@ -8092,6 +8092,24 @@
             '[role="dialog"] button, [role="menu"] button',
             [/not interested/i, /לא מעוניין/i, /don.t suggest/i]
           )
+        },
+        "tiktok.com": {
+          container: (el) => el.closest('[data-e2e="recommend-list-item-container"]') || el.closest('div[class*="DivItemContainer"]') || el.closest("article"),
+          reveal: (c) => {
+            c.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+            c.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+          },
+          menuBtn: (c) => {
+            const direct = c.querySelector('[data-e2e="not-interested"]') || c.querySelector('[data-e2e="video-more"]');
+            if (direct) return direct;
+            return [...c.querySelectorAll("button")].find(
+              (b) => /more|options/i.test(b.getAttribute("data-e2e") ?? "") || /more|options/i.test(b.getAttribute("aria-label") ?? "")
+            );
+          },
+          option: () => findText(
+            '[role="menuitem"], [data-e2e="not-interested-text"], [class*="DivMenuItem"] span',
+            [/not interested/i, /לא מעוניין/i, /don.t recommend/i, /uninterested/i]
+          )
         }
       };
       PLATFORMS["twitter.com"] = PLATFORMS["x.com"];
@@ -8191,6 +8209,182 @@
     }
   });
 
+  // extension/content/dialogue-ui.js
+  function createDialogueUI(onSend) {
+    let container = null;
+    let styleEl2 = null;
+    let autoHide2 = null;
+    function injectStyles2() {
+      if (document.getElementById("tshuva-chat-style")) return;
+      styleEl2 = document.createElement("style");
+      styleEl2.id = "tshuva-chat-style";
+      styleEl2.textContent = STYLES2;
+      document.head.appendChild(styleEl2);
+    }
+    function show() {
+      hide();
+      injectStyles2();
+      container = document.createElement("div");
+      container.id = "tshuva-chat";
+      container.innerHTML = `
+      <button class="tshuva-chat-btn" id="tshuva-chat-close" title="\u05E1\u05D2\u05D5\u05E8">\u2715</button>
+      <input id="tshuva-chat-input" type="text" placeholder="\u05E9\u05D0\u05DC \u05D0\u05EA \u05E7\u05DC\u05D9\u05E4\u05D9..." maxlength="200" autocomplete="off" />
+      <button class="tshuva-chat-btn" id="tshuva-chat-send" title="\u05E9\u05DC\u05D7">\u27A4</button>
+    `;
+      document.body.appendChild(container);
+      const input = container.querySelector("#tshuva-chat-input");
+      const sendBtn = container.querySelector("#tshuva-chat-send");
+      const closeBtn = container.querySelector("#tshuva-chat-close");
+      setTimeout(() => input.focus(), 50);
+      function submit() {
+        const text = input.value.trim();
+        if (!text) return;
+        onSend(text);
+        input.value = "";
+        resetAutoHide();
+      }
+      sendBtn.onclick = submit;
+      closeBtn.onclick = hide;
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submit();
+        }
+        if (e.key === "Escape") hide();
+      });
+      input.addEventListener("input", resetAutoHide);
+      resetAutoHide();
+    }
+    function resetAutoHide() {
+      clearTimeout(autoHide2);
+      autoHide2 = setTimeout(hide, 3e4);
+    }
+    function hide() {
+      clearTimeout(autoHide2);
+      container?.remove();
+      container = null;
+    }
+    function toggle() {
+      if (container) hide();
+      else show();
+    }
+    return { show, hide, toggle };
+  }
+  var STYLES2;
+  var init_dialogue_ui = __esm({
+    "extension/content/dialogue-ui.js"() {
+      STYLES2 = `
+  #tshuva-chat {
+    position: fixed;
+    bottom: 165px;
+    right: 20px;
+    z-index: 2147483646;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 6px;
+    direction: rtl;
+    animation: tshuva-chat-in 0.2s ease;
+  }
+  @keyframes tshuva-chat-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  #tshuva-chat-input {
+    background: #1a1a2e;
+    border: 1.5px solid #4c4c8f;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    color: #e8e8ff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    outline: none;
+    padding: 8px 14px;
+    transition: border-color 0.2s;
+    width: 190px;
+  }
+  #tshuva-chat-input:focus { border-color: #7c7cff; }
+  #tshuva-chat-input::placeholder { color: #5a5a8a; }
+  .tshuva-chat-btn {
+    background: #3d3d7a;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    transition: background 0.15s;
+    width: 34px;
+  }
+  .tshuva-chat-btn:hover { background: #5c5caa; }
+`;
+    }
+  });
+
+  // extension/content/youtube-innertube.js
+  function extractFromRenderer(r) {
+    const texts = [];
+    const content = r.content ?? r;
+    const title = content.title?.runs?.map((x) => x.text).join("") ?? content.headline?.runs?.map((x) => x.text).join("") ?? "";
+    const desc = content.descriptionSnippet?.runs?.map((x) => x.text).join("") ?? "";
+    if (title.length > 4) texts.push(title);
+    if (desc.length > 4) texts.push(desc);
+    return texts;
+  }
+  function extractTexts(root) {
+    const results = [];
+    const queue = [{ obj: root, depth: 0 }];
+    while (queue.length > 0 && results.length < 200) {
+      const { obj, depth } = queue.shift();
+      if (!obj || typeof obj !== "object" || depth > 12) continue;
+      if (Array.isArray(obj)) {
+        for (const item of obj) queue.push({ obj: item, depth: depth + 1 });
+        continue;
+      }
+      for (const [key, val] of Object.entries(obj)) {
+        if (VIDEO_RENDERER_KEYS.has(key)) {
+          results.push(...extractFromRenderer(val));
+        } else if (val && typeof val === "object") {
+          queue.push({ obj: val, depth: depth + 1 });
+        }
+      }
+    }
+    return results;
+  }
+  function startInnerTubeIntercept(onText) {
+    if (location.hostname.replace("www.", "") !== "youtube.com") return;
+    const originalFetch = window.fetch;
+    window.fetch = async function(...args) {
+      const response = await originalFetch.apply(this, args);
+      const url = typeof args[0] === "string" ? args[0] : args[0] instanceof Request ? args[0].url : "";
+      if (url.includes("/youtubei/v1/")) {
+        response.clone().json().then((data) => {
+          const texts = extractTexts(data);
+          texts.forEach((t) => onText(t));
+        }).catch(() => {
+        });
+      }
+      return response;
+    };
+  }
+  var VIDEO_RENDERER_KEYS;
+  var init_youtube_innertube = __esm({
+    "extension/content/youtube-innertube.js"() {
+      VIDEO_RENDERER_KEYS = /* @__PURE__ */ new Set([
+        "videoRenderer",
+        "compactVideoRenderer",
+        "gridVideoRenderer",
+        "richItemRenderer",
+        "reelItemRenderer",
+        "playlistVideoRenderer",
+        "movieRenderer",
+        "radioRenderer"
+      ]);
+    }
+  });
+
   // extension/content/bundle-entry.js
   var require_bundle_entry = __commonJS({
     "extension/content/bundle-entry.js"() {
@@ -8203,6 +8397,8 @@
       init_feed_observer();
       init_action_engine();
       init_feedback_ui();
+      init_dialogue_ui();
+      init_youtube_innertube();
       init_categories();
       init_constants();
       (async () => {
@@ -8210,7 +8406,7 @@
         agent.show();
         const clippyEl = agent._el;
         if (clippyEl) {
-          clippyEl.style.cssText += ";position:fixed!important;bottom:30px!important;right:30px!important;top:auto!important;left:auto!important;z-index:2147483647!important;";
+          clippyEl.style.cssText += ";position:fixed!important;bottom:30px!important;right:30px!important;top:auto!important;left:auto!important;z-index:2147483647!important;cursor:pointer!important;";
         }
         const mascot = {
           say: (text) => agent.speak(text),
@@ -8237,9 +8433,15 @@
           onAnswered: () => feedbackUI.hide()
         });
         await controller.start();
+        const dialogueUI = createDialogueUI((text) => {
+          controller.onUserText(text);
+        });
+        clippyEl?.addEventListener("click", () => dialogueUI.toggle());
         const selector = getSelectorForCurrentSite();
-        if (!selector) return;
-        startFeedObserver(selector, (el, text) => controller.onPostSeen(text, el));
+        if (selector) {
+          startFeedObserver(selector, (el, text) => controller.onPostSeen(text, el));
+        }
+        startInnerTubeIntercept((text) => controller.onPostSeen(text, null));
         document.addEventListener("keydown", (e) => {
           if (e.key === "+" || e.key === "=") controller.onPositive();
           else if (e.key === "-") controller.onNegative();
