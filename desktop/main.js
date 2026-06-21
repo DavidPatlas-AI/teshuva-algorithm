@@ -1,5 +1,6 @@
 const { app, BrowserWindow, screen, ipcMain, Menu, Tray, nativeImage } = require('electron')
 const path = require('path')
+const fs   = require('fs')
 
 let win
 let tray
@@ -52,6 +53,16 @@ app.whenReady().then(() => {
     { label: 'יציאה', click: () => app.quit() }
   ]))
   tray.on('double-click', () => win.isVisible() ? win.hide() : win.show())
+})
+
+// ── IPC: מאפשר ל-renderer לקרוא את מצב המוח השמור ────────────
+ipcMain.handle('get-brain-state', () => {
+  const filePath = path.join(app.getPath('userData'), 'teshuva-state.json')
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+  } catch {
+    return null
+  }
 })
 
 app.on('window-all-closed', () => {

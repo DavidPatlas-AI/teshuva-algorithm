@@ -6812,31 +6812,158 @@
     "desktop/renderer-entry.js"() {
       init_dist();
       init_clippy();
-      var MESSAGES = [
-        "\u05E9\u05DC\u05D5\u05DD! \u05D0\u05E0\u05D9 \u05E7\u05DC\u05D9\u05E4\u05D9, \u05D4\u05E1\u05D5\u05DB\u05DF \u05E9\u05D7\u05D6\u05E8 \u05D1\u05EA\u05E9\u05D5\u05D1\u05D4 \u{1F4CE}",
-        "\u05E0\u05E8\u05D0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E2\u05D5\u05D1\u05D3 \u05E7\u05E9\u05D4. \u05D4\u05E4\u05E1\u05E7\u05D4?",
-        "\u05D4\u05D0\u05DD \u05D9\u05D3\u05E2\u05EA \u05E9\u05D0\u05E0\u05D9 \u05D9\u05DB\u05D5\u05DC \u05DC\u05E2\u05D6\u05D5\u05E8 \u05DC\u05DA?",
-        "\u05DE\u05D4 \u05D0\u05EA\u05D4 \u05E2\u05D5\u05E9\u05D4 \u05D4\u05D9\u05D5\u05DD?",
-        "\u05D0\u05E0\u05D9 \u05DB\u05D0\u05DF \u05D0\u05DD \u05EA\u05E6\u05D8\u05E8\u05DA!",
-        "\u05D6\u05D5\u05DB\u05E8 \u05D0\u05D5\u05EA\u05D9? \u{1F604}",
-        '\u05D9\u05E9 \u05DC\u05DA \u05D3\u05D5\u05D0"\u05DC \u05E9\u05DC\u05D0 \u05E7\u05E8\u05D0\u05EA?',
-        "\u05E4\u05E1\u05E7\u05D4 \u05E9\u05DC 5 \u05D3\u05E7\u05D5\u05EA \u05D9\u05DB\u05D5\u05DC\u05D4 \u05DC\u05E2\u05D6\u05D5\u05E8 \u05DC\u05E8\u05D9\u05DB\u05D5\u05D6!",
-        "\u05DE\u05D4 \u05E9\u05DC\u05D5\u05DE\u05DA \u05D4\u05D9\u05D5\u05DD?",
-        "\u05D0\u05DC \u05EA\u05E9\u05DB\u05D7 \u05DC\u05E9\u05EA\u05D5\u05EA \u05DE\u05D9\u05DD! \u{1F4A7}"
-      ];
       function getGreeting() {
         const h = (/* @__PURE__ */ new Date()).getHours();
-        if (h >= 5 && h < 12) return "\u05D1\u05D5\u05E7\u05E8 \u05D8\u05D5\u05D1! \u2600\uFE0F";
-        if (h >= 12 && h < 17) return "\u05E6\u05D4\u05E8\u05D9\u05D9\u05DD \u05D8\u05D5\u05D1\u05D9\u05DD! \u{1F324}\uFE0F";
-        if (h >= 17 && h < 21) return "\u05E2\u05E8\u05D1 \u05D8\u05D5\u05D1! \u{1F306}";
-        return "\u05DC\u05D9\u05DC\u05D4 \u05D8\u05D5\u05D1! \u{1F319}";
+        if (h >= 5 && h < 12) return "\u05D1\u05D5\u05E7\u05E8 \u05D8\u05D5\u05D1! \u2600\uFE0F \u05DE\u05D5\u05DB\u05DF \u05DC\u05D2\u05DC\u05D5\u05E9 \u05D1\u05EA\u05D1\u05D5\u05E0\u05D4 \u05D4\u05D9\u05D5\u05DD?";
+        if (h >= 12 && h < 17) return "\u05E6\u05D4\u05E8\u05D9\u05D9\u05DD \u05D8\u05D5\u05D1\u05D9\u05DD! \u{1F324}\uFE0F \u05D0\u05D9\u05DA \u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA \u05E0\u05E8\u05D0\u05D4 \u05E2\u05D3 \u05E2\u05DB\u05E9\u05D9\u05D5?";
+        if (h >= 17 && h < 21) return "\u05E2\u05E8\u05D1 \u05D8\u05D5\u05D1! \u{1F306} \u05D6\u05DE\u05DF \u05D8\u05D5\u05D1 \u05DC\u05D1\u05D3\u05D5\u05E7 \u05DE\u05D4 \u05E8\u05D0\u05D9\u05EA \u05D4\u05D9\u05D5\u05DD.";
+        return "\u05DC\u05D9\u05DC\u05D4 \u05D8\u05D5\u05D1! \u{1F319} \u05DE\u05D0\u05D5\u05D7\u05E8 \u05E7\u05E6\u05EA \u05DC\u05D2\u05DC\u05D5\u05DC, \u05DC\u05D0?";
+      }
+      var INSIGHT_MSGS = [
+        "\u05DB\u05D9\u05D3\u05D5\u05E2, 78% \u05DE\u05D4\u05DE\u05D9\u05D3\u05E2 \u05E9\u05D0\u05E0\u05E9\u05D9\u05DD \u05DE\u05E7\u05D1\u05DC\u05D9\u05DD \u05D1\u05E8\u05E9\u05EA\u05D5\u05EA \u2014 \u05D4\u05D5\u05D0 \u05DC\u05D0 \u05DE\u05D4 \u05E9\u05D7\u05D9\u05E4\u05E9\u05D5.",
+        "\u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05E9\u05DC YouTube \u05D9\u05D5\u05D3\u05E2 \u05DE\u05D4 \u05EA\u05E8\u05E6\u05D4 \u05DC\u05E8\u05D0\u05D5\u05EA \u05E8\u05D2\u05E2 \u05DC\u05E4\u05E0\u05D9 \u05E9\u05D0\u05EA\u05D4 \u05D9\u05D5\u05D3\u05E2.",
+        '\u05DB\u05DC "\u05DC\u05D0 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF" \u05E9\u05EA\u05DC\u05D7\u05E5 \u05E9\u05D5\u05D5\u05D4 \u05D9\u05D5\u05EA\u05E8 \u05DE-20 "\u05DC\u05D9\u05D9\u05E7".',
+        "\u05DE\u05D7\u05E7\u05E8 \u05DE-2023: \u05DE\u05E9\u05EA\u05DE\u05E9\u05D9\u05DD \u05D1\u05D5\u05D3\u05E7\u05D9\u05DD \u05D0\u05EA \u05D4\u05D8\u05DC\u05E4\u05D5\u05DF 96 \u05E4\u05E2\u05DE\u05D9\u05DD \u05D1\u05D9\u05D5\u05DD \u05D1\u05DE\u05DE\u05D5\u05E6\u05E2.",
+        "TikTok \u05E6\u05E8\u05D9\u05DA 35 \u05E9\u05E0\u05D9\u05D5\u05EA \u05D1\u05DC\u05D1\u05D3 \u05DB\u05D3\u05D9 \u05DC\u05D3\u05E2\u05EA \u05DE\u05D4 \u05D4\u05E4\u05D5\u05E1\u05D8 \u05D4\u05D1\u05D0 \u05E9\u05D9\u05E2\u05E6\u05D5\u05E8 \u05D0\u05D5\u05EA\u05DA.",
+        "\u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA \u05D4\u05D5\u05D0 \u05DE\u05E8\u05D0\u05D4 \u2014 \u05D0\u05D1\u05DC \u05DE\u05D9 \u05E9\u05DE\u05D7\u05D6\u05D9\u05E7 \u05D0\u05D5\u05EA\u05D5 \u05D4\u05D5\u05D0 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD.",
+        "\u05DB\u05E9\u05D0\u05EA\u05D4 \u05D2\u05D5\u05DC\u05DC \u05DE\u05D4\u05E8 \u2014 \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DC\u05D5\u05DE\u05D3 \u05D2\u05DD \u05DE\u05D6\u05D4.",
+        '\u05D4\u05E4\u05D9\u05D3 "\u05D4\u05D0\u05D9\u05E9\u05D9" \u05E9\u05DC\u05DA \u05DE\u05E9\u05D5\u05EA\u05E3 \u05E2\u05DD \u05DE\u05D9\u05DC\u05D9\u05D5\u05E0\u05D9 \u05D0\u05E0\u05E9\u05D9\u05DD \u05E2\u05DD \u05D0\u05D5\u05EA\u05D5 \u05E4\u05E8\u05D5\u05E4\u05D9\u05DC.'
+      ];
+      var ACTION_TIPS = [
+        "\u05E0\u05E1\u05D4 \u05DC\u05D2\u05DC\u05D5\u05DC 3 \u05E4\u05D5\u05E1\u05D8\u05D9\u05DD \u05D5\u05DC\u05E9\u05D9\u05DD \u05DC\u05D1: \u05DB\u05DE\u05D4 \u05DE\u05D4\u05DD \u05D1\u05D7\u05E8\u05EA \u05DC\u05E8\u05D0\u05D5\u05EA \u05D1\u05E2\u05E6\u05DE\u05DA?",
+        "\u05EA\u05E1\u05D1\u05D9\u05E8 \u05DC\u05D9 \u05DE\u05D4 \u05E8\u05D0\u05D9\u05EA \u05D4\u05D9\u05D5\u05DD \u05D5\u05D0\u05E0\u05D9 \u05D0\u05E0\u05E1\u05D4 \u05DC\u05D6\u05D4\u05D5\u05EA \u05D3\u05E4\u05D5\u05E1\u05D9\u05DD.",
+        '\u05DB\u05E9\u05EA\u05E8\u05D2\u05D9\u05E9 \u05E9\u05D4\u05E4\u05D9\u05D3 "\u05D0\u05D5\u05DB\u05DC \u05D0\u05D5\u05EA\u05DA" \u2014 \u05DC\u05D7\u05E5 \u05E2\u05DC\u05D9\u05D9 \u05D5\u05D0\u05E1\u05D9\u05E8 \u05E4\u05D5\u05E1\u05D8\u05D9\u05DD \u05D1\u05E9\u05DE\u05DA.',
+        "\u05E8\u05D5\u05E6\u05D4 \u05E9\u05D0\u05E1\u05D1\u05D9\u05E8 \u05DC\u05DE\u05D4 \u05E8\u05D0\u05D9\u05EA \u05DE\u05E9\u05D4\u05D5 \u05E1\u05E4\u05E6\u05D9\u05E4\u05D9? \u05DC\u05D7\u05E5 \u05E2\u05DC\u05D9\u05D9.",
+        "\u05D4\u05E4\u05E1\u05E7\u05D4 \u05E9\u05DC 5 \u05D3\u05E7\u05D5\u05EA \u05DE\u05D4\u05DE\u05E1\u05DA \u05E2\u05DB\u05E9\u05D9\u05D5 \u05EA\u05D2\u05D3\u05D9\u05DC \u05D0\u05EA \u05D4\u05E8\u05D9\u05DB\u05D5\u05D6 \u05D1-25%."
+      ];
+      function buildInsightFromBrain(state) {
+        if (!state) return null;
+        const allTime = state?.allTime ?? {};
+        const weights = state?.weights ?? {};
+        const total = Object.values(allTime).reduce((a, b) => a + b, 0);
+        if (total === 0) return null;
+        const LABELS = {
+          politics: "\u05E4\u05D5\u05DC\u05D9\u05D8\u05D9\u05E7\u05D4",
+          sports: "\u05E1\u05E4\u05D5\u05E8\u05D8",
+          entertainment: "\u05D1\u05D9\u05D3\u05D5\u05E8",
+          technology: "\u05D8\u05DB\u05E0\u05D5\u05DC\u05D5\u05D2\u05D9\u05D4",
+          news: "\u05D7\u05D3\u05E9\u05D5\u05EA",
+          health: "\u05D1\u05E8\u05D9\u05D0\u05D5\u05EA",
+          economy: "\u05DB\u05DC\u05DB\u05DC\u05D4",
+          science: "\u05DE\u05D3\u05E2",
+          religion: "\u05D3\u05EA \u05D5\u05DE\u05E1\u05D5\u05E8\u05EA"
+        };
+        const top = Object.entries(allTime).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1])[0];
+        if (!top) return null;
+        const [catId, count] = top;
+        const pct = Math.round(count / total * 100);
+        const label = LABELS[catId] ?? catId;
+        const w = weights[catId] ?? 1;
+        const messages = [
+          `${pct}% \u05DE\u05D4\u05EA\u05D5\u05DB\u05DF \u05E9\u05E0\u05D7\u05E9\u05E4\u05EA \u05D0\u05DC\u05D9\u05D5 \u05D4\u05D5\u05D0 ${label}. \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05D1\u05D8\u05D5\u05D7 \u05E9\u05D6\u05D4 \u05DE\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05E6\u05D4.`,
+          `\u05E8\u05D0\u05D9\u05EA\u05D9 \u05E9\u05D0\u05EA\u05D4 \u05E8\u05D5\u05D0\u05D4 \u05D4\u05E8\u05D1\u05D4 ${label} (${count} \u05E4\u05D5\u05E1\u05D8\u05D9\u05DD). \u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA \u05DE\u05D5\u05D8\u05D4.`,
+          `\u05D4\u05E0\u05D5\u05E9\u05D0 \u05D4\u05DE\u05D5\u05D1\u05D9\u05DC \u05E9\u05DC\u05DA \u05D4\u05D5\u05D0 ${label}. ${w < 0.5 ? "\u05E1\u05D9\u05DE\u05E0\u05EA \u05E9\u05D6\u05D4 \u05DC\u05D0 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u2014 \u05D0\u05D1\u05DC \u05D4\u05D5\u05D0 \u05DE\u05DE\u05E9\u05D9\u05DA \u05DC\u05E2\u05DC\u05D5\u05EA." : "\u05D0\u05DD \u05EA\u05E8\u05E6\u05D4 \u05E4\u05D7\u05D5\u05EA \u2014 \u05EA\u05D2\u05D9\u05D3 \u05DC\u05D9 \u05D5\u05D0\u05D3\u05D1\u05E8 \u05E2\u05DD \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD."}`
+        ];
+        return messages[Math.floor(Math.random() * messages.length)];
+      }
+      var menuEl = null;
+      function createClickMenu(agent, brainState, onClose) {
+        if (menuEl) {
+          menuEl.remove();
+          menuEl = null;
+          onClose?.();
+          return;
+        }
+        const menu = document.createElement("div");
+        menu.id = "clippy-menu";
+        menu.style.cssText = `
+    position: fixed;
+    bottom: 145px;
+    right: 20px;
+    background: rgba(10,10,24,0.95);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 8px 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    color: #e0e0f0;
+    direction: rtl;
+    z-index: 99999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    min-width: 200px;
+    animation: menuIn 0.18s ease;
+  `;
+        const style = document.createElement("style");
+        style.textContent = `
+    @keyframes menuIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .cm-item { padding:9px 16px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:background 0.1s; border-radius:8px; margin:2px 4px; }
+    .cm-item:hover { background:rgba(255,255,255,0.08); }
+    .cm-sep { height:1px; background:rgba(255,255,255,0.08); margin:4px 8px; }
+  `;
+        document.head.appendChild(style);
+        const insight = buildInsightFromBrain(brainState);
+        const items = [
+          { icon: "\u{1F50D}", label: "\u05DE\u05D4 \u05E8\u05D0\u05D9\u05EA\u05D9 \u05D4\u05D9\u05D5\u05DD?", action: () => {
+            const msg = insight ?? `\u05E2\u05D5\u05D3 \u05DC\u05D0 \u05E6\u05D1\u05E8\u05EA\u05D9 \u05DE\u05E1\u05E4\u05D9\u05E7 \u05E0\u05EA\u05D5\u05E0\u05D9\u05DD. \u05E4\u05EA\u05D7 \u05D0\u05EA \u05D4\u05D3\u05E4\u05D3\u05E4\u05DF \u05E2\u05DD \u05D4\u05EA\u05D5\u05E1\u05E3 \u05E4\u05E2\u05D9\u05DC.`;
+            agent.speak(msg);
+            agent.animate();
+          } },
+          { icon: "\u{1F4A1}", label: "\u05EA\u05D5\u05D1\u05E0\u05D4 \u05E2\u05DC \u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05D9", action: () => {
+            const msg = INSIGHT_MSGS[Math.floor(Math.random() * INSIGHT_MSGS.length)];
+            agent.speak(msg);
+            agent.animate();
+          } },
+          { icon: "\u{1F3AF}", label: "\u05D8\u05D9\u05E4 \u05DC\u05D2\u05DC\u05D9\u05E9\u05D4 \u05D7\u05DB\u05DE\u05D4", action: () => {
+            const msg = ACTION_TIPS[Math.floor(Math.random() * ACTION_TIPS.length)];
+            agent.speak(msg);
+            agent.animate();
+          } },
+          null,
+          // separator
+          { icon: "\u{1F44B}", label: "\u05E1\u05D2\u05D5\u05E8 \u05EA\u05E4\u05E8\u05D9\u05D8", action: () => {
+          } }
+        ];
+        items.forEach((item) => {
+          if (item === null) {
+            const sep = document.createElement("div");
+            sep.className = "cm-sep";
+            menu.appendChild(sep);
+            return;
+          }
+          const el = document.createElement("div");
+          el.className = "cm-item";
+          el.innerHTML = `<span>${item.icon}</span><span>${item.label}</span>`;
+          el.addEventListener("click", () => {
+            item.action();
+            menu.remove();
+            menuEl = null;
+          });
+          menu.appendChild(el);
+        });
+        document.body.appendChild(menu);
+        menuEl = menu;
+        setTimeout(() => {
+          document.addEventListener("click", function closer(e) {
+            if (!menu.contains(e.target)) {
+              menu.remove();
+              menuEl = null;
+              document.removeEventListener("click", closer);
+            }
+          });
+        }, 100);
       }
       (async () => {
         const agent = await initAgent(Clippy);
         agent.show();
         const clippyEl = agent._el;
+        let brainState = null;
+        try {
+          brainState = await window.desktopAPI.getBrainState();
+        } catch {
+        }
         await new Promise((r) => setTimeout(r, 700));
-        agent.speak(getGreeting());
+        const openMsg = buildInsightFromBrain(brainState) ?? getGreeting();
+        agent.speak(openMsg);
         agent.animate();
         let dragging = false;
         let dragMoved = false;
@@ -6851,13 +6978,9 @@
           });
           clippyEl.addEventListener("click", () => {
             if (dragMoved) return;
-            const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
-            agent.speak(msg);
-            agent.animate();
+            createClickMenu(agent, brainState, null);
           });
-          clippyEl.addEventListener("mouseenter", () => {
-            window.desktopAPI.mouseEnter();
-          });
+          clippyEl.addEventListener("mouseenter", () => window.desktopAPI.mouseEnter());
           clippyEl.addEventListener("mouseleave", () => {
             if (!dragging) window.desktopAPI.mouseLeave();
           });
@@ -6875,14 +6998,24 @@
           dragging = false;
           window.desktopAPI.mouseLeave();
         });
+        setInterval(() => agent.animate(), 8e3);
+        let msgCycle = 0;
         setInterval(() => {
+          const pool = [
+            buildInsightFromBrain(brainState),
+            INSIGHT_MSGS[msgCycle % INSIGHT_MSGS.length],
+            ACTION_TIPS[Math.floor(Math.random() * ACTION_TIPS.length)]
+          ].filter(Boolean);
+          agent.speak(pool[msgCycle % pool.length]);
           agent.animate();
-        }, 8e3);
-        setInterval(() => {
-          const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
-          agent.speak(msg);
-          agent.animate();
+          msgCycle++;
         }, 45e3);
+        setInterval(async () => {
+          try {
+            brainState = await window.desktopAPI.getBrainState();
+          } catch {
+          }
+        }, 5 * 6e4);
       })();
     }
   });
