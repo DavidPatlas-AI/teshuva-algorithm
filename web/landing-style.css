@@ -1,0 +1,293 @@
+/* ================================================================
+   Teshuva Algorithm — Landing Page Styles
+   RTL, Hebrew, dark hero + light sections
+   ================================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary:       #6366f1;
+  --primary-dark:  #4f46e5;
+  --accent:        #10b981;
+  --text:          #1e293b;
+  --text-light:    #64748b;
+  --bg:            #ffffff;
+  --bg-alt:        #f8fafc;
+  --border:        #e2e8f0;
+  --radius:        10px;
+  --shadow:        0 4px 24px rgba(0,0,0,.08);
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  direction: rtl;
+  text-align: right;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── CONTAINER ───────────────────────────────── */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── SECTIONS ────────────────────────────────── */
+.section { padding: 5rem 0; }
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--text);
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--primary);
+  margin: 0.6rem auto 0;
+  border-radius: 2px;
+}
+
+/* ── HERO ────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+  color: white;
+  padding: 6rem 1.5rem;
+  text-align: center;
+}
+.hero-inner { max-width: 750px; margin: 0 auto; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.04em;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+.clippy-icon { font-size: 1.1em; }
+.hero-sub {
+  font-size: 1.15rem;
+  opacity: 0.88;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+.hero-sub strong { color: #a5f3fc; }
+.hero-quote {
+  background: rgba(255,255,255,.1);
+  border-right: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin: 0 auto 2.5rem;
+  max-width: 550px;
+  text-align: right;
+}
+.hero-quote p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin: 0.3rem 0;
+  font-style: italic;
+}
+.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── BUTTONS ─────────────────────────────────── */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.8rem;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 14px rgba(16,185,129,.4);
+}
+.btn-primary:hover { background: #059669; text-decoration: none; transform: translateY(-1px); }
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255,255,255,.5);
+}
+.btn-outline:hover { border-color: white; text-decoration: none; }
+.btn-lg { padding: 1rem 2.5rem; font-size: 1.1rem; }
+
+/* ── HOW IT WORKS ────────────────────────────── */
+.how { background: var(--bg-alt); }
+.steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.step {
+  flex: 1;
+  min-width: 200px;
+  max-width: 260px;
+  text-align: center;
+  background: white;
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+.step-num {
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+.step h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+.step-arrow {
+  font-size: 1.8rem;
+  color: var(--primary);
+  align-self: center;
+  flex-shrink: 0;
+}
+@media (max-width: 640px) { .step-arrow { display: none; } }
+
+/* ── FEATURE GRID ────────────────────────────── */
+.features { background: var(--bg); }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.feature-card {
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  padding: 1.8rem;
+  border: 1px solid var(--border);
+  transition: transform .18s, box-shadow .18s;
+}
+.feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.feat-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+.feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--primary); }
+.feature-card p { font-size: 0.93rem; color: var(--text-light); line-height: 1.65; }
+
+/* ── NETWORKS ────────────────────────────────── */
+.networks { background: var(--bg-alt); }
+.network-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.network-chip {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* ── INSTALL ─────────────────────────────────── */
+.install { background: var(--bg); }
+.install-steps { display: flex; flex-direction: column; gap: 2rem; max-width: 750px; margin: 0 auto; }
+.install-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+}
+.install-num {
+  width: 42px;
+  height: 42px;
+  background: var(--primary);
+  color: white;
+  font-weight: 800;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.install-step strong { display: block; margin-bottom: 0.5rem; font-size: 1.05rem; }
+.install-step pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.83rem;
+  overflow-x: auto;
+  margin-top: 0.5rem;
+  direction: ltr;
+  text-align: left;
+}
+.install-step code {
+  background: #e0e7ff;
+  color: var(--primary-dark);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* ── CATEGORIES ──────────────────────────────── */
+.categories { background: var(--bg-alt); }
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  justify-content: center;
+}
+.cat-tag {
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: color-mix(in srgb, var(--c) 12%, white);
+  color: var(--c);
+  border: 2px solid var(--c);
+}
+
+/* ── CTA ─────────────────────────────────────── */
+.cta {
+  background: linear-gradient(135deg, #312e81, #1e1b4b);
+  color: white;
+}
+.cta-inner { text-align: center; }
+.cta h2 { font-size: 2rem; margin-bottom: 0.8rem; }
+.cta p { font-size: 1.1rem; opacity: 0.8; margin-bottom: 2rem; }
+.cta .btn-outline { color: white; border-color: rgba(255,255,255,.5); }
+.cta .btn-outline:hover { border-color: white; }
+
+/* ── FOOTER ──────────────────────────────────── */
+.site-footer {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 2.5rem 0;
+  text-align: center;
+}
+.site-footer a { color: #a5b4fc; }
+.site-footer a:hover { color: white; }
+.footer-sub { font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.7; }

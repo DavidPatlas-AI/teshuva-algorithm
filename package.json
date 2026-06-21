@@ -6,14 +6,49 @@
   "scripts": {
     "start": "electron ./desktop/main.js",
     "build": "npx esbuild extension/content/bundle-entry.js --bundle --format=iife --outfile=extension/content/bundle.js && npx esbuild desktop/renderer-entry.js --bundle --format=iife --outfile=desktop/renderer.js && npx esbuild extension/background-entry.js --bundle --format=iife --outfile=extension/background.js && npx esbuild extension/popup/popup-entry.js --bundle --format=iife --outfile=extension/popup/popup.js",
+    "build:desktop": "npx esbuild desktop/renderer-entry.js --bundle --format=iife --outfile=desktop/renderer.js",
+    "dist": "npm run build:desktop && npx electron-builder --win --x64",
     "desktop": "electron desktop/main.js",
     "extension": "echo Load the extension/ folder in chrome://extensions",
     "lint": "echo TODO",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern=tests/"
   },
+  "build": {
+    "appId": "ai.davidpatlas.teshuva-algorithm",
+    "productName": "האלגוריתם שחזר בתשובה",
+    "copyright": "Copyright © 2026 David Atlas",
+    "directories": {
+      "output": "dist-installer"
+    },
+    "files": [
+      "desktop/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "!node_modules/electron/**",
+      "!node_modules/electron-builder/**",
+      "!node_modules/esbuild/**",
+      "!node_modules/playwright/**"
+    ],
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "desktop/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "desktop/icon.ico",
+      "uninstallerIcon": "desktop/icon.ico",
+      "shortcutName": "האלגוריתם שחזר בתשובה",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "teshuva-algorithm-setup-${version}.exe"
+    }
+  },
   "jest": {
     "transform": {},
-    "extensionsToTreatAsEsm": [".js"]
+    "extensionsToTreatAsEsm": [
+      ".js"
+    ]
   },
   "keywords": [
     "clippy",
@@ -27,6 +62,7 @@
   "type": "commonjs",
   "devDependencies": {
     "electron": "^42.4.0",
+    "electron-builder": "^26.15.3",
     "esbuild": "^0.28.0",
     "playwright": "^1.60.0"
   },

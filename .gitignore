@@ -1,7 +1,9 @@
 node_modules/
 .edge-profile/
 screenshots/
+!web/screenshots/
 dist/
+dist-installer/
 /build
 /out
 desktop/err*.log
