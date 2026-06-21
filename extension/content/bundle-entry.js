@@ -13,6 +13,7 @@ import { dismissPost, isActionSupported }from './action-engine.js'
 import { createFeedbackUI }              from './feedback-ui.js'
 import { createDialogueUI }              from './dialogue-ui.js'
 import { startInnerTubeIntercept }       from './youtube-innertube.js'
+import { injectPostBadge }               from './post-badge.js'
 import { CATEGORIES }                    from '../../brain/categories.js'
 import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
 
@@ -72,7 +73,21 @@ import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
   // ── Feed Observer ──────────────────────────────────────────
   const selector = getSelectorForCurrentSite()
   if (selector) {
-    startFeedObserver(selector, (el, text) => controller.onPostSeen(text, el))
+    startFeedObserver(selector, (el, text) => {
+      const catId = controller.onPostSeen(text, el)
+      if (catId && catId !== 'uncategorized' && el) {
+        const cat     = CATEGORIES[catId]
+        const signals = brain.signals(catId)
+        injectPostBadge(
+          el,
+          catId,
+          cat?.heLabel ?? catId,
+          cat?.color   ?? '#ff9a1f',
+          signals,
+          () => { brain.negative(catId); dismissPost(el) },
+        )
+      }
+    })
   }
 
   // ── YouTube InnerTube intercept ────────────────────────────

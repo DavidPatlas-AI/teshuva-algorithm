@@ -7544,6 +7544,39 @@
     }
   });
 
+  // brain/signals.js
+  function buildSignals(categoryId, allTimeStats, weights, sessionStats = {}) {
+    const signals = [];
+    const total = Object.values(allTimeStats).reduce((s, n) => s + n, 0) || 1;
+    const count = allTimeStats[categoryId] ?? 0;
+    const pct = Math.round(count / total * 100);
+    const weight = weights?.[categoryId] ?? 1;
+    const sesCount = sessionStats[categoryId] ?? 0;
+    const historyScore = Math.min(100, pct * 2);
+    signals.push({
+      label: "\u05E6\u05E4\u05D9\u05D9\u05D4 \u05E7\u05D5\u05D3\u05DE\u05EA",
+      value: historyScore,
+      type: historyScore > 50 ? "negative" : historyScore > 20 ? "neutral" : "positive"
+    });
+    const interestScore = Math.round((weight - 0.1) / 2.9 * 100);
+    signals.push({
+      label: "\u05E2\u05E0\u05D9\u05D9\u05DF \u05DE\u05E4\u05D5\u05E8\u05E9",
+      value: Math.max(0, Math.min(100, interestScore)),
+      type: weight >= 1.5 ? "positive" : weight <= 0.5 ? "negative" : "neutral"
+    });
+    const sessionScore = Math.min(100, sesCount * 12);
+    signals.push({
+      label: "\u05EA\u05D3\u05D9\u05E8\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD",
+      value: sessionScore,
+      type: sessionScore > 60 ? "negative" : "neutral"
+    });
+    return signals;
+  }
+  var init_signals = __esm({
+    "brain/signals.js"() {
+    }
+  });
+
   // brain/brain-api.js
   function createBrain(storageAdapter) {
     const state = createState(storageAdapter);
@@ -7565,6 +7598,10 @@
       // הסבר עמוק — סוג הכוונה + אחוז + טקסט מפורט
       intent(categoryId) {
         return buildIntent(categoryId, state.getAllTimeStats(), state.getWeights());
+      },
+      // 3 אותות מספריים לbadge הסבר ויזואלי
+      signals(categoryId) {
+        return buildSignals(categoryId, state.getAllTimeStats(), state.getWeights(), state.getSessionStats());
       },
       // ברכה לפי שעה
       greeting() {
@@ -7616,6 +7653,7 @@
       init_state();
       init_explanations();
       init_intent();
+      init_signals();
       init_categories();
     }
   });
@@ -8214,7 +8252,7 @@
     let container = null;
     let styleEl2 = null;
     let autoHide2 = null;
-    function injectStyles2() {
+    function injectStyles3() {
       if (document.getElementById("tshuva-chat-style")) return;
       styleEl2 = document.createElement("style");
       styleEl2.id = "tshuva-chat-style";
@@ -8223,7 +8261,7 @@
     }
     function show() {
       hide();
-      injectStyles2();
+      injectStyles3();
       container = document.createElement("div");
       container.id = "tshuva-chat";
       container.innerHTML = `
@@ -8385,6 +8423,144 @@
     }
   });
 
+  // extension/content/post-badge.js
+  function injectStyles2() {
+    if (styleInjected || document.getElementById("tshuva-badge-styles")) return;
+    const s = document.createElement("style");
+    s.id = "tshuva-badge-styles";
+    s.textContent = CSS;
+    document.head.appendChild(s);
+    styleInjected = true;
+  }
+  function injectPostBadge(postEl, categoryId, categoryLabel, categoryColor, signals, onDismiss) {
+    if (!postEl) return null;
+    if (postEl.querySelector(".tshuva-badge")) return null;
+    injectStyles2();
+    const badge = document.createElement("div");
+    badge.className = "tshuva-badge";
+    badge.dataset.tshuvaCategory = categoryId;
+    const signalHtml = signals.map((sig) => {
+      const cls = sig.type === "positive" ? "pos" : sig.type === "negative" ? "neg" : "neu";
+      return `
+      <span class="tshuva-badge-signal">
+        <span class="tshuva-badge-signal-bar">
+          <span class="tshuva-badge-signal-fill ${cls}" style="width:${sig.value}%"></span>
+        </span>
+        <span class="tshuva-badge-pct ${cls}">${sig.value}%</span>
+        ${sig.label}
+      </span>
+    `;
+    }).join(`<span class="tshuva-badge-sep">\xB7</span>`);
+    badge.innerHTML = `
+    <span class="tshuva-badge-icon" style="color:${categoryColor}">\u{1F4CE}</span>
+    <span class="tshuva-badge-cat" style="color:${categoryColor}">${categoryLabel}</span>
+    <span class="tshuva-badge-sep">|</span>
+    ${signalHtml}
+    <button class="tshuva-badge-dismiss" title="\u05D4\u05E1\u05EA\u05E8 \u05E4\u05D5\u05E1\u05D8 \u05D6\u05D4">\u2715</button>
+  `;
+    badge.querySelector(".tshuva-badge-dismiss").addEventListener("click", (e) => {
+      e.stopPropagation();
+      badge.style.opacity = "0";
+      badge.style.transform = "scale(0.9)";
+      badge.style.transition = "all 0.2s ease";
+      setTimeout(() => badge.remove(), 200);
+      onDismiss?.();
+    });
+    postEl.insertAdjacentElement("afterend", badge);
+    return badge;
+  }
+  var CSS, styleInjected;
+  var init_post_badge = __esm({
+    "extension/content/post-badge.js"() {
+      CSS = `
+  .tshuva-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 2px;
+    padding: 5px 10px 5px 8px;
+    background: rgba(10,10,20,0.88);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11.5px;
+    color: #d0d0e0;
+    direction: rtl;
+    cursor: default;
+    user-select: none;
+    backdrop-filter: blur(4px);
+    max-width: 420px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 9999;
+    animation: tshuva-badge-in 0.25s ease;
+  }
+  @keyframes tshuva-badge-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .tshuva-badge-icon {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .tshuva-badge-cat {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .tshuva-badge-sep {
+    color: rgba(255,255,255,0.25);
+    font-size: 10px;
+  }
+  .tshuva-badge-signal {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10.5px;
+    color: #9090aa;
+    white-space: nowrap;
+  }
+  .tshuva-badge-signal-bar {
+    display: inline-block;
+    width: 28px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.12);
+    vertical-align: middle;
+    overflow: hidden;
+  }
+  .tshuva-badge-signal-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  .tshuva-badge-signal-fill.pos  { background: #22c55e; }
+  .tshuva-badge-signal-fill.neu  { background: #f59e0b; }
+  .tshuva-badge-signal-fill.neg  { background: #ef4444; }
+  .tshuva-badge-pct {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .tshuva-badge-pct.pos { color: #22c55e; }
+  .tshuva-badge-pct.neu { color: #f59e0b; }
+  .tshuva-badge-pct.neg { color: #ef4444; }
+  .tshuva-badge-dismiss {
+    margin-right: auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.3);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0 2px;
+    line-height: 1;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+  .tshuva-badge-dismiss:hover { color: #ef4444; }
+`;
+      styleInjected = false;
+    }
+  });
+
   // extension/content/bundle-entry.js
   var require_bundle_entry = __commonJS({
     "extension/content/bundle-entry.js"() {
@@ -8399,6 +8575,7 @@
       init_feedback_ui();
       init_dialogue_ui();
       init_youtube_innertube();
+      init_post_badge();
       init_categories();
       init_constants();
       (async () => {
@@ -8439,7 +8616,24 @@
         clippyEl?.addEventListener("click", () => dialogueUI.toggle());
         const selector = getSelectorForCurrentSite();
         if (selector) {
-          startFeedObserver(selector, (el, text) => controller.onPostSeen(text, el));
+          startFeedObserver(selector, (el, text) => {
+            const catId = controller.onPostSeen(text, el);
+            if (catId && catId !== "uncategorized" && el) {
+              const cat = CATEGORIES[catId];
+              const signals = brain.signals(catId);
+              injectPostBadge(
+                el,
+                catId,
+                cat?.heLabel ?? catId,
+                cat?.color ?? "#ff9a1f",
+                signals,
+                () => {
+                  brain.negative(catId);
+                  dismissPost(el);
+                }
+              );
+            }
+          });
         }
         startInnerTubeIntercept((text) => controller.onPostSeen(text, null));
         document.addEventListener("keydown", (e) => {

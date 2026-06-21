@@ -5,6 +5,7 @@ import { classify, scoreText }               from './classifier.js'
 import { createState }                        from './state.js'
 import { greeting, explain, weeklyInsights }  from './explanations.js'
 import { buildIntent }                        from './intent.js'
+import { buildSignals }                       from './signals.js'
 import { CATEGORIES, CATEGORY_IDS }           from './categories.js'
 
 // storageAdapter: { get(key) → Promise<any>, set(key, value) → Promise<void> }
@@ -33,6 +34,11 @@ export function createBrain(storageAdapter) {
     // הסבר עמוק — סוג הכוונה + אחוז + טקסט מפורט
     intent(categoryId) {
       return buildIntent(categoryId, state.getAllTimeStats(), state.getWeights())
+    },
+
+    // 3 אותות מספריים לbadge הסבר ויזואלי
+    signals(categoryId) {
+      return buildSignals(categoryId, state.getAllTimeStats(), state.getWeights(), state.getSessionStats())
     },
 
     // ברכה לפי שעה
