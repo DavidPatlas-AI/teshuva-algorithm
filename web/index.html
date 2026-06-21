@@ -37,7 +37,7 @@
   .sec{max-width:1200px;margin:0 auto;padding-left:30px;padding-right:30px}
 
   /* ── nav ──────────────────────────────────────────── */
-  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links{display:flex;align-items:center;gap:16px}
   .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:transparent}
   .nav-burger span{display:block;width:22px;height:2px;background:#ece9e1;border-radius:2px;transition:transform .25s,opacity .25s}
   .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -260,19 +260,18 @@
       <div style="display:flex;align-items:center;gap:13px">
         <svg width="22" height="30" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" style="stroke:#ffce8e;stroke-width:14px"></rect><rect x="50" y="22" width="40" height="120" rx="20" style="stroke:#ffce8e;stroke-width:14px"></rect></svg>
         <div style="line-height:1.05">
-          <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:19px;letter-spacing:-.2px">האלגוריתם שחזר בתשובה</div>
+          <div style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:17px;letter-spacing:-.2px;white-space:nowrap">האלגוריתם שחזר בתשובה</div>
           <div style="font-family:'Space Mono',monospace;font-size:10px;color:#7d7567;letter-spacing:1px;direction:ltr;text-align:right;text-transform:uppercase">the algorithm that repented</div>
         </div>
       </div>
       <!-- desktop links -->
       <div class="nav-links">
-        <a href="#confession" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הווידוי</a>
-        <a href="#idea" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הרעיון</a>
-        <a href="#how" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">איך זה עובד</a>
-        <a href="#live-demo" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">דמו חי</a>
-        <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">יכולות</a>
-        <a href="#vision" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">החזון</a>
-        <a href="#faq" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">FAQ</a>
+        <a href="#confession" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">הווידוי</a>
+        <a href="#idea" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">הרעיון</a>
+        <a href="#how" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">איך עובד</a>
+        <a href="#live-demo" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">דמו</a>
+        <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">יכולות</a>
+        <a href="#faq" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">FAQ</a>
         <div class="lang-switcher" id="lang-switcher-desktop">
           <button class="lang-btn active" id="lang-he" onclick="switchLang('he')">עב</button>
           <button class="lang-btn" id="lang-en" onclick="switchLang('en')">EN</button>
@@ -319,7 +318,7 @@
           <span id="hero-h1b" style="display:block">אותך שנים.</span>
           <span id="hero-h1c" style="display:block;color:var(--accent,#ff9a1f);font-style:italic">עכשיו הוא חזר בתשובה.</span>
         </h1>
-        <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:15px;color:#9a9182;margin:26px 0 0;text-align:right;line-height:1.6;max-width:520px;margin-right:0;margin-left:auto">"What if the algorithm stopped hiding<br>and started explaining itself?"</p>
+        <p id="hero-explain" style="font-size:18px;line-height:1.65;color:#cdc6b6;margin:22px 0 0;max-width:540px">קליפי הוא תוסף Chrome שרץ ברקע תוך כדי גלישה ברשתות חברתיות. הוא מסביר <b style="color:#fff">בעברית ובזמן אמת</b> למה הראו לך כל פוסט — ונותן לך לשנות את הפיד בלחיצה אחת.</p>
         <div style="display:flex;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap">
           <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" rel="noopener noreferrer" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:10px;box-shadow:0 12px 34px rgba(255,154,31,.32);display:inline-flex;align-items:center;gap:9px" id="hero-dl-btn">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="#0a0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -368,7 +367,7 @@
           <div>
             <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1px;color:#d05a4a;text-transform:uppercase;direction:ltr;text-align:right;margin-bottom:5px">the problem</div>
             <h3 id="prob-h" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:23px;margin:0">הבעיה: בחרו בשבילך, בשקט</h3>
-            <p id="prob-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:8px 0 0">פיד שתוכנן להשאיר אותך בפנים — לא לתת לך ערך. לא ידעת למה עלה הפוסט הזה בדיוק. ולא הייתה לך שום אפשרות להגיד לא.</p>
+            <p id="prob-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:8px 0 0">מישהו החליט בשבילך — מה תראה ראשון, מה יישמר ממך, כמה שעות תגלול. לא שאלו אותך. לא הסבירו לך. ולא יכולת לעצור את זה.</p>
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;color:rgba(255,154,31,.6)">
@@ -379,7 +378,7 @@
           <div>
             <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;text-align:right;margin-bottom:5px">the teshuva</div>
             <h3 id="teshuva-h" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:23px;margin:0">התשובה: הוא מתוודה ומסביר</h3>
-            <p id="teshuva-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:8px 0 0">קליפי חוזר לחיים — הפעם לצד הפיד שלך. כל פוסט מקבל הסבר ברור: אילו אותות דחפו אותו למעלה, וכמה מזה המלצה אמיתית — וכמה סתם מניפולציה.</p>
+            <p id="teshuva-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:8px 0 0">עכשיו לכל פוסט יש הסבר. אילו 3–5 אותות דחפו אותו למעלה. כמה מזה באמת מתאים לך — וכמה שירת את הפלטפורמה. ואתה תמיד יכול לא להסכים.</p>
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;color:rgba(255,154,31,.6)">
@@ -463,13 +462,13 @@
         <div style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:rgba(236,233,225,.14);line-height:1">01</div>
         <h3 id="step1-h" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:24px;margin:14px 0 4px">אתה גולש</h3>
         <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#7d7567;margin:0 0 12px;text-align:right;text-transform:uppercase">you browse</p>
-        <p id="step1-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:0">פייסבוק, יוטיוב, אינסטגרם, X. גלוש כרגיל — אל תשנה כלום.</p>
+        <p id="step1-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:0">גלוש בפייסבוק, יוטיוב, אינסטגרם, X כמו תמיד. קליפי מתחיל לצפות ולנתח — בשקט ובלי לשנות שום דבר בחוויה שלך.</p>
       </div>
       <div class="step-cell">
         <div style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:rgba(236,233,225,.14);line-height:1">02</div>
         <h3 id="step2-h" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:24px;margin:14px 0 4px">קליפי צופה</h3>
         <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:11px;color:#7d7567;margin:0 0 12px;text-align:right;text-transform:uppercase">clippy watches</p>
-        <p id="step2-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:0">התוסף קורא את האותות שהאלגוריתם משתמש בהם — על המכשיר שלך בלבד.</p>
+        <p id="step2-p" style="color:#aaa291;font-size:15.5px;line-height:1.6;margin:0">התוסף מזהה: מה ראית, כמה זמן שהית, מה שמרת — ומחשב למה כל פוסט קיבל את המקום שלו. הכל על המכשיר שלך, שום דבר לא יוצא החוצה.</p>
       </div>
       <div class="step-last">
         <div style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:rgba(255,154,31,.3);line-height:1">03</div>
@@ -534,7 +533,7 @@
             </div>
             <div><h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:24px;margin:0">שקיפות אלגוריתמית</h3><div dir="ltr" style="font-family:'Space Mono';font-size:10.5px;color:#7d7567;text-align:right;text-transform:uppercase">algorithm transparency</div></div>
           </div>
-          <p style="color:#aaa291;font-size:16px;line-height:1.65;margin:0">כל פוסט מקבל הסבר אנושי. מה דחף אותו למעלה. אילו אותות הפעילו אותו. וכמה מזה המלצה אמיתית — וכמה פשוט מניפולציה לזמן מסך.</p>
+          <p style="color:#aaa291;font-size:16px;line-height:1.65;margin:0">כל פוסט מקבל ציון פירוק: צפייה קודמת +62%, טרנד +24%, ממומן +14%. לא "ייתכן שתאהב" — אלא בדיוק למה, בכמה, ממה.</p>
         </div>
         <div style="margin-top:22px;background:#0a0f18;border:1px solid rgba(236,233,225,.09);border-radius:10px;padding:14px 16px">
           <div style="font-family:'Space Mono';font-size:10px;color:#7d7567;direction:ltr;margin-bottom:8px;text-transform:uppercase">why am i seeing this?</div>
@@ -749,6 +748,14 @@
       <div style="background:rgba(255,255,255,.028);border:1px solid rgba(236,233,225,.1);border-radius:13px;padding:22px 24px">
         <div id="faq-q4" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:18px;margin-bottom:8px">עם אילו פלטפורמות זה עובד?</div>
         <div id="faq-a4" style="color:#9a9182;font-size:15px;line-height:1.6">Twitter/X, YouTube, Facebook, Instagram, TikTok. כשקליפי זיהה תוכן בפלטפורמה לא נתמכת — הוא אומר זאת בפירוש.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.028);border:1px solid rgba(236,233,225,.1);border-radius:13px;padding:22px 24px">
+        <div id="faq-q5" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:18px;margin-bottom:8px">מה ההבדל בין האפליקציה לתוסף?</div>
+        <div id="faq-a5" style="color:#9a9182;font-size:15px;line-height:1.6">התוסף רץ בתוך הדפדפן ומסביר פוסטים בזמן גלישה ברשתות. האפליקציה יושבת על שולחן העבודה, גלויה תמיד, ומדברת אליך גם כשלא גולש — עם עדכונים, תזכורות ותוכן מותאם.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.028);border:1px solid rgba(236,233,225,.1);border-radius:13px;padding:22px 24px">
+        <div id="faq-q6" style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:18px;margin-bottom:8px">קליפי מבין עברית?</div>
+        <div id="faq-a6" style="color:#9a9182;font-size:15px;line-height:1.6">כן. כל ההסברים, הבועות והשיחות — בעברית. קליפי מזהה תוכן עברי, רואה סלנג ישראלי, ומסביר הכל בשפה שאתה חושב בה. ממשק מלא גם ברוסית ואנגלית.</div>
       </div>
     </div>
     <style>@media(max-width:700px){#faq-grid{grid-template-columns:1fr}}</style>
@@ -1019,19 +1026,20 @@ const LANG_DATA = {
   he: {
     dir:'rtl', lang:'he',
     'hero-h1a':'האלגוריתם ניהל', 'hero-h1b':'אותך שנים.', 'hero-h1c':'עכשיו הוא חזר בתשובה.',
+    'hero-explain':'קליפי הוא תוסף Chrome שרץ ברקע תוך כדי גלישה ברשתות חברתיות. הוא מסביר <b style="color:#fff">בעברית ובזמן אמת</b> למה הראו לך כל פוסט — ונותן לך לשנות את הפיד בלחיצה אחת.',
     'idea-h2':'הרעיון בגדול',
     'idea-p1':'כל אלגוריתם המלצות הוא קופסה שחורה. הוא מחליט בשבילך — מה תראה, מה יישמר מפניך, וכמה שעות תבזבז בגלילה.',
     'idea-p2':'"האלגוריתם שחזר בתשובה" הוא תוסף דפדפן שפותח את הקופסה. קליפי יושב לצידך, מסביר בעברית <b style="color:#fff">בדיוק למה</b> ראית כל פוסט — ואז פונה ישירות לאלגוריתמים עצמם ומדבר <b style="color:#fff">בשמך</b>.',
     'prob-h':'הבעיה: בחרו בשבילך, בשקט',
-    'prob-p':'פיד שתוכנן להשאיר אותך בפנים — לא לתת לך ערך. לא ידעת למה עלה הפוסט הזה בדיוק. ולא הייתה לך שום אפשרות להגיד לא.',
+    'prob-p':'מישהו החליט בשבילך — מה תראה ראשון, מה יישמר ממך, כמה שעות תגלול. לא שאלו אותך. לא הסבירו לך. ולא יכולת לעצור את זה.',
     'teshuva-h':'התשובה: הוא מתוודה ומסביר',
-    'teshuva-p':'קליפי חוזר לחיים — הפעם לצד הפיד שלך. כל פוסט מקבל הסבר ברור: אילו אותות דחפו אותו למעלה, וכמה מזה המלצה אמיתית — וכמה סתם מניפולציה.',
+    'teshuva-p':'עכשיו לכל פוסט יש הסבר. אילו 3–5 אותות דחפו אותו למעלה. כמה מזה באמת מתאים לך — וכמה שירת את הפלטפורמה. ואתה תמיד יכול לא להסכים.',
     'vision-card-h':'החזון: הוא מתווכח בשמך',
     'vision-card-p':'קליפי פונה ישירות ליוטיוב, לטיקטוק ולאינסטגרם — בשפה שאלגוריתמים מבינים — ואומר להם: "פחות כזה. יותר מה שהוא ביקש." בלי שתגע בכלום.',
     'how-h2':'שלושה צעדים. אפס מאמץ.',
     'how-subp':'אתה ממשיך לגלוש בדיוק כרגיל. קליפי עושה את כל העבודה השקופה ברקע.',
-    'step1-h':'אתה גולש', 'step1-p':'פייסבוק, יוטיוב, אינסטגרם, X. גלוש כרגיל — אל תשנה כלום.',
-    'step2-h':'קליפי צופה', 'step2-p':'התוסף קורא את האותות שהאלגוריתם משתמש בהם — על המכשיר שלך בלבד.',
+    'step1-h':'אתה גולש', 'step1-p':'גלוש בפייסבוק, יוטיוב, אינסטגרם, X כמו תמיד. קליפי מתחיל לצפות ולנתח — בשקט ובלי לשנות שום דבר בחוויה שלך.',
+    'step2-h':'קליפי צופה', 'step2-p':'התוסף מזהה: מה ראית, כמה זמן שהית, מה שמרת — ומחשב למה כל פוסט קיבל את המקום שלו. הכל על המכשיר שלך, שום דבר לא יוצא החוצה.',
     'step3-h':'קליפי מסביר', 'step3-p':'בועה קופצת ואומרת בדיוק <b style="color:#fff">למה</b> ראית את זה.',
     'feat-h2':'מה שהאלגוריתם הסתיר — עכשיו גלוי',
     'vis-p1':'הצעד הבא: אלגוריתם שמדבר עם <b style="color:#fff">אלגוריתמים</b>. קליפי פונה ישירות ליוטיוב, לטיקטוק ולאינסטגרם ואומר להם בשמך: "פחות מזה. יותר ממה שביקשתי." אתה לא צריך לעשות כלום.',
@@ -1066,6 +1074,8 @@ const LANG_DATA = {
     'faq-q2':'באיזה דפדפנים זה עובד?','faq-a2':'כל דפדפן מבוסס Chromium — Chrome, Edge, Brave. Firefox ו-Safari אינם נתמכים כרגע. לאפליקציית Windows אין תלות בדפדפן בכלל.',
     'faq-q3':'כמה זה עולה?','faq-a3':'חינמי לחלוטין. קוד פתוח ב-MIT License — אפשר לראות כל שורת קוד ב-GitHub, לפצל, לשנות, ולהפיץ.',
     'faq-q4':'עם אילו פלטפורמות זה עובד?','faq-a4':'Twitter/X, YouTube, Facebook, Instagram, TikTok. כשקליפי זיהה תוכן בפלטפורמה לא נתמכת — הוא אומר זאת בפירוש.',
+    'faq-q5':'מה ההבדל בין האפליקציה לתוסף?','faq-a5':'התוסף רץ בתוך הדפדפן ומסביר פוסטים בזמן גלישה ברשתות. האפליקציה יושבת על שולחן העבודה, גלויה תמיד, ומדברת אליך גם כשלא גולש — עם עדכונים, תזכורות ותוכן מותאם.',
+    'faq-q6':'קליפי מבין עברית?','faq-a6':'כן. כל ההסברים, הבועות והשיחות — בעברית. קליפי מזהה תוכן עברי, רואה סלנג ישראלי, ומסביר הכל בשפה שאתה חושב בה. ממשק מלא גם ברוסית ואנגלית.',
     'demo-h2':'לחצו על פוסט. גלו למה הוא כאן.','demo-subp':'דמו חי שמפרק כל המלצה לאותות ברורים ומראה כיצד בקשה אחת משנה את הפיד בזמן אמת.',
     'feed-now-h':'הפיד שלך עכשיו','feed-now-sub':'סימולציה מקומית · ללא איסוף מידע','demo-live-badge':'הסבר חי',
     'clean-button':'אזן את הפיד בשבילי','explain-button':'הסבר לי בפשטות',
@@ -1080,6 +1090,7 @@ const LANG_DATA = {
   en: {
     dir:'ltr', lang:'en',
     'hero-h1a':'The algorithm', 'hero-h1b':'ran your life for years.', 'hero-h1c':"Now it's coming clean.",
+    'hero-explain':'Clippy is a Chrome extension that runs silently in the background while you browse social media. It explains <b style="color:#fff">in real time</b> why you were shown every post — and lets you reshape your feed in one click.',
     'idea-h2':'The Big Idea',
     'idea-p1':'Every recommendation algorithm is a black box. It decides for you — what you see, what stays hidden, and how many hours you waste scrolling.',
     'idea-p2':'"The Algorithm That Repented" is a browser extension that opens the box. Clippy sits beside you, explains <b style="color:#fff">exactly why</b> you saw each post — then speaks <b style="color:#fff">on your behalf</b> directly to the algorithms themselves.',
@@ -1128,6 +1139,8 @@ const LANG_DATA = {
     'faq-q2':'Which browsers are supported?','faq-a2':'Any Chromium-based browser — Chrome, Edge, Brave. Firefox and Safari are not currently supported. The Windows desktop app needs no browser at all.',
     'faq-q3':'How much does it cost?','faq-a3':'Completely free. Open source under MIT License — every line of code is visible on GitHub, and you can fork, modify, and redistribute freely.',
     'faq-q4':'Which platforms does it work with?','faq-a4':'Twitter/X, YouTube, Facebook, Instagram, TikTok. When Clippy detects content from an unsupported platform, it says so explicitly.',
+    'faq-q5':'What\'s the difference between the app and the extension?','faq-a5':'The extension runs inside the browser and explains posts while you scroll social media. The desktop app sits on your screen, always visible, and talks to you even when you\'re not browsing — with updates, reminders, and personalised content.',
+    'faq-q6':'Does Clippy understand Hebrew?','faq-a6':'Yes. All explanations, bubbles, and conversations are in Hebrew. Clippy recognises Hebrew content, reads Israeli slang, and explains everything in the language you think in. Full interface in Russian and English too.',
     'demo-h2':'Click a post. Discover why it\'s there.','demo-subp':'A live demo that breaks down every recommendation into clear signals and shows how a single request changes the feed in real time.',
     'feed-now-h':'Your feed right now','feed-now-sub':'Local simulation · no data collected','demo-live-badge':'Live explanation',
     'clean-button':'Balance my feed for me','explain-button':'Explain it simply',
@@ -1142,6 +1155,7 @@ const LANG_DATA = {
   ru: {
     dir:'ltr', lang:'ru',
     'hero-h1a':'Алгоритм', 'hero-h1b':'управлял тобой годами.', 'hero-h1c':'Теперь он раскаялся.',
+    'hero-explain':'Клиппи — расширение Chrome, которое работает в фоне пока ты листаешь соцсети. Он объясняет <b style="color:#fff">в реальном времени</b> почему тебе показали каждый пост — и позволяет изменить ленту одним нажатием.',
     'idea-h2':'Главная идея',
     'idea-p1':'Каждый алгоритм рекомендаций — это чёрный ящик. Он решает за тебя: что ты видишь, что скрыто, и сколько часов ты тратишь на прокрутку.',
     'idea-p2':'"Алгоритм, который раскаялся" — это расширение браузера, которое открывает ящик. Клиппи сидит рядом, объясняет <b style="color:#fff">точно почему</b> ты видел каждый пост — а затем говорит <b style="color:#fff">от твоего имени</b> напрямую с алгоритмами.',
@@ -1190,6 +1204,8 @@ const LANG_DATA = {
     'faq-q2':'Какие браузеры поддерживаются?','faq-a2':'Любой браузер на основе Chromium — Chrome, Edge, Brave. Firefox и Safari пока не поддерживаются. Приложение для Windows не зависит от браузера вообще.',
     'faq-q3':'Сколько это стоит?','faq-a3':'Полностью бесплатно. Открытый исходный код под лицензией MIT — каждая строка кода видна на GitHub, можно форкнуть, изменить и распространять.',
     'faq-q4':'С какими платформами работает?','faq-a4':'Twitter/X, YouTube, Facebook, Instagram, TikTok. Когда Клиппи обнаруживает контент с неподдерживаемой платформы — он говорит об этом прямо.',
+    'faq-q5':'В чём разница между приложением и расширением?','faq-a5':'Расширение работает в браузере и объясняет посты во время просмотра соцсетей. Приложение живёт на рабочем столе, видно всегда, и разговаривает с тобой даже когда ты не в браузере — с обновлениями и напоминаниями.',
+    'faq-q6':'Клиппи понимает русский?','faq-a6':'Да. Все объяснения, подсказки и диалоги — на русском. Интерфейс полностью переведён. Клиппи также работает на иврите и английском.',
     'demo-h2':'Нажми на пост. Узнай почему он здесь.','demo-subp':'Живое демо, которое разбирает каждую рекомендацию на понятные сигналы и показывает, как один запрос меняет ленту в реальном времени.',
     'feed-now-h':'Твоя лента сейчас','feed-now-sub':'Локальная симуляция · без сбора данных','demo-live-badge':'Живое объяснение',
     'clean-button':'Сбалансировать мою ленту','explain-button':'Объясни просто',
@@ -1217,7 +1233,7 @@ window.switchLang = function(lang) {
 
   // Update text/html by ID
   const IDs = [
-    'hero-h1a','hero-h1b','hero-h1c',
+    'hero-h1a','hero-h1b','hero-h1c','hero-explain',
     'idea-h2','idea-p1','idea-p2',
     'prob-h','prob-p','teshuva-h','teshuva-p','vision-card-h','vision-card-p',
     'how-h2','how-subp','step1-h','step1-p','step2-h','step2-p','step3-h','step3-p',
@@ -1230,7 +1246,7 @@ window.switchLang = function(lang) {
     'guide-data-h','guide-data-p','guide-chrome-storage','guide-prefs-path',
     'nav-download-btn','nav-download-mobile','hero-dl-label','cta-dl-label','footer-tagline',
     'guide-intro','guide-iphone-h','guide-iphone-p',
-    'faq-h2','faq-q1','faq-a1','faq-q2','faq-a2','faq-q3','faq-a3','faq-q4','faq-a4',
+    'faq-h2','faq-q1','faq-a1','faq-q2','faq-a2','faq-q3','faq-a3','faq-q4','faq-a4','faq-q5','faq-a5','faq-q6','faq-a6',
     'demo-h2','demo-subp','feed-now-h','feed-now-sub','demo-live-badge','explain-button',
     'signal-three-label'
   ];
