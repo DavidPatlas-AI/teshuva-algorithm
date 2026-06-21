@@ -114,17 +114,16 @@ async function loadAll() {
     `${totalVisits.toLocaleString()} ביקורים ב-7 ימים`
 
   // ── Tab 1: Overview ───────────────────────────────────────────
-  document.getElementById('stat-visits').textContent     = totalVisits.toLocaleString()
-  document.getElementById('stat-social').textContent     = totalSocial.toLocaleString()
-  document.getElementById('stat-categories').textContent =
-    liveCats.length || Object.keys(histCatCounts).filter(k => k !== 'uncategorized').length
+  const postsAnalyzed = Object.values(stored).reduce((a, b) => a + b, 0)
+  document.getElementById('stat-posts-analyzed').textContent = postsAnalyzed.toLocaleString()
+  document.getElementById('stat-dismissed-grid').textContent = dismissedTotal.toLocaleString()
+  document.getElementById('stat-social').textContent         = totalSocial.toLocaleString()
 
   document.getElementById('stat-top-cat').textContent = topLiveCat
     ? CATEGORIES[topLiveCat[0]]?.heLabel ?? topLiveCat[0]
     : (Object.entries(histCatCounts)
         .filter(([k]) => k !== 'uncategorized')
         .sort((a, b) => b[1] - a[1])[0]
-        ?.[0]
           ? CATEGORIES[Object.entries(histCatCounts).sort((a,b)=>b[1]-a[1])[0][0]]?.heLabel ?? '—'
           : '—')
 

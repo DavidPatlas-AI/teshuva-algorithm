@@ -619,10 +619,11 @@
           document.getElementById("dismiss-banner").style.display = "flex";
         }
         document.getElementById("header-sub").textContent = `${totalVisits.toLocaleString()} \u05D1\u05D9\u05E7\u05D5\u05E8\u05D9\u05DD \u05D1-7 \u05D9\u05DE\u05D9\u05DD`;
-        document.getElementById("stat-visits").textContent = totalVisits.toLocaleString();
+        const postsAnalyzed = Object.values(stored).reduce((a, b) => a + b, 0);
+        document.getElementById("stat-posts-analyzed").textContent = postsAnalyzed.toLocaleString();
+        document.getElementById("stat-dismissed-grid").textContent = dismissedTotal.toLocaleString();
         document.getElementById("stat-social").textContent = totalSocial.toLocaleString();
-        document.getElementById("stat-categories").textContent = liveCats.length || Object.keys(histCatCounts).filter((k) => k !== "uncategorized").length;
-        document.getElementById("stat-top-cat").textContent = topLiveCat ? CATEGORIES[topLiveCat[0]]?.heLabel ?? topLiveCat[0] : Object.entries(histCatCounts).filter(([k]) => k !== "uncategorized").sort((a, b) => b[1] - a[1])[0]?.[0] ? CATEGORIES[Object.entries(histCatCounts).sort((a, b) => b[1] - a[1])[0][0]]?.heLabel ?? "\u2014" : "\u2014";
+        document.getElementById("stat-top-cat").textContent = topLiveCat ? CATEGORIES[topLiveCat[0]]?.heLabel ?? topLiveCat[0] : Object.entries(histCatCounts).filter(([k]) => k !== "uncategorized").sort((a, b) => b[1] - a[1])[0] ? CATEGORIES[Object.entries(histCatCounts).sort((a, b) => b[1] - a[1])[0][0]]?.heLabel ?? "\u2014" : "\u2014";
         const sortedSocial = Object.entries(socialCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
         const maxSocial = sortedSocial[0]?.[1] ?? 1;
         document.getElementById("social-sites").innerHTML = sortedSocial.length ? sortedSocial.map(([d, c]) => barRow(d, c, maxSocial, "#A78BFA")).join("") : '<div class="empty">\u05DC\u05D0 \u05E0\u05DE\u05E6\u05D0\u05D5 \u05D1\u05D9\u05E7\u05D5\u05E8\u05D9\u05DD \u05D1\u05E8\u05E9\u05EA\u05D5\u05EA \u05D7\u05D1\u05E8\u05EA\u05D9\u05D5\u05EA \u05D1-7 \u05D9\u05DE\u05D9\u05DD \u05D4\u05D0\u05D7\u05E8\u05D5\u05E0\u05D9\u05DD</div>';

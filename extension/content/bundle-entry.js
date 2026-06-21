@@ -84,7 +84,20 @@ import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
           cat?.heLabel ?? catId,
           cat?.color   ?? '#ff9a1f',
           signals,
-          () => { brain.negative(catId); dismissPost(el) },
+          () => {
+            brain.negative(catId)
+            dismissPost(el)
+            const label   = cat?.heLabel ?? catId
+            const w       = brain.getStats().weights?.[catId] ?? 1.0
+            const replies = [
+              `הבנתי! מפחית ${label} בפיד שלך.`,
+              `קיבלתי — פחות ${label} מעכשיו.`,
+              `רשמתי. ${label} לא מעניין אותך עכשיו.`,
+              w < 0.5 ? `שוב ${label}? כבר מסיר אוטומטית.` : `פחות ${label} — נלמד.`,
+            ]
+            mascot.say(replies[Math.floor(Math.random() * replies.length)])
+            mascot.animate()
+          },
         )
       }
     })
