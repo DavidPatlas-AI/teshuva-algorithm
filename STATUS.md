@@ -10,14 +10,17 @@
 |------|-----|--------|
 | `manifest.json` | ✅ מוכן | MV3, כל 5 פלטפורמות, הרשאות storage/history/tabs |
 | `background.js` | ✅ מקומפל | שמירת סטטיסטיקות, weights, הגדרות |
-| `content/bundle.js` | ✅ מקומפל (2MB) | ה-content script המלא שרץ בדפדפן |
+| `content/bundle.js` | ✅ מקומפל (86KB) | content script — SVG mascot, ללא clippyjs |
 | `content/feed-observer.js` | ✅ | MutationObserver + scroll detection לאיתור פוסטים חדשים |
 | `content/site-adapters.js` | ✅ | CSS selectors ל-Twitter/X, Facebook, Instagram, YouTube, TikTok |
 | `content/action-engine.js` | ✅ | לוחץ "Not Interested" / "Hide" בשם המשתמש — 5 פלטפורמות |
 | `content/dialogue-ui.js` | ✅ | שדה קלט טקסטואלי — שאל את קליפי |
 | `content/feedback-ui.js` | ✅ | כפתורי 👍/👎 שמופיעים כשקליפי שואל שאלה |
 | `content/youtube-innertube.js` | ✅ | מיירט YouTube InnerTube API לכותרות לפני render |
+| `content/post-badge.js` | ✅ | Badge ויזואלי על כל פוסט: קטגוריה + 3 אותות + % + כפתור ❌ |
 | `popup/popup.html + popup.js` | ✅ | חלון פופ-אפ עם סטטיסטיקות וגרפים |
+| `popup/onboarding.html` | ✅ | 5 שקפי onboarding למשתמשים חדשים |
+| `icons/` | ✅ | icon16/32/48/128.png |
 
 ### המוח (`brain/`)
 | קובץ | מצב | תיאור |
@@ -26,13 +29,15 @@
 | `classifier.js` | ✅ | ניקוד keyword-based עם משקלות (w:1/2/3) |
 | `explanations.js` | ✅ | הסברים לפי קטגוריה, תובנות שבועיות, ברכות שעתיות |
 | `intent.js` | ✅ | 5 סוגי כוונה: DOMINANT / RECURRING / FIRST_TIME / TEST / EXPLICIT |
-| `brain-api.js` | ✅ | API ציבורי יחיד — observe, explain, intent, getStats |
+| `signals.js` | ✅ | 3 אותות נפרדים: היסטוריה אישית, משקל עניין, תדירות סשן |
+| `brain-api.js` | ✅ | API ציבורי יחיד — observe, explain, intent, signals, getStats |
 | `state.js` | ✅ | אבסטרקציה לאחסון (session + allTime + weights + dismissed) |
 | `adapters/` | ✅ | chrome-adapter + electron-adapter |
 
 ### המסכה — קליפי (`mascot/`)
 | קובץ | מצב | תיאור |
 |------|-----|--------|
+| `svg-mascot.js` | ✅ | מסכת SVG + CSS — CSP-safe לחלוטין, אין eval/new Function |
 | `mascot-controller.js` | ✅ | מתאם בין brain ↔ mascot ↔ user |
 | `animations.js` | ✅ | mood → animation mapping (greet/think/excited/confused/idle) |
 | `mascot.svg` | ✅ | הדמות הגרפית של קליפי |
@@ -57,47 +62,19 @@
 |------|-----|--------|
 | `shared/constants.js` | ✅ | STORAGE_KEY, message types, cooldowns |
 | `tests/` | ✅ | brain.test, classifier.test, questions.test, state.test |
-| `web/index.html` | ✅ | אתר הנחיתה — **פעיל ב-Netlify** |
+| `web/index.html` | ✅ | אתר הנחיתה — **פעיל ב-Netlify**, מתורגם: עברית / אנגלית / רוסית |
 
 ---
 
-## מה חסר / לא מוכן ❌
+## מה עוד ניתן לשפר 🔧
 
-### 1. **Badge הסבר ויזואלי על פוסטים** — הדבר הכי חשוב ❌
-> הבטחנו: "כל פוסט מקבל הסבר — צפייה קודמת +62%, טרנד +24%, ממומן +14%"
-> 
-> מה קיים: קליפי *אומר* משהו בבלון. אין תגית שמופיעה *על הפוסט עצמו*.
+### 1. **פופ-אפ — ממשק למשתמש חדש** ⚠️
+> הפופ-אפ מציג נתונים אבל עלול להיות מבלבל כשאין עדיין היסטוריה.
+> שיפור: הצג הודעת "ברוך הבא" ו-placeholder כשהנתונים ריקים.
 
-**מה צריך לבנות:**
-- `extension/content/post-badge.js` — תגית/badge שמופיע מתחת לפוסט
-- מראה: קטגוריה + צבע + 2-3 אותות עם ‎%‎ + כפתור ❌
-
-### 2. **חישוב אותות מרובים** ❌
-> כרגע: מחזיר רק "פוליטיקה — 47% מהפיד שלך"
-> 
-> צריך: 3 אותות נפרדים (היסטוריה אישית, משקל פידבק, תדירות session)
-
-**מה צריך לבנות:**
-- פונקציה `buildSignals(categoryId, allTimeStats, weights, sessionStats)` ב-`brain/intent.js`
-
-### 3. **אייקונים חסרים** ❌
-> `icon16.png` ו-`icon32.png` חסרים (build.bat מתריע)
-> 
-> **פתרון:** פתח `extension/icon-generator.html` בדפדפן ← "הורד את כל האייקונים"
-
-### 4. **bundle.js לא מסונכרן עם הקוד** ⚠️
-> הקוד המקור עודכן אבל הבundle הקומפל עלול להיות ישן.
-> 
-> **פתרון:** הרץ `npm run build` לפני כל בדיקה של התוסף.
-
-### 5. **clippyjs ו-CSP של MV3** ⚠️
-> Manifest V3 אוסר on `unsafe-eval` — clippyjs משתמשת ב-new Function().
-> ייתכן שהתוסף נחסם ב-Chrome חדש.
-> 
-> **פתרון אפשרי:** החלף את דמות קליפי ב-SVG + CSS animation מותאמת.
-
-### 6. **הפופ-אפ — ממשק דל** ⚠️
-> מציג גרפים וסטטיסטיקות אבל לא מספיק ידידותי למשתמש חדש.
+### 2. **בדיקה אמיתית על אתרים** ⚠️
+> התוסף לא נבדק בדפדפן Chrome אמיתי על Twitter / Facebook.
+> לבדיקה: טען כ-Unpacked extension, פתח Twitter, וודא שקליפי מופיע.
 
 ---
 
@@ -109,12 +86,6 @@ npm run build
 
 # בנה רק את התוסף (content script)
 npx esbuild extension/content/bundle-entry.js --bundle --format=iife --outfile=extension/content/bundle.js
-
-# בנה רק את אפליקציית Desktop
-npm run build:desktop
-
-# צור installer של Windows
-npm run dist
 ```
 
 ---
@@ -125,9 +96,3 @@ npm run dist
 2. פתח `chrome://extensions`
 3. הפעל "מצב מפתח"
 4. "טען תוסף לא ארוז" ← בחר תיקיית `extension/`
-
----
-
-## הצעד הבא המומלץ
-
-**בנה `post-badge.js`** — זהו הפיצ'ר שיהפוך את קליפי מ"מסביר בבלון" ל"מציג הסבר על כל פוסט". זה יביא את המוצר לתואם עם מה שמובטח באתר.

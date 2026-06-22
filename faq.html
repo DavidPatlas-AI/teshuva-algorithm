@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>שאלות נפוצות — האלגוריתם שחזר בתשובה</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#06080D;--bg2:#0f0a1e;--bg3:#1a0a3d;--purple:#7C3AED;--purple-light:#a78bfa;
+  --purple-xlight:#c4b5fd;--amber:#ff9a1f;--text:#e9d5ff;--text2:#c4b5fd;--text3:#9ca3af;
+  --border:rgba(124,58,237,.25);--card:rgba(124,58,237,.08)}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;direction:rtl}
+nav{position:sticky;top:0;z-index:100;background:rgba(6,8,13,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;color:var(--text);text-decoration:none}
+.nav-logo span{font-size:22px}
+.nav-cta{background:var(--purple);color:white;border:none;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none}
+
+.hero{text-align:center;padding:64px 24px 48px;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(124,58,237,.15),transparent)}
+.hero h1{font-size:clamp(32px,5vw,50px);font-weight:800;margin-bottom:12px}
+.hero h1 span{color:var(--purple-light)}
+.hero p{font-size:16px;color:var(--text2);max-width:500px;margin:0 auto 32px}
+.search-wrap{max-width:480px;margin:0 auto;position:relative}
+.search-wrap input{width:100%;padding:14px 20px 14px 48px;background:rgba(124,58,237,.1);
+  border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;
+  font-family:inherit;direction:rtl;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:var(--purple-light)}
+.search-wrap input::placeholder{color:var(--text3)}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}
+
+.content{max-width:780px;margin:0 auto;padding:48px 24px 80px}
+
+/* Category tabs */
+.cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+.cat-tab{padding:8px 18px;border-radius:20px;font-size:13px;cursor:pointer;
+  border:1.5px solid var(--border);color:var(--text2);background:transparent;transition:all .2s}
+.cat-tab.active{background:var(--purple);border-color:var(--purple);color:white;font-weight:600}
+.cat-tab:hover:not(.active){border-color:var(--purple-light);color:var(--text)}
+
+/* FAQ section */
+.faq-section{margin-bottom:40px}
+.faq-section-title{font-size:18px;font-weight:700;color:var(--purple-light);margin-bottom:16px;
+  padding-bottom:8px;border-bottom:1px solid var(--border)}
+.faq-item{border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.faq-item:hover{border-color:rgba(124,58,237,.45)}
+.faq-q{padding:18px 20px;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;font-size:15px;font-weight:600;user-select:none;transition:background .2s}
+.faq-q:hover{background:var(--card)}
+.faq-q .arrow{font-size:18px;transition:transform .3s;flex-shrink:0;color:var(--purple-light)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.faq-a.open{max-height:400px;padding:0 20px 20px}
+.faq-a p{font-size:14px;color:var(--text2);line-height:1.75}
+.faq-a code{background:rgba(124,58,237,.2);padding:2px 6px;border-radius:4px;font-size:13px}
+.faq-item.open{border-color:rgba(124,58,237,.5)}
+.faq-item.open .arrow{transform:rotate(180deg)}
+
+/* no-results */
+.no-results{text-align:center;padding:40px;color:var(--text3)}
+.no-results span{font-size:48px;display:block;margin-bottom:12px}
+
+/* CTA box */
+.cta-box{background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(124,58,237,.05));
+  border:1.5px solid var(--border);border-radius:20px;padding:32px;
+  text-align:center;margin-top:48px}
+.cta-box h3{font-size:22px;font-weight:700;margin-bottom:8px}
+.cta-box p{font-size:14px;color:var(--text2);margin-bottom:20px}
+.cta-box a{display:inline-block;background:var(--purple);color:white;
+  padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none}
+
+footer{border-top:1px solid var(--border);padding:24px 40px;display:flex;
+  justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer p,footer a{font-size:12px;color:var(--text3);text-decoration:none}
+footer a:hover{color:var(--purple-light)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="landing-page.html"><span>📎</span> האלגוריתם שחזר בתשובה</a>
+  <a class="nav-cta" href="#">התקן חינם</a>
+</nav>
+
+<section class="hero">
+  <h1>שאלות <span>נפוצות</span></h1>
+  <p>כל מה שרצית לדעת על קליפי, הפרטיות שלך, ואיך הכול עובד.</p>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="חפש שאלה..." oninput="filterFaq(this.value)">
+  </div>
+</section>
+
+<div class="content">
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="filterCat('all',this)">הכול</button>
+    <button class="cat-tab" onclick="filterCat('general',this)">כללי</button>
+    <button class="cat-tab" onclick="filterCat('privacy',this)">פרטיות</button>
+    <button class="cat-tab" onclick="filterCat('tech',this)">טכני</button>
+    <button class="cat-tab" onclick="filterCat('billing',this)">תשלום</button>
+    <button class="cat-tab" onclick="filterCat('mobile',this)">מובייל</button>
+  </div>
+
+  <div id="faq-container">
+
+    <div class="faq-section" data-cat="general">
+      <div class="faq-section-title">כללי</div>
+
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">מה זה האלגוריתם שחזר בתשובה? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>זה תוסף Chrome שמנתח את הפיד שלך ברשתות החברתיות ומסביר לך <b>למה</b> אתה רואה מה שאתה רואה. קליפי — המסקות שלנו — לומד מהעדפות שלך ומסיר פוסטים לא רצויים בלי לשאול.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם זה חינמי? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כן! הגרסה הבסיסית חינמית לחלוטין ולתמיד. יש גם גרסת פרו עם תכונות מתקדמות. ראה <a href="pricing.html" style="color:var(--purple-light)">דף התמחור</a>.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">איזה דפדפנים נתמכים? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כרגע Chrome ו-Edge (ו-Brave). Firefox ו-Safari — בתכנון. התוסף בנוי על Manifest V3 שהוא הסטנדרט של כרום.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">אילו רשתות חברתיות נתמכות? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>Twitter/X, Facebook, Instagram, YouTube, TikTok. Reddit ו-LinkedIn — בתכנון לגרסה הבאה.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-section" data-cat="privacy">
+      <div class="faq-section-title">פרטיות ואבטחה</div>
+
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם הנתונים שלי נשלחים לשרת? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p><b>לא.</b> כל הנתונים נשמרים ב-<code>chrome.storage.local</code> — בדפדפן שלך בלבד. אין שרת, אין API חיצוני, אין שום שליחה של מידע.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם קליפי קורא את הודעות הפרטיות שלי? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>לא! קליפי קורא רק תוכן פומבי בפיד — כותרות, תגיות, שמות ערוצים. הוא לא ניגש להודעות, לתגובות פרטיות, לסיסמאות, או לכל מידע אחר.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">איך אני מוחק את כל הנתונים? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>פשוט מאוד: פתח את הפופאפ של התוסף ← לחץ "אפס נתונים" בתחתית. זה מוחק כל מה שנשמר מקומית. הסרת התוסף מהדפדפן גם מוחקת הכל.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם הקוד פתוח? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כן! הקוד המלא זמין ב-GitHub: <code>github.com/DavidPatlas-AI/teshuva-algorithm</code>. תוכל לבדוק בעצמך שאנחנו לא עושים שום דבר מחשיד.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-section" data-cat="tech">
+      <div class="faq-section-title">שאלות טכניות</div>
+
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">למה אני צריך לאשר הרשאת "היסטוריה"? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כדי לנתח אילו אתרים ביקרת ובאיזו תדירות. הנתונים נשמרים מקומית בלבד. בלי ההרשאה הזו קליפי לא יכול להציג את הסטטיסטיקה השבועית.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">התוסף מאט את הדפדפן שלי? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>לא. קליפי רץ בצורה lazy — הוא מנתח תוכן רק כשאתה גולל. הצריכת CPU ממוצעת היא פחות מ-1% אפילו בגלילה מהירה.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">קליפי לא מזהה תוכן בפיד שלי. מה לעשות? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>נסה: 1) רענן את הדף, 2) ודא שהתוסף מופעל (אייקון בסרגל), 3) גלול מטה כדי לטעון תוכן נוסף. אם הבעיה נמשכת — כתוב לנו ב-<a href="support.html" style="color:var(--purple-light)">דף התמיכה</a>.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-section" data-cat="billing">
+      <div class="faq-section-title">תשלום ומנוי</div>
+
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם יש תקופת ניסיון לפרו? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כן — 14 יום חינם, ללא כרטיס אשראי. אחרי 14 יום תוכל להחליט אם להמשיך.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">איך אני מבטל מנוי? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כל הגדרות → "ניהול מנוי" → "בטל מנוי". ביטול מיידי, ללא עמלות, ללא שאלות.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם אפשר לקבל חשבונית? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כן, חשבוניות מס מלאות זמינות בתוכנית הצוות. שלח מייל ל-susp4514@gmail.com עם שם העסק.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-section" data-cat="mobile">
+      <div class="faq-section-title">אפליקציית מובייל</div>
+
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">האם יש אפליקציית מובייל? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>כן! אפליקציה ל-Android ו-iOS בפיתוח פעיל. בבטא בקרוב — רשום את עצמך לרשימת ההמתנה ב-<a href="support.html" style="color:var(--purple-light)">דף התמיכה</a>.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggle(this)">
+        <div class="faq-q">מה האפליקציה עושה שהתוסף לא? <span class="arrow">⌄</span></div>
+        <div class="faq-a"><p>האפליקציה מציגה את קליפי כ-Chat Head שמרחף מעל כל האפליקציות, מציגה תובנות שבועיות ב-push notification, ועובדת גם כשהדפדפן סגור.</p></div>
+      </div>
+    </div>
+
+    <div id="no-results" class="no-results" style="display:none">
+      <span>🤔</span>
+      לא מצאנו תשובה לשאלה שלך.<br>
+      <a href="support.html" style="color:var(--purple-light);text-decoration:none">שאל אותנו ישירות →</a>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h3>לא מצאת תשובה?</h3>
+    <p>הצוות שלנו עונה בדרך כלל תוך 24 שעות.</p>
+    <a href="support.html">צור קשר →</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 האלגוריתם שחזר בתשובה</p>
+  <div style="display:flex;gap:20px">
+    <a href="docs/privacy-policy.html">פרטיות</a>
+    <a href="pricing.html">תמחור</a>
+    <a href="support.html">תמיכה</a>
+    <a href="landing-page.html">בית</a>
+  </div>
+</footer>
+
+<script>
+function toggle(item) {
+  const a = item.querySelector('.faq-a');
+  const open = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-a').classList.remove('open');
+  });
+  if (!open) { item.classList.add('open'); a.classList.add('open'); }
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('search').value = '';
+  document.querySelectorAll('.faq-section').forEach(s => {
+    s.style.display = (cat === 'all' || s.dataset.cat === cat) ? '' : 'none';
+  });
+  document.getElementById('no-results').style.display = 'none';
+}
+
+function filterFaq(q) {
+  q = q.trim().toLowerCase();
+  let any = false;
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    const show = !q || text.includes(q);
+    item.style.display = show ? '' : 'none';
+    if (show) any = true;
+  });
+  document.querySelectorAll('.faq-section').forEach(s => {
+    const vis = [...s.querySelectorAll('.faq-item')].some(i => i.style.display !== 'none');
+    s.style.display = vis ? '' : 'none';
+  });
+  document.getElementById('no-results').style.display = any ? 'none' : '';
+}
+</script>
+</body>
+</html>

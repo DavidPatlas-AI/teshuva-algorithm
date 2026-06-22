@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<title>ברוך הבא — האלגוריתם שחזר בתשובה</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  width:420px;min-height:580px;
+  font-family:'Segoe UI',Arial,sans-serif;
+  background:linear-gradient(160deg,#0f0a1e 0%,#1a0a3d 60%,#06080d 100%);
+  color:#e9d5ff;direction:rtl;overflow:hidden;
+}
+
+/* ─── slide container ─────────────────────────── */
+.slides{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);width:500%}
+.slide{width:20%;min-height:580px;padding:32px 28px;
+       display:flex;flex-direction:column;align-items:center;justify-content:space-between}
+
+/* ─── mascot / emoji ─────────────────────────── */
+.mascot{font-size:72px;margin-bottom:8px;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.mascot-sm{font-size:48px;margin-bottom:6px}
+
+/* ─── text ────────────────────────────────────── */
+.slide-title{font-size:26px;font-weight:800;text-align:center;line-height:1.25;
+  background:linear-gradient(135deg,#e9d5ff,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.slide-sub{font-size:14px;color:#c4b5fd;text-align:center;line-height:1.65;margin-bottom:20px}
+
+/* ─── feature list ────────────────────────────── */
+.feat-list{list-style:none;width:100%;margin-bottom:20px}
+.feat-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;
+  font-size:13px;line-height:1.5;color:#e9d5ff}
+.feat-list li span.ic{font-size:22px;flex-shrink:0}
+.feat-list li b{color:#fbbf24}
+
+/* ─── permission cards ───────────────────────── */
+.perm-card{
+  background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;
+  display:flex;align-items:flex-start;gap:10px;width:100%}
+.perm-icon{font-size:22px;flex-shrink:0}
+.perm-name{font-size:13px;font-weight:700;color:#a78bfa}
+.perm-desc{font-size:11px;color:#c4b5fd;margin-top:2px;line-height:1.45}
+.perm-badge{
+  margin-right:auto;font-size:10px;font-weight:700;
+  background:#065f46;color:#6ee7b7;
+  border-radius:20px;padding:2px 8px;white-space:nowrap;flex-shrink:0}
+
+/* ─── platform pills ─────────────────────────── */
+.platforms{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.platform-pill{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);
+  border-radius:20px;padding:7px 14px;font-size:12px;color:#e9d5ff}
+.platform-pill span{font-size:16px}
+
+/* ─── privacy box ────────────────────────────── */
+.privacy-box{
+  background:rgba(5,46,22,.6);border:1px solid #059669;
+  border-radius:12px;padding:14px 16px;margin-bottom:16px;
+  font-size:12px;line-height:1.6;color:#6ee7b7;width:100%}
+.privacy-box strong{color:#34d399}
+
+/* ─── dots ───────────────────────────────────── */
+.dots{display:flex;gap:8px;margin-bottom:20px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(167,139,250,.3);
+  transition:all .3s;cursor:pointer}
+.dot.active{background:#a78bfa;width:24px;border-radius:4px}
+
+/* ─── buttons ────────────────────────────────── */
+.btn-primary{
+  width:100%;padding:14px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,#7C3AED,#a78bfa);
+  color:white;font-size:16px;font-weight:700;cursor:pointer;
+  transition:transform .15s,box-shadow .15s;
+  box-shadow:0 4px 20px rgba(124,58,237,.4)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,58,237,.5)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{
+  width:100%;padding:11px;border-radius:12px;
+  background:transparent;border:1.5px solid rgba(167,139,250,.35);
+  color:#c4b5fd;font-size:14px;cursor:pointer;margin-top:8px;
+  transition:border-color .2s}
+.btn-ghost:hover{border-color:#a78bfa}
+.btn-row{display:flex;gap:10px;width:100%}
+.btn-row .btn-primary{flex:2}
+.btn-row .btn-ghost{flex:1;margin-top:0;font-size:13px}
+
+/* ─── big emoji icon ─────────────────────────── */
+.big-icon{font-size:90px;margin:16px 0 10px;text-align:center;display:block}
+.check-list{list-style:none;width:100%}
+.check-list li{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:#c4b5fd;padding:8px 0;
+  border-bottom:1px solid rgba(124,58,237,.15)}
+.check-list li:last-child{border:none}
+.check-list li::before{content:"✓";color:#34d399;font-weight:700;font-size:15px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="slides" id="slides">
+
+  <!-- ══ SLIDE 1 — Welcome ══════════════════════ -->
+  <div class="slide">
+    <div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%">
+      <div class="mascot">📎</div>
+      <div class="slide-title">היי, אני קליפי.<br>חזרתי בתשובה.</div>
+      <div class="slide-sub">
+        הפעם אני לא מציק לך עם הצעות מיותרות —<br>
+        אני עובד <b style="color:#fbbf24">בשבילך</b> כדי להחזיר לך שליטה<br>
+        על האלגוריתמים של הרשתות החברתיות.
+      </div>
+      <div class="platforms">
+        <div class="platform-pill"><span>🐦</span> Twitter / X</div>
+        <div class="platform-pill"><span>📘</span> Facebook</div>
+        <div class="platform-pill"><span>📸</span> Instagram</div>
+        <div class="platform-pill"><span>▶️</span> YouTube</div>
+        <div class="platform-pill"><span>🎵</span> TikTok</div>
+      </div>
+    </div>
+    <div style="width:100%">
+      <div class="dots" id="dots1" style="justify-content:center">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <button class="btn-primary" onclick="next()">בוא נתחיל ←</button>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 2 — What I Do ════════════════════ -->
+  <div class="slide">
+    <div></div>
+    <div style="width:100%">
+      <div class="mascot-sm" style="text-align:center">🔍</div>
+      <div class="slide-title" style="font-size:22px">מה אני עושה?</div>
+      <ul class="feat-list">
+        <li><span class="ic">📊</span><div>
+          <b>מנתח מה אתה רואה</b><br>
+          מזהה קטגוריות תוכן בזמן אמת — פוליטיקה, ספורט, בידור, טכנולוגיה ועוד.
+        </div></li>
+        <li><span class="ic">🔍</span><div>
+          <b>מסביר למה</b><br>
+          "ראית 47 סרטוני ספורט השבוע — לכן YouTube ממשיך להמליץ על ספורט"
+        </div></li>
+        <li><span class="ic">🗑️</span><div>
+          <b>מסיר מה שלא מעניין</b><br>
+          לומד מהעדפות שלך ומסיר פוסטים לא רלוונטיים, בלי לשאול.
+        </div></li>
+        <li><span class="ic">❤️</span><div>
+          <b>מעצב את הפיד שלך</b><br>
+          סמן "מעניין" ו"לא מעניין" — קליפי יזכור לתמיד.
+        </div></li>
+      </ul>
+    </div>
+    <div style="width:100%">
+      <div class="dots" style="justify-content:center">
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="prev()">→ חזור</button>
+        <button class="btn-primary" onclick="next()">הבנתי ←</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 3 — Privacy ══════════════════════ -->
+  <div class="slide">
+    <div></div>
+    <div style="width:100%">
+      <div class="mascot-sm" style="text-align:center">🔒</div>
+      <div class="slide-title" style="font-size:22px">הפרטיות שלך</div>
+      <div class="privacy-box">
+        <strong>כל הנתונים נשמרים אצלך בלבד.</strong><br>
+        אנחנו לא שולחים, לא מוכרים, לא מאחסנים בשרת — כלום.<br>
+        אין חשבון. אין כניסה. אין מעקב.
+      </div>
+      <ul class="check-list">
+        <li>כל הנתונים ב-chrome.storage.local — על המחשב שלך בלבד</li>
+        <li>אין חיבור לשרת חיצוני</li>
+        <li>אין אנליטיקס, אין טלמטריה</li>
+        <li>מחיקה מלאה — לחץ "אפס נתונים" בכל עת</li>
+        <li>קוד פתוח — תוכל לבדוק בעצמך</li>
+      </ul>
+    </div>
+    <div style="width:100%">
+      <div class="dots" style="justify-content:center">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="prev()">→ חזור</button>
+        <button class="btn-primary" onclick="next()">מצוין ←</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4 — Permissions ══════════════════ -->
+  <div class="slide">
+    <div></div>
+    <div style="width:100%">
+      <div class="mascot-sm" style="text-align:center">🛡️</div>
+      <div class="slide-title" style="font-size:22px">למה אני צריך<br>הרשאות?</div>
+      <div class="perm-card">
+        <div class="perm-icon">📜</div>
+        <div style="flex:1">
+          <div class="perm-name">היסטוריית גלישה</div>
+          <div class="perm-desc">כדי לנתח אילו אתרים ביקרת ובאיזו תדירות — נשמר מקומית בלבד</div>
+        </div>
+        <div class="perm-badge">מקומי בלבד</div>
+      </div>
+      <div class="perm-card">
+        <div class="perm-icon">🗂️</div>
+        <div style="flex:1">
+          <div class="perm-name">אחסון מקומי</div>
+          <div class="perm-desc">לשמור את הנתונים, ההעדפות והסטטיסטיקה שלך</div>
+        </div>
+        <div class="perm-badge">מקומי בלבד</div>
+      </div>
+      <div class="perm-card">
+        <div class="perm-icon">🌐</div>
+        <div style="flex:1">
+          <div class="perm-name">גישה לרשתות חברתיות</div>
+          <div class="perm-desc">לקרוא ולסנן תוכן רק בטוויטר, פייסבוק, אינסטגרם, יוטיוב, טיקטוק</div>
+        </div>
+        <div class="perm-badge">5 אתרים בלבד</div>
+      </div>
+    </div>
+    <div style="width:100%">
+      <div class="dots" style="justify-content:center">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="prev()">→ חזור</button>
+        <button class="btn-primary" onclick="next()">סבבה ←</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 5 — Ready! ═══════════════════════ -->
+  <div class="slide">
+    <div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%">
+      <div class="mascot" style="animation-duration:1.2s">🎉</div>
+      <div class="slide-title">מוכן!</div>
+      <div class="slide-sub">
+        קליפי מותקן ועובד.<br>
+        פתח Twitter, YouTube, או כל רשת חברתית אחרת —<br>
+        קליפי יתחיל לנתח <b style="color:#fbbf24">מיד</b>.
+      </div>
+      <div style="background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);
+        border-radius:12px;padding:14px 16px;width:100%;text-align:center;margin-bottom:16px">
+        <div style="font-size:12px;color:#c4b5fd;margin-bottom:6px">📌 לפתיחה מהירה</div>
+        <div style="font-size:13px;color:#e9d5ff">לחץ על אייקון 📎 בסרגל הכלים</div>
+      </div>
+    </div>
+    <div style="width:100%">
+      <div class="dots" style="justify-content:center">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+      </div>
+      <button class="btn-primary" onclick="finish()" id="btn-finish">
+        התחל לגלוש! 🚀
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let current = 0;
+const total = 5;
+
+function go(n) {
+  current = Math.max(0, Math.min(total - 1, n));
+  document.getElementById('slides').style.transform = `translateX(${current * 20}%)`;
+}
+function next() { go(current + 1); }
+function prev() { go(current - 1); }
+
+function finish() {
+  chrome.storage.local.set({onboardingDone: true}, () => {
+    window.close();
+  });
+}
+
+// pin button feedback
+document.getElementById('btn-finish').addEventListener('click', function() {
+  this.textContent = '✓ מוכן!';
+  this.style.background = 'linear-gradient(135deg,#065f46,#059669)';
+});
+</script>
+</body>
+</html>

@@ -1,10 +1,8 @@
 // Content script entry — מחבר mascot-controller + feed-observer + dialogue + innertube
 // כל לוגיקה של brain/questions/animations חיה ב-mascot-controller
 
-import { initAgent } from 'clippyjs'
-import ClippyAgent   from 'clippyjs/agents/clippy'
-
-import { createBrain }                  from '../../brain/brain-api.js'
+import { createSVGMascot }               from '../../mascot/svg-mascot.js'
+import { createBrain }                   from '../../brain/brain-api.js'
 import { createChromeAdapter }           from '../../brain/adapters/chrome-adapter.js'
 import { createMascotController }        from '../../mascot/mascot-controller.js'
 import { getSelectorForCurrentSite }     from './site-adapters.js'
@@ -18,23 +16,18 @@ import { CATEGORIES }                    from '../../brain/categories.js'
 import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
 
 ;(async () => {
-  // ── Mascot (Clippy) ────────────────────────────────────────
-  const agent = await initAgent(ClippyAgent)
-  agent.show()
-
-  // agent._el הוא האלמנט האמיתי — clippyjs לא מוסיף class
-  const clippyEl = agent._el
-  if (clippyEl) {
-    clippyEl.style.cssText += ';position:fixed!important;bottom:30px!important;right:30px!important;top:auto!important;left:auto!important;z-index:2147483647!important;cursor:pointer!important;'
-  }
+  // ── Mascot (SVG — CSP-safe, no eval/new Function) ─────────
+  const svgMascot = createSVGMascot()
+  svgMascot.init()
+  const clippyEl = svgMascot._el
 
   // ── IMascot adapter ────────────────────────────────────────
   const mascot = {
-    say:     text => agent.speak(text),
-    animate: name => name ? agent.play(name) : agent.animate(),
-    show:    ()   => agent.show(),
-    hide:    ()   => agent.hide(),
-    onClick: cb   => clippyEl?.addEventListener('click', cb),
+    say:     text => svgMascot.say(text),
+    animate: name => svgMascot.animate(name ?? ''),
+    show:    ()   => svgMascot.show(),
+    hide:    ()   => svgMascot.hide(),
+    onClick: cb   => svgMascot.onClick(cb),
   }
 
   // ── Settings ───────────────────────────────────────────────
@@ -68,7 +61,7 @@ import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
   const dialogueUI = createDialogueUI(text => {
     controller.onUserText(text)
   })
-  clippyEl?.addEventListener('click', () => dialogueUI.toggle())
+  svgMascot.onClick(() => dialogueUI.toggle())
 
   // ── Feed Observer ──────────────────────────────────────────
   const selector = getSelectorForCurrentSite()
