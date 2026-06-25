@@ -10,5 +10,5 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
+    Content-Security-Policy = "frame-ancestors 'self' https://*.netlify.app http://localhost:* http://127.0.0.1:*;"

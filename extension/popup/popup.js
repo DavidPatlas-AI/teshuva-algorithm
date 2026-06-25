@@ -620,6 +620,22 @@
         }
         document.getElementById("header-sub").textContent = `${totalVisits.toLocaleString()} \u05D1\u05D9\u05E7\u05D5\u05E8\u05D9\u05DD \u05D1-7 \u05D9\u05DE\u05D9\u05DD`;
         const postsAnalyzed = Object.values(stored).reduce((a, b) => a + b, 0);
+        if (postsAnalyzed === 0 && totalSocial === 0) {
+          document.getElementById("tab-overview").innerHTML = `
+      <div style="text-align:center;padding:28px 16px">
+        <div style="font-size:48px;margin-bottom:12px">\u{1F4CE}</div>
+        <div style="font-size:15px;font-weight:700;color:#1F2937;margin-bottom:8px">\u05D1\u05E8\u05D5\u05DA \u05D4\u05D1\u05D0!</div>
+        <div style="font-size:12px;color:#6B7280;line-height:1.7;margin-bottom:20px">
+          \u05E7\u05DC\u05D9\u05E4\u05D9 \u05DE\u05D5\u05DB\u05DF \u05DC\u05E0\u05EA\u05D7 \u05D0\u05EA \u05D4\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA.<br>
+          \u05E4\u05EA\u05D7 <b>Twitter, YouTube, Facebook</b> \u05D0\u05D5 \u05DB\u05DC \u05E8\u05E9\u05EA \u05D7\u05D1\u05E8\u05EA\u05D9\u05EA \u05D0\u05D7\u05E8\u05EA<br>
+          \u05D5\u05E7\u05DC\u05D9\u05E4\u05D9 \u05D9\u05EA\u05D7\u05D9\u05DC \u05DC\u05D0\u05E1\u05D5\u05E3 \u05E0\u05EA\u05D5\u05E0\u05D9\u05DD \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.
+        </div>
+        <div style="background:#EDE9FE;border-radius:10px;padding:12px 14px;font-size:12px;color:#5B21B6;text-align:right">
+          \u{1F4A1} \u05D2\u05DC\u05D5\u05DC \u05DB\u05DE\u05D4 \u05E4\u05D5\u05E1\u05D8\u05D9\u05DD, \u05D5\u05D0\u05D6 \u05D7\u05D6\u05D5\u05E8 \u05DC\u05DB\u05D0\u05DF \u05DC\u05E8\u05D0\u05D5\u05EA \u05D0\u05EA \u05D4\u05E0\u05D9\u05EA\u05D5\u05D7
+        </div>
+      </div>`;
+          return;
+        }
         document.getElementById("stat-posts-analyzed").textContent = postsAnalyzed.toLocaleString();
         document.getElementById("stat-dismissed-grid").textContent = dismissedTotal.toLocaleString();
         document.getElementById("stat-social").textContent = totalSocial.toLocaleString();

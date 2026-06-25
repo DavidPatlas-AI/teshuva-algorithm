@@ -115,6 +115,25 @@ async function loadAll() {
 
   // ── Tab 1: Overview ───────────────────────────────────────────
   const postsAnalyzed = Object.values(stored).reduce((a, b) => a + b, 0)
+
+  // Empty state for new users
+  if (postsAnalyzed === 0 && totalSocial === 0) {
+    document.getElementById('tab-overview').innerHTML = `
+      <div style="text-align:center;padding:28px 16px">
+        <div style="font-size:48px;margin-bottom:12px">📎</div>
+        <div style="font-size:15px;font-weight:700;color:#1F2937;margin-bottom:8px">ברוך הבא!</div>
+        <div style="font-size:12px;color:#6B7280;line-height:1.7;margin-bottom:20px">
+          קליפי מוכן לנתח את הפיד שלך.<br>
+          פתח <b>Twitter, YouTube, Facebook</b> או כל רשת חברתית אחרת<br>
+          וקליפי יתחיל לאסוף נתונים אוטומטית.
+        </div>
+        <div style="background:#EDE9FE;border-radius:10px;padding:12px 14px;font-size:12px;color:#5B21B6;text-align:right">
+          💡 גלול כמה פוסטים, ואז חזור לכאן לראות את הניתוח
+        </div>
+      </div>`
+    return
+  }
+
   document.getElementById('stat-posts-analyzed').textContent = postsAnalyzed.toLocaleString()
   document.getElementById('stat-dismissed-grid').textContent = dismissedTotal.toLocaleString()
   document.getElementById('stat-social').textContent         = totalSocial.toLocaleString()
