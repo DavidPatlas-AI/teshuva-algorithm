@@ -270,10 +270,9 @@
         <a href="#idea" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">הרעיון</a>
         <a href="#how" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">איך עובד</a>
         <a href="#live-demo" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">דמו</a>
-        <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">יכולות</a>
+        <a href="#analyzer" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">נתח טקסט</a>
         <a href="#roadmap" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">Roadmap</a>
         <a href="#waitlist" style="color:var(--accent,#ff9a1f);text-decoration:none;font-size:13.5px;font-weight:700">הצטרפו ←</a>
-        <a href="#faq" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">FAQ</a>
         <div class="lang-switcher" id="lang-switcher-desktop">
           <button class="lang-btn active" id="lang-he" onclick="switchLang('he')">עב</button>
           <button class="lang-btn" id="lang-en" onclick="switchLang('en')">EN</button>
@@ -802,6 +801,131 @@
     <!-- responsive collapse for mobile -->
     <style>#guide-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}@media(max-width:900px){#guide-cards-grid{grid-template-columns:1fr}}</style>
   </section>
+
+  <!-- PASTE ANALYZER — MVP -->
+  <section id="analyzer" class="sec" style="position:relative;z-index:4;padding-top:72px;padding-bottom:64px">
+    <div style="text-align:center;margin-bottom:36px">
+      <div style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr">// paste & analyze</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;letter-spacing:-.6px;margin:10px 0 8px">הדבק — קבל ניתוח מיידי</h2>
+      <p style="color:#9a9182;font-size:16px;max-width:520px;margin:0 auto;line-height:1.6">הדבק כותרת פוסט, ציוץ, כתבה, או כל טקסט אחר — קליפי יסביר איזה מנגנון אלגוריתמי יש פה ומה המטרה שלו.</p>
+    </div>
+    <div style="max-width:780px;margin:0 auto">
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <textarea id="analyzer-input" placeholder="הדבק כאן טקסט, כותרת, ציוץ, כתבה — כל דבר שתרצה להבין..."
+          style="flex:1;padding:16px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,154,31,.25);border-radius:12px;color:#ece9e1;font-size:14px;font-family:inherit;direction:rtl;resize:vertical;min-height:90px;outline:none;transition:border-color .2s;line-height:1.6"
+          onfocus="this.style.borderColor='rgba(255,154,31,.6)'" onblur="this.style.borderColor='rgba(255,154,31,.25)'"
+          oninput="if(this.value.length>3)analyzeText()"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap">
+        <button onclick="analyzeText()" style="padding:11px 24px;background:var(--accent,#ff9a1f);color:#0a0d12;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">🔍 נתח</button>
+        <button onclick="loadExample('news')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: כתבת חדשות</button>
+        <button onclick="loadExample('sport')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: ספורט</button>
+        <button onclick="loadExample('tech')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: טכנולוגיה</button>
+      </div>
+      <div id="analyzer-result" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(236,233,225,.1);border-radius:16px;padding:28px;animation:pophint .25s ease">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+          <div id="anl-icon" style="font-size:32px">🔍</div>
+          <div>
+            <div id="anl-cat" style="font-size:11px;font-family:'Space Mono';text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;direction:ltr">category</div>
+            <div id="anl-label" style="font-family:'Frank Ruhl Libre';font-weight:700;font-size:24px"></div>
+          </div>
+          <div style="margin-right:auto;text-align:center">
+            <div id="anl-score" style="font-family:'Space Mono';font-size:28px;font-weight:700;color:var(--accent,#ff9a1f)">—</div>
+            <div style="font-size:10px;color:#6f6a60">ניקוד</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div style="background:rgba(255,154,31,.06);border:1px solid rgba(255,154,31,.18);border-radius:10px;padding:14px">
+            <div style="font-size:10px;font-family:'Space Mono';color:var(--accent,#ff9a1f);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;direction:ltr">// why this works on you</div>
+            <p id="anl-why" style="font-size:13px;color:#cdc6b6;line-height:1.6;margin:0"></p>
+          </div>
+          <div style="background:rgba(255,255,255,.025);border:1px solid rgba(236,233,225,.08);border-radius:10px;padding:14px">
+            <div style="font-size:10px;font-family:'Space Mono';color:#6f6a60;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;direction:ltr">// platform's interest</div>
+            <p id="anl-platform" style="font-size:13px;color:#9a9182;line-height:1.6;margin:0"></p>
+          </div>
+        </div>
+        <div id="anl-triggers" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px"></div>
+        <div style="margin-top:16px">
+          <div style="font-size:10px;font-family:'Space Mono';color:#6f6a60;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;direction:ltr">// alternatives — balanced content</div>
+          <div id="anl-alts" style="display:flex;flex-direction:column;gap:5px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+  (function(){
+    const CATS = {
+      politics:{label:'פוליטיקה',icon:'🏛️',color:'#EF4444',terms:['נתניהו','כנסת','ביבי','גנץ','לפיד','בחירות','ממשלה','מפלגה','פוליטיקה','פוליטי','election','government','trump','biden','netanyahu','president','minister','vote','senate','parliament'],
+        why:'תוכן פוליטי מחולק ב-3× יותר. כעס ופחד מגדילים מעורבות, וזה מה שהאלגוריתם מחפש.',
+        platform:'הפלטפורמה מרוויחה מכל שניה שתשקיע בוויכוח. ניצוץ רגשי = משתמש שנשאר.',
+        alts:['ניתוח עמוק ללא ספין','מה קורה מאחורי הכותרות','נקודת מבט מהצד השני']},
+      sports:{label:'ספורט',icon:'⚽',color:'#F59E0B',terms:['כדורגל','ליגה','מכבי','הפועל','ביתר','נבחרת','שחקן','אליפות','גביע','כדורסל','טניס','football','basketball','nba','fifa','soccer','sport','champion','league','team'],
+        why:'ספורט מחבר לקהילה ויוצר תחושת שייכות. האלגוריתם מזהה שמשתמשים חוזרים לעדכוני תוצאות.',
+        platform:'תוכן ספורט מביא גלישה חוזרת — לפני המשחק, במהלכו, ואחריו. 3 סשנים במקום 1.',
+        alts:['ניתוח טקטי מעמיק','ראיון עם הספורטאי','מה שלא מראים בשידור']},
+      tech:{label:'טכנולוגיה',icon:'💻',color:'#8B5CF6',terms:['AI','בינה מלאכותית','GPT','ChatGPT','אפליקציה','פיתוח','תוכנה','מחשב','גוגל','אפל','מיקרוסופט','tech','technology','software','startup','digital','app','code','developer','google','apple','microsoft','openai'],
+        why:'תוכן טכנולוגי מקבל שיתופים מקצועיים גבוהים. לינקדאין ויוטיוב מגבירים אותו לקהלים "מתקדמים".',
+        platform:'AI ו-tech content מביאים משתמשים שמשלמים על מנויים. הפלטפורמה מטרגטת אותם כי הם רווחיים.',
+        alts:['ביקורת אמיתית של הכלי','מה הסיכונים שלא מזכירים','חלופות קוד פתוח']},
+      entertainment:{label:'בידור',icon:'🎬',color:'#EC4899',terms:['סרט','סדרה','מוסיקה','אמן','שחקן','להקה','הופעה','Netflix','YouTube','TikTok','ויראלי','celebrity','music','actor','movie','show','viral','trending','song'],
+        why:'בידור מפעיל מנגנון דופמין — כל רייל קצר מספק ציפייה לבא אחריו. קשה לעצור.',
+        platform:'אורך הצפייה הממוצע של reel — 23 שניות. 100 reels = 38 דקות. הפלטפורמה רוצה אותך בלולאה.',
+        alts:['ביקורת קולנוע מעמיקה','מה מאחורי הקלעים','השפעת בידור על החברה']},
+      news:{label:'חדשות',icon:'📰',color:'#06B6D4',terms:['חדשות','עדכון','שבירה','דיווח','מהדורה','עיתון','כתב','כתבה','news','breaking','report','journalist','media','headline'],
+        why:'חדשות דחופות מפעילות חרדה — ומחרדה קשה להסתלק. "עדכן" וחזור.',
+        platform:'כל קליק על "עדכן" מחושב. עמוד חדשות שמחזיר 8× ביום שווה 8× חשיפות לפרסומות.',
+        alts:['ניתוח שבועי מאוזן','עובדות ללא עיצוב רגשי','מקורות עצמאיים']},
+      health:{label:'בריאות',icon:'💊',color:'#10B981',terms:['בריאות','דיאטה','תזונה','ספורט','כושר','רפואה','תרופה','health','diet','fitness','doctor','medical','nutrition','wellness'],
+        why:'תוכן בריאות מפעיל פחד (FOMO על הבריאות שלך) ותקווה — שניהם מגדילים מעורבות.',
+        platform:'תוכן בריאות מביא מי שמוכן לשלם על מנויים. תשומת לב רבה לתוכן ממומן של תוספי תזונה.',
+        alts:['ייעוץ רפואי מקצועי בלבד','עדות מחקר מאושרת','ספק: מי ממומן הכתבה?']},
+      economy:{label:'כלכלה',icon:'💰',color:'#F97316',terms:['כסף','השקעה','בורסה','ביטקוין','קריפטו','מניה','נדלן','כלכלה','finance','money','stock','invest','bitcoin','crypto','bank','economy'],
+        why:'כסף = פחד ותאוות בצע. שני המנגנונים הכי עוצמתיים לשמירת תשומת לב.',
+        platform:'תוכן פיננסי מביא מבוגרים עם כסף — קהל האידאלי לפרסומות יוקרתיות.',
+        alts:['הסבר פשוט ללא ז׳רגון','השקפה מאוזנת על סיכונים','מה מומחים עצמאיים אומרים']},
+    };
+    const EXAMPLES = {
+      news:'ישראל מול איראן: ראש הממשלה מכנס את הקבינט הביטחוני לדיון חירום לאחר ירי טילים',
+      sport:'מכבי תל אביב מגיע לגמר ליגת האלופות: ניצחון דרמטי 91–88 ב-3 שניות אחרונות',
+      tech:'OpenAI משיקה GPT-5: 10 פיצ'רים שישנו לחלוטין את אופן השימוש ב-AI',
+    };
+    window.loadExample = function(k) {
+      const el = document.getElementById('analyzer-input');
+      el.value = EXAMPLES[k] || '';
+      analyzeText();
+    };
+    window.analyzeText = function() {
+      const text = (document.getElementById('analyzer-input').value || '').toLowerCase();
+      if (text.length < 4) return;
+      let best = null, bestScore = 0;
+      for (const [id, cat] of Object.entries(CATS)) {
+        let score = 0;
+        const matched = [];
+        for (const term of cat.terms) {
+          if (text.includes(term.toLowerCase())) { score += (term.length > 4 ? 2 : 1); matched.push(term); }
+        }
+        if (score > bestScore) { bestScore = score; best = {id, score, matched, ...cat}; }
+      }
+      if (!best) { best = {label:'לא מזוהה',icon:'❓',color:'#6B7280',score:0,matched:[],why:'הטקסט קצר מדי או לא ברור — נסה עוד מילים.',platform:'לא ניתן לקבוע.',alts:['נסה להוסיף עוד הקשר']}; }
+      const normScore = Math.min(99, Math.max(12, Math.round(bestScore * 9)));
+      document.getElementById('anl-icon').textContent = best.icon;
+      document.getElementById('anl-cat').style.color = best.color;
+      document.getElementById('anl-cat').textContent = best.id || 'category';
+      document.getElementById('anl-label').textContent = best.label;
+      document.getElementById('anl-label').style.color = best.color;
+      document.getElementById('anl-score').textContent = normScore + '%';
+      document.getElementById('anl-why').textContent = best.why;
+      document.getElementById('anl-platform').textContent = best.platform;
+      document.getElementById('anl-triggers').innerHTML = (best.matched||[]).slice(0,6).map(m =>
+        `<span style="padding:3px 9px;background:rgba(255,154,31,.1);border:1px solid rgba(255,154,31,.25);border-radius:99px;font-size:11.5px;color:var(--accent,#ff9a1f);font-family:'Space Mono'">${m}</span>`
+      ).join('');
+      document.getElementById('anl-alts').innerHTML = (best.alts||[]).map(a =>
+        `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(236,233,225,.07)"><span style="color:#6f6a60">↺</span><span style="font-size:13px;color:#aaa291">${a}</span></div>`
+      ).join('');
+      document.getElementById('analyzer-result').style.display = 'block';
+    };
+  })();
+  </script>
 
   <!-- FAQ -->
   <section id="faq" class="sec" style="position:relative;z-index:4;padding-top:56px;padding-bottom:64px">
