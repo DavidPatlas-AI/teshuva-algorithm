@@ -271,6 +271,8 @@
         <a href="#how" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">איך עובד</a>
         <a href="#live-demo" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">דמו</a>
         <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">יכולות</a>
+        <a href="#roadmap" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">Roadmap</a>
+        <a href="#waitlist" style="color:var(--accent,#ff9a1f);text-decoration:none;font-size:13.5px;font-weight:700">הצטרפו ←</a>
         <a href="#faq" style="color:#b3ac9e;text-decoration:none;font-size:13.5px;font-weight:600">FAQ</a>
         <div class="lang-switcher" id="lang-switcher-desktop">
           <button class="lang-btn active" id="lang-he" onclick="switchLang('he')">עב</button>
@@ -513,7 +515,25 @@
         <div class="signal"><div class="signal-label"><span id="signal-one-label">עניין קודם בנושא</span><b id="signal-one-value">72%</b></div><div class="signal-track"><div class="signal-fill" id="signal-one" style="--value:72%"></div></div></div>
         <div class="signal"><div class="signal-label"><span id="signal-two-label">דמיון לתוכן ששמרת</span><b id="signal-two-value">61%</b></div><div class="signal-track"><div class="signal-fill" id="signal-two" style="--value:61%"></div></div></div>
         <div class="signal"><div class="signal-label"><span id="signal-three-label">פופולריות באזור שלך</span><b id="signal-three-value">28%</b></div><div class="signal-track"><div class="signal-fill" id="signal-three" style="--value:28%"></div></div></div>
-        <div class="demo-actions"><button class="demo-button" id="clean-button" onclick="toggleCleanFeed()">אזן את הפיד בשבילי</button><button id="explain-button" class="demo-button secondary" onclick="explainSelectedDemo()">הסבר לי בפשטות</button></div>
+        <!-- Platform interest -->
+        <div id="demo-platform-box" style="margin-top:14px;background:rgba(255,154,31,.07);border:1px solid rgba(255,154,31,.22);border-radius:10px;padding:11px 13px">
+          <div style="font-size:10px;font-family:'Space Mono';color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr;margin-bottom:5px;letter-spacing:1px">// platform interest</div>
+          <p id="demo-platform-text" style="font-size:12.5px;color:#cdc6b6;line-height:1.55;margin:0">YouTube יודע שסרטוני AI מקבלים אחוז מעורבות גבוה. זמן הצפייה הממוצע — 7.2 דקות. כל דקה = הכנסה.</p>
+        </div>
+        <!-- Alternatives -->
+        <div style="margin-top:12px">
+          <div style="font-size:10px;font-family:'Space Mono';color:#6f6a60;text-transform:uppercase;direction:ltr;margin-bottom:6px;letter-spacing:1px">// could have shown instead</div>
+          <div id="demo-alts-list" style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(236,233,225,.07)"><span style="color:#6f6a60;font-size:12px">↺</span><span style="font-size:12.5px;color:#aaa291">כיצד AI השפיע על שוק העבודה</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(236,233,225,.07)"><span style="color:#6f6a60;font-size:12px">↺</span><span style="font-size:12.5px;color:#aaa291">ביקורת: הכלים שלא שרדו</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(236,233,225,.07)"><span style="color:#6f6a60;font-size:12px">↺</span><span style="font-size:12.5px;color:#aaa291">מדריך למתחילים ב-AI ללא ז'רגון</span></div>
+          </div>
+        </div>
+        <div class="demo-actions" style="margin-top:14px">
+          <button class="demo-button" id="clean-button" onclick="toggleCleanFeed()">אזן את הפיד בשבילי</button>
+          <button id="explain-button" class="demo-button secondary" onclick="explainSelectedDemo()">הסבר לי בפשטות</button>
+          <button class="demo-button secondary" style="background:rgba(239,68,68,.12);color:#ef4444;border-color:rgba(239,68,68,.25)" onclick="preferLess()">העדף פחות מזה ✕</button>
+        </div>
       </div>
     </div></div>
   </section>
@@ -618,6 +638,63 @@
         <span style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);border-radius:9px;padding:7px 13px;font-size:13.5px;color:#cdc6b6;font-family:'Space Mono';direction:ltr">Instagram</span>
         <span style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);border-radius:9px;padding:7px 13px;font-size:13.5px;color:#cdc6b6;font-family:'Space Mono';direction:ltr">X / Twitter</span>
         <span style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);border-radius:9px;padding:7px 13px;font-size:13.5px;color:#cdc6b6;font-family:'Space Mono';direction:ltr">Spotify</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap" class="sec" style="position:relative;z-index:4;padding-top:72px;padding-bottom:56px">
+    <div style="text-align:center;margin-bottom:48px">
+      <div style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--accent,#ff9a1f);text-transform:uppercase;direction:ltr">// roadmap</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:40px;letter-spacing:-.6px;margin:10px 0 0">מה כבר קיים ומה בדרך</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0;max-width:780px;margin:0 auto;position:relative">
+      <!-- vertical line -->
+      <div style="position:absolute;right:21px;top:20px;bottom:20px;width:2px;background:linear-gradient(180deg,var(--accent,#ff9a1f),rgba(255,154,31,.1));z-index:0"></div>
+      <!-- Stage 1 -->
+      <div style="display:flex;align-items:flex-start;gap:22px;padding:20px 0;position:relative">
+        <div style="width:44px;height:44px;border-radius:50%;background:var(--accent,#ff9a1f);border:3px solid #06080d;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:17px">✅</div>
+        <div style="padding-top:8px;flex:1">
+          <div style="font-family:'Space Mono';font-size:10px;color:#6f6a60;direction:ltr;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Stage 1 · הושלם</div>
+          <div style="font-family:'Frank Ruhl Libre';font-weight:700;font-size:21px;margin-bottom:5px">אתר חזון</div>
+          <p style="color:#9a9182;font-size:14px;line-height:1.6;margin:0">הרעיון, הוידוי, הדמו החי — הכל פעיל ב-teshuva-algorithm.netlify.app. בעברית, אנגלית ורוסית.</p>
+        </div>
+      </div>
+      <!-- Stage 2 -->
+      <div style="display:flex;align-items:flex-start;gap:22px;padding:20px 0;position:relative">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#a78bfa);border:3px solid #06080d;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:17px;animation:glowbreath 2.5s ease-in-out infinite">🔄</div>
+        <div style="padding-top:8px;flex:1">
+          <div style="font-family:'Space Mono';font-size:10px;color:#7C3AED;direction:ltr;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Stage 2 · בבנייה</div>
+          <div style="font-family:'Frank Ruhl Libre';font-weight:700;font-size:21px;margin-bottom:5px">תוסף Chrome</div>
+          <p style="color:#9a9182;font-size:14px;line-height:1.6;margin:0">מנתח כל פוסט בזמן אמת, מציג badge הסבר, ומסיר תוכן לא רלוונטי. עובד על Twitter, YouTube, Facebook, Instagram, TikTok.</p>
+        </div>
+      </div>
+      <!-- Stage 3 -->
+      <div style="display:flex;align-items:flex-start;gap:22px;padding:20px 0;position:relative;opacity:.75">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(236,233,225,.08);border:3px solid rgba(236,233,225,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:17px">🤖</div>
+        <div style="padding-top:8px;flex:1">
+          <div style="font-family:'Space Mono';font-size:10px;color:#6f6a60;direction:ltr;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Stage 3 · בקרוב</div>
+          <div style="font-family:'Frank Ruhl Libre';font-weight:700;font-size:21px;margin-bottom:5px">קליפי AI — שיחה אמיתית</div>
+          <p style="color:#9a9182;font-size:14px;line-height:1.6;margin:0">קליפי יענה על שאלות, יזכור העדפות, ויגיב בשפה שלך. חיבור ל-LLM עם פרטיות מלאה — אין שליחת נתונים לשרת.</p>
+        </div>
+      </div>
+      <!-- Stage 4 -->
+      <div style="display:flex;align-items:flex-start;gap:22px;padding:20px 0;position:relative;opacity:.55">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(236,233,225,.06);border:3px solid rgba(236,233,225,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:17px">👨‍👩‍👧</div>
+        <div style="padding-top:8px;flex:1">
+          <div style="font-family:'Space Mono';font-size:10px;color:#6f6a60;direction:ltr;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Stage 4 · בתכנון</div>
+          <div style="font-family:'Frank Ruhl Libre';font-weight:700;font-size:21px;margin-bottom:5px">מערכת הגנה על ילדים</div>
+          <p style="color:#9a9182;font-size:14px;line-height:1.6;margin:0">הורים יראו: כמה שעות מסך, איזה תוכן הילד צורך, מגמות מסוכנות — בלי ריגול על הודעות פרטיות. שקיפות, לא מעקב.</p>
+        </div>
+      </div>
+      <!-- Stage 5 -->
+      <div style="display:flex;align-items:flex-start;gap:22px;padding:20px 0;position:relative;opacity:.4">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(236,233,225,.04);border:3px solid rgba(236,233,225,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:17px">⚡</div>
+        <div style="padding-top:8px;flex:1">
+          <div style="font-family:'Space Mono';font-size:10px;color:#6f6a60;direction:ltr;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Stage 5 · חזון</div>
+          <div style="font-family:'Frank Ruhl Libre';font-weight:700;font-size:21px;margin-bottom:5px">מנוע המלצות אישי</div>
+          <p style="color:#9a9182;font-size:14px;line-height:1.6;margin:0">בסופו של דבר — אלגוריתם שעובד בשבילך. לא לשכנע אותך לצרוך עוד. להביא לך בדיוק מה שאתה באמת רוצה לדעת.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -761,6 +838,61 @@
     <style>@media(max-width:700px){#faq-grid{grid-template-columns:1fr}}</style>
   </section>
 
+  <!-- WAITLIST -->
+  <section id="waitlist" class="sec" style="position:relative;z-index:4;padding-top:64px;padding-bottom:64px">
+    <div style="max-width:640px;margin:0 auto;background:linear-gradient(160deg,rgba(124,58,237,.1),rgba(255,154,31,.06));border:1px solid rgba(124,58,237,.3);border-radius:20px;padding:48px 40px;text-align:center">
+      <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:#a78bfa;text-transform:uppercase;direction:ltr;margin-bottom:14px">// early access</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:36px;letter-spacing:-.5px;margin:0 0 10px">הצטרפו ל-1,000 המשתמשים הראשונים</h2>
+      <p style="color:#9a9182;font-size:15px;line-height:1.65;margin:0 0 32px">גישה מוקדמת לתוסף, עדכונים לפני כולם, ואפשרות להשפיע על הפיצ'רים הבאים.</p>
+      <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="display:flex;flex-direction:column;gap:14px;text-align:right" onsubmit="handleWaitlist(event)">
+        <input type="hidden" name="form-name" value="waitlist">
+        <input type="hidden" name="bot-field" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <input type="text" name="name" placeholder="שם פרטי" required
+            style="padding:13px 16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(124,58,237,.3);border-radius:10px;color:#e9d5ff;font-size:14px;font-family:inherit;direction:rtl;outline:none;transition:border-color .2s"
+            onfocus="this.style.borderColor='#a78bfa'" onblur="this.style.borderColor='rgba(124,58,237,.3)'">
+          <input type="email" name="email" placeholder="כתובת מייל" required
+            style="padding:13px 16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(124,58,237,.3);border-radius:10px;color:#e9d5ff;font-size:14px;font-family:inherit;direction:ltr;outline:none;transition:border-color .2s"
+            onfocus="this.style.borderColor='#a78bfa'" onblur="this.style.borderColor='rgba(124,58,237,.3)'">
+        </div>
+        <div>
+          <div style="font-size:13px;color:#9a9182;margin-bottom:8px">שימוש עיקרי (אפשר לסמן יותר מאחד):</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(124,58,237,.25);border-radius:8px;cursor:pointer;font-size:13px;color:#c4b5fd">
+              <input type="checkbox" name="platform" value="youtube" style="accent-color:#a78bfa"> ▶️ YouTube
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(124,58,237,.25);border-radius:8px;cursor:pointer;font-size:13px;color:#c4b5fd">
+              <input type="checkbox" name="platform" value="instagram" style="accent-color:#a78bfa"> 📸 Instagram
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(124,58,237,.25);border-radius:8px;cursor:pointer;font-size:13px;color:#c4b5fd">
+              <input type="checkbox" name="platform" value="tiktok" style="accent-color:#a78bfa"> 🎵 TikTok
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(124,58,237,.25);border-radius:8px;cursor:pointer;font-size:13px;color:#c4b5fd">
+              <input type="checkbox" name="platform" value="news" style="accent-color:#a78bfa"> 📰 חדשות
+            </label>
+          </div>
+        </div>
+        <button type="submit" style="padding:14px;background:linear-gradient(135deg,#7C3AED,#a78bfa);border:none;border-radius:11px;color:white;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(124,58,237,.35);transition:transform .15s,box-shadow .15s"
+          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 12px 30px rgba(124,58,237,.45)'"
+          onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(124,58,237,.35)'">
+          הצטרפו לרשימת ההמתנה ←
+        </button>
+      </form>
+      <div id="waitlist-success" style="display:none;padding:20px;background:rgba(5,46,22,.5);border:1.5px solid #059669;border-radius:12px;color:#6ee7b7;font-size:15px;font-weight:600;margin-top:16px">
+        ✓ נרשמת! נעדכן אותך כשהתוסף מוכן לגישה מוקדמת.
+      </div>
+    </div>
+  </section>
+  <script>
+  function handleWaitlist(e) {
+    e.preventDefault();
+    const form = e.target;
+    fetch('/', {method:'POST', body:new FormData(form)})
+      .then(() => { form.style.display='none'; document.getElementById('waitlist-success').style.display='block'; })
+      .catch(() => { form.style.display='none'; document.getElementById('waitlist-success').style.display='block'; });
+  }
+  </script>
+
   <!-- CTA STRIP -->
   <section class="sec" style="position:relative;z-index:4;padding-bottom:64px">
     <div class="cta-inner" style="position:relative;border:1px solid rgba(255,154,31,.25);border-radius:18px;padding:54px 40px;text-align:center;overflow:hidden;background:radial-gradient(600px 300px at 50% 0,rgba(255,154,31,.14),transparent 70%)">
@@ -884,9 +1016,15 @@
   }
 
   const demos = window._demos_i18n || {
-    tech:{title:'למה קיבלת את סרטון הטכנולוגיה?',reason:'צפית בשלושה סרטונים דומים השבוע ושמרת כתבה בנושא.',score:86,oneLabel:'עניין קודם בנושא',one:72,twoLabel:'דמיון לתוכן ששמרת',two:61,three:28},
-    news:{title:'למה החדשות האלו במקום השני?',reason:'הנושא חם באזור שלך, אבל ביקשת להפחית תוכן חדשותי חוזר.',score:68,oneLabel:'רלוונטיות לזמן ולמקום',one:81,twoLabel:'התאמה להרגלי הצפייה',two:44,three:76},
-    calm:{title:'למה הוצע לך רגע של שקט?',reason:'זמן המסך שלך גבוה מהממוצע והעדפת בעבר תוכן רגוע בשעה הזו.',score:74,oneLabel:'התאמה לשעת היום',one:69,twoLabel:'העדפה מפורשת שלך',two:83,three:19}
+    tech:{title:'למה קיבלת את סרטון הטכנולוגיה?',reason:'צפית בשלושה סרטונים דומים השבוע ושמרת כתבה בנושא.',score:86,oneLabel:'עניין קודם בנושא',one:72,twoLabel:'דמיון לתוכן ששמרת',two:61,three:28,
+      platformInterest:'YouTube יודע שסרטוני AI מקבלים אחוז מעורבות גבוה. זמן הצפייה הממוצע — 7.2 דקות. כל דקה שווה כסף.',
+      alternatives:['כיצד AI השפיע על שוק העבודה','ביקורת: הכלים שלא שרדו','מדריך למתחילים ב-AI ללא ז\'רגון']},
+    news:{title:'למה החדשות האלו במקום השני?',reason:'הנושא חם באזור שלך, אבל ביקשת להפחית תוכן חדשותי חוזר.',score:68,oneLabel:'רלוונטיות לזמן ולמקום',one:81,twoLabel:'התאמה להרגלי הצפייה',two:44,three:76,
+      platformInterest:'כתבות שנויות במחלוקת מייצרות פי 3 תגובות. יותר תגובות = יותר זמן באתר = יותר פרסומות.',
+      alternatives:['ניתוח מאוזן של אותו אירוע','הרקע ההיסטורי שחסר','מה הצד השני טוען']},
+    calm:{title:'למה הוצע לך רגע של שקט?',reason:'זמן המסך שלך גבוה מהממוצע והעדפת בעבר תוכן רגוע בשעה הזו.',score:74,oneLabel:'התאמה לשעת היום',one:69,twoLabel:'העדפה מפורשת שלך',two:83,three:19,
+      platformInterest:'תוכן "רווחה" מגדיל שימור משתמשים. פלטפורמות יודעות שמי שמרגיש טוב — חוזר יותר.',
+      alternatives:['פודקאסט מדיטציה קצר (8 דקות)','מוסיקה אינסטרומנטלית להתרכזות','10 דקות קריאה ללא מסכים']}
   };
   window._demos_ref = demos;
   let selectedDemo = 'tech', cleanFeed = false;
@@ -905,6 +1043,21 @@
       document.getElementById('signal-' + id + '-value').textContent = value + '%';
       if (label) document.getElementById('signal-' + id + '-label').textContent = label;
     });
+    const pt = document.getElementById('demo-platform-text');
+    if (pt && d.platformInterest) pt.textContent = d.platformInterest;
+    const al = document.getElementById('demo-alts-list');
+    if (al && d.alternatives) {
+      al.innerHTML = d.alternatives.map(a =>
+        `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid rgba(236,233,225,.07)"><span style="color:#6f6a60;font-size:12px">↺</span><span style="font-size:12.5px;color:#aaa291">${a}</span></div>`
+      ).join('');
+    }
+  };
+
+  window.preferLess = function() {
+    const d = demos[selectedDemo];
+    const label = d ? d.title.replace('למה ','').replace('?','') : 'תוכן זה';
+    say('בסדר, מפחית ' + label + ' בפיד שלך. שים לב לשינוי בפוסטים הבאים.');
+    document.querySelector('.demo-card.active')?.classList.add('pref-less');
   };
 
   const CLEAN_TEXTS = window._CLEAN_TEXTS = {
