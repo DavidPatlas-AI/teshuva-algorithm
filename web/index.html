@@ -712,6 +712,34 @@
     </div>
   </section>
 
+  <!-- TEXT ANALYZER -->
+  <section id="analyzer" class="sec" style="position:relative;z-index:4;padding-top:64px;padding-bottom:64px">
+    <div style="text-align:center;margin-bottom:34px">
+      <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;direction:ltr">// analyze any post</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:44px;margin:10px 0 0">נתח כל תוכן — מה האלגוריתם רואה?</h2>
+      <p style="color:var(--muted);font-size:16px;margin:12px auto 0;max-width:560px;line-height:1.65">הדבק כותרת, ציוץ או פוסט — וגלה מיידית לאיזו קטגוריה הוא שייך, מה מניע אותו ומה האלגוריתם מתכנן לעשות בו.</p>
+    </div>
+    <div style="max-width:780px;margin:0 auto">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button onclick="fillExample('politics')" style="border:1px solid rgba(185,28,28,.3);background:rgba(185,28,28,.06);color:#b91c1c;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">🏛️ פוליטיקה</button>
+        <button onclick="fillExample('sports')" style="border:1px solid rgba(21,128,61,.3);background:rgba(21,128,61,.06);color:#15803d;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">⚽ ספורט</button>
+        <button onclick="fillExample('entertainment')" style="border:1px solid rgba(161,98,7,.3);background:rgba(161,98,7,.06);color:#a16207;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">🎬 בידור</button>
+        <button onclick="fillExample('tech')" style="border:1px solid rgba(29,78,216,.3);background:rgba(29,78,216,.06);color:#1d4ed8;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">💻 טכנולוגיה</button>
+        <button onclick="fillExample('news')" style="border:1px solid rgba(220,38,38,.3);background:rgba(220,38,38,.06);color:#dc2626;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">📰 חדשות</button>
+        <button onclick="fillExample('health')" style="border:1px solid rgba(15,118,110,.3);background:rgba(15,118,110,.06);color:#0f766e;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">❤️ בריאות</button>
+        <button onclick="fillExample('economy')" style="border:1px solid rgba(180,83,9,.3);background:rgba(180,83,9,.06);color:#b45309;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">💰 כלכלה</button>
+        <button onclick="fillExample('religion')" style="border:1px solid rgba(109,40,217,.3);background:rgba(109,40,217,.06);color:#6d28d9;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">✡️ דת ומסורת</button>
+        <button onclick="fillExample('science')" style="border:1px solid rgba(14,116,144,.3);background:rgba(14,116,144,.06);color:#0e7490;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">🔭 מדע</button>
+      </div>
+      <textarea id="analyzer-input" rows="4" placeholder="הדבק כאן כותרת, פוסט או ציוץ כלשהו…" style="width:100%;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:rgba(255,255,255,.86);color:var(--ink);font:500 16px 'Assistant',sans-serif;resize:vertical;outline:none;direction:rtl;line-height:1.55"></textarea>
+      <button onclick="analyzeText()" style="margin-top:10px;width:100%;border:0;border-radius:12px;padding:14px;background:linear-gradient(110deg,var(--accent),#ffca68);color:#191827;font:900 16px 'Assistant',sans-serif;cursor:pointer;transition:transform .2s ease" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">נתח את התוכן →</button>
+      <div id="analyzer-result" style="display:none;margin-top:22px">
+        <div id="analyzer-chips" style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px"></div>
+        <div id="analyzer-detail" style="border:1px solid var(--line);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,.72)"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="sec" id="faq" style="position:relative;z-index:4;padding-top:74px;padding-bottom:64px">
     <div style="text-align:center;margin-bottom:30px">
@@ -1305,6 +1333,108 @@
     const el = document.getElementById(id);
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 30, behavior: 'smooth' });
   }
+
+  // ── Text Analyzer ──────────────────────────────────────
+  const CATS = {
+    politics:{label:'פוליטיקה',icon:'🏛️',color:'#b91c1c',
+      terms:['בחירות','ממשלה','כנסת','פוליטיקה','מפלגה','שר','ראש ממשלה','הצבעה','קואליציה','אופוזיציה','חוק','חקיקה','vote','election','government','parliament','minister','law','policy','democrat','republican','president','senate','congress'],
+      why:'תוכן פוליטי מייצר מעורבות גבוהה דרך מחלוקת ועוצמה רגשית — אנשים מגיבים, מפרסמים ושומרים.',
+      platform:'פלטפורמות מגבירות תוכן פוליטי כי הוא מייצר ויכוחים ו-engagement גבוה — גם אם המשתמש לא מסכים.',
+      alts:['חדשות עובדתיות ללא דעה','ניתוח מאוזן משני הצדדים','מידע מקומי ישיר']},
+    sports:{label:'ספורט',icon:'⚽',color:'#15803d',
+      terms:['כדורגל','ספורט','משחק','קבוצה','שחקן','מאמן','ליגה','גביע','ניצחון','תוצאה','מגרש','אצטדיון','soccer','football','basketball','sport','game','team','player','coach','league','champion','match','score','goal','nba','fifa'],
+      why:'תוכן ספורטיבי יוצר שיא מעורבות סביב ניצחונות והפסדים — מעין חוויה שבטית שמחברת אנשים.',
+      platform:'ספורט הוא קטגוריית הנצפות הגבוהה ביותר בוידאו — אלגוריתמים יגבירו ניצחונות ותוצאות.',
+      alts:['ניתוח טקטי מקצועי','ראיון שחקן ישיר','סטטיסטיקות ללא פרשנות']},
+    entertainment:{label:'בידור',icon:'🎬',color:'#a16207',
+      terms:['סרט','סדרה','מוסיקה','אמן','שיר','פופ','ריאליטי','כוכב','תוכנית','בידור','ריקוד','הופעה','movie','series','music','artist','song','pop','celebrity','show','entertainment','dance','concert','netflix','tiktok','viral'],
+      why:'בידור מקסמם זמן צפייה דרך תוכן קל ומהנה — הפלטפורמה יודעת שתישאר עוד קצת.',
+      platform:'אלגוריתמי בידור מדדים watch-time ו-completion rate — מה שגורם לך לצפות עד הסוף.',
+      alts:['ביקורת קולנועית מעמיקה','ראיון יוצר מאחורי הקלעים','פודקאסט תרבות']},
+    tech:{label:'טכנולוגיה',icon:'💻',color:'#1d4ed8',
+      terms:['טכנולוגיה','ai','בינה מלאכותית','סטארטאפ','אפליקציה','תוכנה','חומרה','קוד','עדכון','השקה','דיגיטלי','technology','artificial intelligence','startup','app','software','hardware','coding','feature','launch','digital','iphone','android','gadget','tech','gpt','openai'],
+      why:'תוכן טכנולוגי מושך משתמשים בעלי השכלה גבוהה עם כוח קנייה — פרסומאים אוהבים אותם.',
+      platform:'תוכן טכנולוגי זוכה לשיתוף גבוה מיוצרי דעה — הפלטפורמה מגבירה אותו לטווח רחב.',
+      alts:['ביקורת מוצר אובייקטיבית','השוואת ביצועים טכנית','ניתוח עסקי עצמאי']},
+    news:{label:'חדשות',icon:'📰',color:'#dc2626',
+      terms:['חדשות','ידיעה','דיווח','עדכון','מהדורה','כתב','תחקיר','אירוע','שידור','תקשורת','news','breaking','report','update','press','journalist','media','headline','coverage','story','alert'],
+      why:'חדשות שוברות מייצרות תחושת דחיפות ופחד מהחמצה (FOMO) — מעורבות גבוהה בזמן קצר.',
+      platform:'אלגוריתמים מגבירים חדשות שליליות בגלל מעורבות גבוהה יותר — פחד מוכר יותר משמחה.',
+      alts:['רקע ותוכן עומק','פרספקטיבה היסטורית','ניתוח עובדות ללא דעה']},
+    health:{label:'בריאות',icon:'❤️',color:'#0f766e',
+      terms:['בריאות','דיאטה','כושר','תזונה','רפואה','מחלה','טיפול','פסיכולוגיה','נפש','יוגה','מדיטציה','health','diet','fitness','nutrition','medicine','disease','treatment','mental','yoga','meditation','wellness','exercise','doctor'],
+      why:'תוכן בריאות מגיע מחיפוש אישי ופחד ממחלות — רמת מוטיבציה גבוהה מאוד לקלוט מידע.',
+      platform:'בריאות ותזונה הן הנישות המתמידות ביותר ביוטיוב — אלגוריתמים מקצים להן תקציב מודעות גבוה.',
+      alts:['מחקר מדעי peer-reviewed','ייעוץ רפואי מוסמך','סקירת ראיות בלי "טיפים"']},
+    economy:{label:'כלכלה',icon:'💰',color:'#b45309',
+      terms:['כלכלה','מניה','השקעה','שוק','בורסה','ריבית','אינפלציה','כסף','עסק','חברה','רווח','הפסד','economy','stock','investment','market','finance','interest','inflation','money','business','profit','bitcoin','crypto','trading'],
+      why:'תוכן כלכלי מגיע מחיפוש פתרונות לפחד כלכלי — מעורבות גבוהה כי הסיכון אישי.',
+      platform:'תוכן פיננסי מייצר מעורבות גבוהה בקרב משתמשים עם הכנסה — ערך גבוה לפרסום.',
+      alts:['דוחות פיננסיים רשמיים','ניתוח מקצועי של אנליסט','נתונים ממוסדות ממשלתיים']},
+    religion:{label:'דת ומסורת',icon:'✡️',color:'#6d28d9',
+      terms:['תורה','שבת','חג','תפילה','רב','ישיבה','הלכה','כשרות','פסח','ראש השנה','יום כיפור','חנוכה','קידוש','מצווה','ברכה','torah','shabbat','jewish','prayer','rabbi','religion','faith','church','bible','synagogue','kosher','islam','muslim','christian'],
+      why:'תוכן דתי מגייס לקהילה ומחזק זהות משותפת — אחוזי השלמה ושיתוף גבוהים מאוד.',
+      platform:'קהלים דתיים נאמנים ביותר — אלגוריתמים מגבירים תוכן שמחזק קבוצה ומייצר loyalty.',
+      alts:['מקורות ראשוניים ללא פרשנות','דיון ערכי מאוזן','נקודת מבט בין-דתית']},
+    science:{label:'מדע',icon:'🔭',color:'#0e7490',
+      terms:['מדע','חלל','פיזיקה','כימיה','ביולוגיה','מחקר','גילוי','נאסא','כוכב','גלקסיה','dna','גנטיקה','אסטרונומיה','science','space','physics','chemistry','biology','research','discovery','nasa','star','planet','evolution','quantum','climate','experiment','study'],
+      why:'תוכן מדעי מייצר סקרנות ותחושת גילוי — אחוזי שמירה גבוהים ושיתוף בקרב משכילים.',
+      platform:'תוכן STEM מביא משתמשים עם הכנסה גבוהה — ערך פרסומי גבוה, קהל מדויק.',
+      alts:['מחקר עמית מקורי (peer-reviewed)','הסבר ממדען ישירות','ביקורת על שיטת המחקר']}
+  };
+  const EXAMPLES = {
+    politics:'שוב בחירות: הממשלה מתפרקת אחרי כשל בהצבעת אמון — נתניהו מול לפיד בבחירות מוקדמות',
+    sports:'ניצחון היסטורי: מכבי תל אביב עלתה לגמר הליגה האירופית לראשונה בתולדות המועדון',
+    entertainment:'גאל גדות מאשרת: נכנסתי להיריון בזמן צילומי וונדר וומן 3 — הפרויקט נעצר',
+    tech:'OpenAI מכריזה על GPT-5: מודל שמבין וידאו בזמן אמת ועובד פי 100 מהר יותר מהמקדים',
+    news:'רעידת אדמה בעוצמה 7.4 פוגעת בחוף המזרחי של יפן — אזעקת צונאמי הופעלה',
+    health:'מחקר חדש: 30 דקות הליכה ביום מפחיתות סיכון לדיכאון ב-43% — גם ללא ירידה במשקל',
+    economy:'בנק ישראל מעלה ריבית ב-0.5%: מה זה אומר למשכנתא שלך ולהלוואות הצרכניות',
+    religion:'הלכות שבת: מה מותר ומה אסור — מדריך מקיף לפי דעת הפוסקים לשמירת שבת כהלכה',
+    science:'גילוי פורץ דרך: מדענים מ-NASA מצאו ראיות ראשונות לחיים קדמוניים על המאדים'
+  };
+  window.fillExample = function(cat) {
+    const el = document.getElementById('analyzer-input');
+    if (el) { el.value = EXAMPLES[cat] || ''; el.focus(); }
+  };
+  window.analyzeText = function() {
+    const text = (document.getElementById('analyzer-input')?.value || '').toLowerCase();
+    if (!text.trim()) return;
+    const scores = Object.entries(CATS).map(([id, cat]) => {
+      const hits = cat.terms.filter(t => text.includes(t));
+      return { id, cat, score: hits.length };
+    }).filter(r => r.score > 0).sort((a, b) => b.score - a.score);
+    const resultEl = document.getElementById('analyzer-result');
+    const chipsEl  = document.getElementById('analyzer-chips');
+    const detailEl = document.getElementById('analyzer-detail');
+    resultEl.style.display = 'block';
+    if (!scores.length) {
+      chipsEl.innerHTML = '<span style="color:var(--muted);font-size:14px">לא זוהתה קטגוריה ברורה — נסו טקסט אחר</span>';
+      detailEl.innerHTML = ''; return;
+    }
+    const top3 = scores.slice(0, 3);
+    chipsEl.innerHTML = top3.map((r, i) => `<button onclick="showCatDetail('${r.id}')" style="cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:99px;border:2px solid ${r.cat.color}${i===0?'':'44'};background:${r.cat.color}${i===0?'20':'0d'};color:${r.cat.color};font:700 13px 'Assistant',sans-serif;${i===0?'box-shadow:0 2px 14px '+r.cat.color+'30;':''}"><span>${r.cat.icon}</span><span>${r.cat.label}</span>${i===0?'<span style="font:700 9px \'Space Mono\',monospace;opacity:.75"> #1</span>':''}</button>`).join('');
+    window.showCatDetail(top3[0].id);
+  };
+  window.showCatDetail = function(catId) {
+    const cat = CATS[catId]; if (!cat) return;
+    document.getElementById('analyzer-detail').innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="font-size:32px">${cat.icon}</span>
+        <div><div style="font:900 22px 'Frank Ruhl Libre',serif;color:var(--ink)">${cat.label}</div><div style="font:700 10px 'Space Mono',monospace;color:${cat.color};margin-top:2px;direction:ltr">DETECTED CATEGORY</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;background:rgba(255,255,255,.55)">
+          <div style="font:700 10px 'Space Mono',monospace;color:var(--cyan);margin-bottom:6px;direction:ltr">// WHY IT SPREADS</div>
+          <p style="margin:0;font-size:13px;color:var(--muted);line-height:1.6">${cat.why}</p>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;background:rgba(255,255,255,.55)">
+          <div style="font:700 10px 'Space Mono',monospace;color:var(--accent);margin-bottom:6px;direction:ltr">// PLATFORM LOGIC</div>
+          <p style="margin:0;font-size:13px;color:var(--muted);line-height:1.6">${cat.platform}</p>
+        </div>
+      </div>
+      <div><div style="font:700 10px 'Space Mono',monospace;color:var(--violet);margin-bottom:8px;direction:ltr">// ALTERNATIVES</div><div style="display:flex;flex-wrap:wrap;gap:7px">${cat.alts.map(a=>`<span style="padding:5px 10px;border:1px solid var(--line);border-radius:99px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.5)">${a}</span>`).join('')}</div></div>`;
+  };
 
   setLanguage(currentLanguage);
   updateThemeControls(rootEl.dataset.theme);
