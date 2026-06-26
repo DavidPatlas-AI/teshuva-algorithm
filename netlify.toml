@@ -3,9 +3,10 @@
 
 [functions]
   node_bundler = "esbuild"
+  directory = "netlify/functions"
 
-[functions."*"]
-  node_version = "18"
+[build.environment]
+  NODE_VERSION = "18"
 
 [[headers]]
   for = "/downloads/*"
