@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "האלגוריתם שחזר בתשובה",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "קליפי מסביר למה אתה רואה מה שאתה רואה — מנתח תוכן ברשתות חברתיות ומאפשר שליטה מלאה על האלגוריתם",
   "icons": {
     "16":  "icons/icon16.png",
@@ -30,7 +30,10 @@
         "https://www.facebook.com/*",
         "https://www.instagram.com/*",
         "https://www.youtube.com/*",
-        "https://www.tiktok.com/*"
+        "https://www.tiktok.com/*",
+        "https://www.linkedin.com/*",
+        "https://www.reddit.com/*",
+        "https://www.threads.net/*"
       ],
       "js": ["content/bundle.js"],
       "run_at": "document_idle"
@@ -47,6 +50,9 @@
     "https://www.facebook.com/*",
     "https://www.instagram.com/*",
     "https://www.youtube.com/*",
-    "https://www.tiktok.com/*"
+    "https://www.tiktok.com/*",
+    "https://www.linkedin.com/*",
+    "https://www.reddit.com/*",
+    "https://www.threads.net/*"
   ]
 }

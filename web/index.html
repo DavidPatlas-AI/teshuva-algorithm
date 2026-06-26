@@ -788,7 +788,7 @@
           <div id="guide-ext-step2" style="margin-bottom:3px">2. chrome://extensions ◀ הפעל "מצב מפתח"</div>
           <div id="guide-ext-step3">3. לחץ "טען תוסף לא ארוז" ◀ בחר את התיקייה</div>
         </div>
-        <a href="/downloads/teshuva-extension-1.3.0.zip" style="display:block;text-align:center;margin-top:14px;background:rgba(255,154,31,.12);color:var(--accent,#ff9a1f);text-decoration:none;font-weight:800;font-size:14px;padding:11px 18px;border-radius:9px;border:1px solid rgba(255,154,31,.3)" id="guide-ext-btn">⬇ הורד תוסף Chrome (.zip)</a>
+        <a href="/downloads/teshuva-extension-1.4.0.zip" style="display:block;text-align:center;margin-top:14px;background:rgba(255,154,31,.12);color:var(--accent,#ff9a1f);text-decoration:none;font-weight:800;font-size:14px;padding:11px 18px;border-radius:9px;border:1px solid rgba(255,154,31,.3)" id="guide-ext-btn">⬇ הורד תוסף Chrome (.zip)</a>
       </div>
 
       <!-- Data storage card -->
@@ -858,6 +858,8 @@
         <button onclick="loadExample('news')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: כתבת חדשות</button>
         <button onclick="loadExample('sport')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: ספורט</button>
         <button onclick="loadExample('tech')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: טכנולוגיה</button>
+        <button onclick="loadExample('religion')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: דת</button>
+        <button onclick="loadExample('science')" style="padding:11px 18px;background:rgba(255,255,255,.05);color:#b3ac9e;border:1px solid rgba(236,233,225,.15);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit">דוגמה: מדע</button>
       </div>
       <div id="analyzer-result" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(236,233,225,.1);border-radius:16px;padding:28px;animation:pophint .25s ease">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
@@ -920,11 +922,21 @@
         why:'כסף = פחד ותאוות בצע. שני המנגנונים הכי עוצמתיים לשמירת תשומת לב.',
         platform:'תוכן פיננסי מביא מבוגרים עם כסף — קהל האידאלי לפרסומות יוקרתיות.',
         alts:['הסבר פשוט ללא ז׳רגון','השקפה מאוזנת על סיכונים','מה מומחים עצמאיים אומרים']},
+      religion:{label:'דת ומסורת',icon:'✡️',color:'#A78BFA',terms:['תורה','שבת','חג','תפילה','רב','ישיבה','הלכה','כשרות','פסח','ראש השנה','יום כיפור','חנוכה','קידוש','מצווה','ברכה','Torah','shabbat','jewish','prayer','rabbi','religion','faith','church','bible','synagogue','kosher','islam','muslim','christian'],
+        why:'תוכן דתי מגייס לקהילה ומחזק זהות — שני מנגנונים שמייצרים מעורבות גבוהה וחזרה סדירה.',
+        platform:'קהלים דתיים נאמנים ביותר — חוזרים כל יום, משתפים בקהילה, ומגיבים רגשית. שיתוף גבוה = חשיפה רחבה.',
+        alts:['מקורות ראשוניים ללא פרשנות','דיון ערכי מאוזן','נקודת מבט בין-דתית']},
+      science:{label:'מדע',icon:'🔭',color:'#06B6D4',terms:['מדע','חלל','פיזיקה','כימיה','ביולוגיה','מחקר','גילוי','נאסא','כוכב','גלקסיה','DNA','גנטיקה','אסטרונומיה','science','space','physics','chemistry','biology','research','discovery','nasa','star','planet','evolution','quantum','climate','experiment','study'],
+        why:'תוכן מדעי מייצר סקרנות ותחושת גילוי — מנגנון חזק לשמירת תשומת לב. שיתוף גבוה בקרב קהל משכיל.',
+        platform:'תוכן STEM מביא משתמשים עם הכנסה גבוהה — קהל מבוקש מאוד לפרסום יוקרתי.',
+        alts:['מחקר עמית מקורי (peer-reviewed)','הסבר ממדען ישירות','ביקורת על שיטת המחקר']},
     };
     const EXAMPLES = {
       news:'ישראל מול איראן: ראש הממשלה מכנס את הקבינט הביטחוני לדיון חירום לאחר ירי טילים',
       sport:'מכבי תל אביב מגיע לגמר ליגת האלופות: ניצחון דרמטי 91–88 ב-3 שניות אחרונות',
-      tech:'OpenAI משיקה GPT-5: 10 פיצ'רים שישנו לחלוטין את אופן השימוש ב-AI',
+      tech:'OpenAI משיקה GPT-5: 10 פיצ\'רים שישנו לחלוטין את אופן השימוש ב-AI',
+      religion:'הלכות שבת: מה מותר ומה אסור — מדריך מקיף לפי דעת הפוסקים לשמירת שבת כהלכה',
+      science:'גילוי פורץ דרך: מדענים מ-NASA מצאו ראיות ראשונות לחיים קדמוניים על המאדים',
     };
     window.loadExample = function(k) {
       const el = document.getElementById('analyzer-input');
@@ -934,20 +946,23 @@
     window.analyzeText = function() {
       const text = (document.getElementById('analyzer-input').value || '').toLowerCase();
       if (text.length < 4) return;
-      let best = null, bestScore = 0;
+      const results = [];
       for (const [id, cat] of Object.entries(CATS)) {
         let score = 0;
         const matched = [];
         for (const term of cat.terms) {
           if (text.includes(term.toLowerCase())) { score += (term.length > 4 ? 2 : 1); matched.push(term); }
         }
-        if (score > bestScore) { bestScore = score; best = {id, score, matched, ...cat}; }
+        if (score > 0) results.push({id, score, matched, ...cat});
       }
+      results.sort((a,b) => b.score - a.score);
+      let best = results[0] || null;
       if (!best) { best = {label:'לא מזוהה',icon:'❓',color:'#6B7280',score:0,matched:[],why:'הטקסט קצר מדי או לא ברור — נסה עוד מילים.',platform:'לא ניתן לקבוע.',alts:['נסה להוסיף עוד הקשר']}; }
-      const normScore = Math.min(99, Math.max(12, Math.round(bestScore * 9)));
+      const normScore = Math.min(99, Math.max(12, Math.round(best.score * 9)));
       document.getElementById('anl-icon').textContent = best.icon;
       document.getElementById('anl-cat').style.color = best.color;
-      document.getElementById('anl-cat').textContent = best.id || 'category';
+      const runner = results.slice(1,3).map(r => `<span style="padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid rgba(236,233,225,.1);font-size:10.5px;color:#7d7567">${r.icon} ${r.label}</span>`).join(' ');
+      document.getElementById('anl-cat').innerHTML = (best.id || 'category') + (runner ? ' &nbsp;' + runner : '');
       document.getElementById('anl-label').textContent = best.label;
       document.getElementById('anl-label').style.color = best.color;
       document.getElementById('anl-score').textContent = normScore + '%';

@@ -89,8 +89,14 @@ teshuva-algorithm/
 ├── agent/
 │   └── dialogue.js           # Conversational AI stub
 │
-├── landing-page.html         # Public landing page
-└── package.json              # v0.3.0
+├── web/                      # Landing page & marketing site (Netlify)
+│   ├── index.html            # Main landing page (HE/EN/RU, dark/light)
+│   ├── features.html         # Features page
+│   ├── pricing.html          # Pricing page
+│   ├── faq.html              # FAQ page
+│   ├── support.html          # Support page
+│   └── downloads/            # Extension zip for manual install
+└── package.json
 ```
 
 ---

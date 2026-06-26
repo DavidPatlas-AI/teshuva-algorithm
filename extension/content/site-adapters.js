@@ -7,6 +7,9 @@ export const SITE_SELECTORS = {
   'instagram.com': "._a9zs span, .C4VMK span",
   'youtube.com':   "#video-title, #description-text",
   'tiktok.com':    "[data-e2e='browse-video-desc']",
+  'linkedin.com':  ".feed-shared-update-v2__description span, .update-components-text span",
+  'reddit.com':    "[data-testid='post-content'] h3, .Post h3",
+  'threads.net':   "div[dir='auto'] span",
   'localhost':     "[data-testid='tweetText']",
 }
 
