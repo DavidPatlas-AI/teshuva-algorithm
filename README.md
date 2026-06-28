@@ -11,7 +11,7 @@ This project is a small act of rebellion: a browser extension + desktop agent (C
 
 ## What It Does
 
-1. **Watches** your feed — YouTube, X/Twitter, Facebook, Instagram, TikTok
+1. **Watches** your feed — YouTube, X/Twitter, Facebook, Instagram, TikTok, LinkedIn, Reddit, Threads
 2. **Classifies** every post into one of 9 categories (politics, sports, tech, etc.)
 3. **Asks** you with floating 👍/👎 buttons: "Are you interested in this?"
 4. **Learns** your preferences and adjusts its weight per category
@@ -40,6 +40,9 @@ This project is a small act of rebellion: a browser extension + desktop agent (C
 | AI-powered dialogue layer (click Clippy to chat) | ✅ Working |
 | TikTok action adapter | ✅ Working |
 | YouTube InnerTube API integration | ✅ Working |
+| LinkedIn / Reddit / Threads action adapter | ✅ Working (needs real-browser testing) |
+| Web text analyzer (9 categories, Hebrew/EN/RU) | ✅ Working |
+| 37 unit tests (brain, classifier, state, questions) | ✅ Passing |
 
 ---
 
