@@ -15,7 +15,7 @@ npm run build:desktop
 npm test
 
 # Run a single test file
-node --experimental-vm-modules node_modules/.bin/jest tests/brain.test.js
+node --experimental-vm-modules node_modules/jest/bin/jest.js tests/brain.test.js
 
 # Start Electron desktop app
 npm start
@@ -83,7 +83,7 @@ Entry points bundled by esbuild:
 3. Add DOM strategy to `content/action-engine.js` (for the "Not interested" click)
 4. Run `npm run build`
 
-> LinkedIn, Reddit, Threads are in the manifest and site-adapters but **not yet in action-engine.js** — posts are classified but "Not interested" won't be clicked on those platforms.
+LinkedIn, Reddit, and Threads are fully wired: site-adapters + manifest + action-engine.
 
 ### Desktop (`desktop/`)
 
