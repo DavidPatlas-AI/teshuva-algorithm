@@ -101,6 +101,6 @@ Defines `STORAGE_KEY`, `SETTINGS_KEY`, all `MSG.*` types for content↔backgroun
 
 ## Known Gaps
 
-- `action-engine.js` has no adapter for LinkedIn, Reddit, or Threads
+- LinkedIn/Reddit/Threads action-engine selectors are best-effort — they need real-browser testing to verify menu button discovery works on current DOM
 - No real linting (`"lint": "echo TODO"`)
-- `package.json` still has `"url": "https://github.com/YOUR_USERNAME/teshuva-algorithm"` — should be `DavidPatlas-AI`
+- `desktop/renderer.js` bundle is 1.9 MB (includes clippyjs assets) — normal, but slow to rebuild
