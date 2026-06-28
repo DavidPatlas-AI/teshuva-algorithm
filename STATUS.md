@@ -63,18 +63,20 @@
 | `shared/constants.js` | ✅ | STORAGE_KEY, message types, cooldowns |
 | `tests/` | ✅ | brain.test, classifier.test, questions.test, state.test |
 | `web/index.html` | ✅ | אתר הנחיתה — **פעיל ב-Netlify**, מתורגם: עברית / אנגלית / רוסית |
+| `web/index.html#analyzer` | ✅ | אנליזר טקסט אינטראקטיבי — 9 קטגוריות, top-3 chips, פאנל הסבר |
+| `tests/` | ✅ | 37 טסטים עוברים — brain, classifier, state, questions |
 
 ---
 
 ## מה עוד ניתן לשפר 🔧
 
 ### 1. **בדיקה אמיתית על אתרים** ⚠️
-> התוסף לא נבדק בדפדפן Chrome אמיתי על Twitter / Facebook.
-> לבדיקה: טען כ-Unpacked extension, פתח Twitter, וודא שקליפי מופיע.
+> התוסף לא נבדק בדפדפן Chrome אמיתי.
+> לבדיקה: טען כ-Unpacked extension, פתח Twitter/YouTube, וודא שקליפי מופיע ושה-badge מוצג.
 
-### 2. **site-adapters.js לפלטפורמות החדשות** ⚠️
-> LinkedIn, Reddit, Threads נוספו ל-manifest אבל אין להן CSS selectors ב-site-adapters.js.
-> קליפי יופיע אבל לא יזהה פוסטים — צריך להוסיף selectors.
+### 2. **action-engine לפלטפורמות החדשות** ⚠️
+> LinkedIn, Reddit, Threads — ה-selectors נכתבו אבל לא נבדקו בדפדפן אמיתי.
+> DOM של הפלטפורמות משתנה תכופות, ייתכן שיצטרכו עדכון.
 
 ---
 
