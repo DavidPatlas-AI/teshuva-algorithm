@@ -11,7 +11,7 @@
     "desktop": "electron desktop/main.js",
     "extension": "echo Load the extension/ folder in chrome://extensions",
     "lint": "echo TODO",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern=tests/"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/"
   },
   "build": {
     "appId": "ai.davidpatlas.teshuva-algorithm",
@@ -30,7 +30,14 @@
       "!node_modules/playwright/**"
     ],
     "win": {
-      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "icon": "desktop/icon.ico"
     },
     "nsis": {
@@ -45,10 +52,7 @@
     }
   },
   "jest": {
-    "transform": {},
-    "extensionsToTreatAsEsm": [
-      ".js"
-    ]
+    "transform": {}
   },
   "keywords": [
     "clippy",
@@ -64,6 +68,7 @@
     "electron": "^42.4.0",
     "electron-builder": "^26.15.3",
     "esbuild": "^0.28.0",
+    "jest": "^30.4.2",
     "playwright": "^1.60.0"
   },
   "dependencies": {
@@ -71,6 +76,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/teshuva-algorithm"
+    "url": "https://github.com/DavidPatlas-AI/teshuva-algorithm"
   }
 }

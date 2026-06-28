@@ -1583,6 +1583,42 @@
         }
       };
       PLATFORMS["twitter.com"] = PLATFORMS["x.com"];
+      PLATFORMS["linkedin.com"] = {
+        container: (el) => el.closest(".feed-shared-update-v2, .occludable-update, [data-urn]") || el.closest("li.artdeco-list__item"),
+        reveal: () => {
+        },
+        menuBtn: (c) => c.querySelector('[aria-label="Open control menu"], [aria-label="\u05E4\u05EA\u05D7 \u05EA\u05E4\u05E8\u05D9\u05D8 \u05D1\u05E7\u05E8\u05D4"], button.feed-shared-control-menu__trigger') || [...c.querySelectorAll("button")].find(
+          (b) => /control menu|more options/i.test(b.getAttribute("aria-label") ?? "")
+        ),
+        option: () => findText(
+          '[role="listbox"] [role="option"], .artdeco-dropdown__content [role="option"], [role="menu"] [role="menuitem"]',
+          [/not interested/i, /לא מעוניין/i, /unfollow/i, /hide/i, /report/i]
+        )
+      };
+      PLATFORMS["reddit.com"] = {
+        container: (el) => el.closest('shreddit-post, [data-testid="post-container"], .Post, article'),
+        reveal: () => {
+        },
+        menuBtn: (c) => c.querySelector('[aria-label="More options"], button[aria-haspopup="menu"]') || [...c.querySelectorAll("button")].find(
+          (b) => /more options|overflow/i.test(b.getAttribute("aria-label") ?? "")
+        ),
+        option: () => findText(
+          '[data-testid="post-overflow-menu"] button, [role="menu"] [role="menuitem"], [role="menuitem"]',
+          [/not interested/i, /hide/i, /block/i]
+        )
+      };
+      PLATFORMS["threads.net"] = {
+        container: (el) => el.closest('article, [role="article"], div[tabindex="-1"][style*="padding"]'),
+        reveal: () => {
+        },
+        menuBtn: (c) => [...c.querySelectorAll('button, [role="button"]')].find(
+          (b) => /more|options/i.test(b.getAttribute("aria-label") ?? "") || b.querySelector('svg[aria-label*="More"], svg[aria-label*="more"]')
+        ),
+        option: () => findText(
+          '[role="dialog"] button, [role="menu"] button, [role="menuitem"]',
+          [/not interested/i, /hide/i, /mute/i, /block/i, /unfollow/i]
+        )
+      };
     }
   });
 
