@@ -49,7 +49,7 @@
   .nav-mobile .nav-cta-m{margin:14px 20px 18px;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:15px;padding:11px 20px;border-radius:9px}
 
   /* ── hero ─────────────────────────────────────────── */
-  .hero-grid{display:grid;grid-template-columns:1.32fr .68fr;gap:46px;align-items:end}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
   .hero-h1{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:80px;line-height:.98;letter-spacing:-1.5px;margin:20px 0 0}
   .hero-wm{position:absolute;top:30px;left:24px;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:230px;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(255,154,31,.1);pointer-events:none;z-index:0;user-select:none}
 
@@ -92,7 +92,7 @@
     .hero-grid{grid-template-columns:1fr;gap:30px}
     .hero-h1{font-size:clamp(40px,9vw,64px)}
     .hero-wm{font-size:140px;opacity:.6}
-    .hero-right{display:none}     /* flame — מוסתר בטאבלט */
+    .hero-right{display:none}     /* product mockup — hidden on tablet/mobile */
 
     /* idea */
     .idea-grid{grid-template-columns:1fr;gap:30px}
@@ -401,24 +401,65 @@
           </a>
         </div>
       </div>
-      <!-- flame -->
-      <div class="hero-right" style="position:relative;padding-bottom:8px">
-        <div style="position:relative;height:200px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:18px">
-          <div style="position:absolute;bottom:30px;width:180px;height:180px;background:radial-gradient(closest-side,rgba(255,154,31,.5),transparent);filter:blur(6px);animation:glowbreath 3.4s ease-in-out infinite"></div>
-          <svg width="92" height="150" viewBox="0 0 92 150" fill="none" style="position:relative;z-index:1">
-            <g style="transform-origin:46px 92px;animation:flick 2.6s ease-in-out infinite">
-              <path d="M46 6 C30 38 22 52 22 76 a24 24 0 0 0 48 0 C70 56 60 40 46 6 Z" fill="url(#fl)"></path>
-              <path d="M46 40 C38 60 34 66 34 80 a12 12 0 0 0 24 0 C58 66 52 58 46 40 Z" fill="#fff6e6" opacity=".9"></path>
-            </g>
-            <rect x="40" y="112" width="12" height="30" rx="3" fill="#3a342a"></rect>
-            <rect x="30" y="138" width="32" height="8" rx="4" fill="#4a4234"></rect>
-            <defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"></stop><stop offset=".5" stop-color="#ff9a1f"></stop><stop offset="1" stop-color="#c9561a"></stop></linearGradient></defs>
-          </svg>
+      <!-- product mockup -->
+      <div class="hero-right" style="position:relative">
+        <!-- browser frame -->
+        <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 32px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04);background:#0e1020">
+          <!-- title bar -->
+          <div style="background:#1a1d2e;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.07)">
+            <span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#28c840;display:inline-block"></span>
+            <div style="flex:1;background:#111426;border-radius:6px;padding:4px 10px;font-family:'Space Mono',monospace;font-size:10px;color:#5a5f7a;direction:ltr;margin:0 8px">youtube.com/feed</div>
+          </div>
+          <!-- feed rows -->
+          <div style="padding:14px 14px 8px">
+            <!-- post 1 – dimmed -->
+            <div style="display:flex;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.025);margin-bottom:8px;opacity:.35">
+              <div style="width:88px;height:50px;border-radius:7px;background:linear-gradient(135deg,#1e2a4a,#2d3a60);flex:none"></div>
+              <div style="flex:1">
+                <div style="height:9px;background:rgba(255,255,255,.12);border-radius:4px;width:85%;margin-bottom:7px"></div>
+                <div style="height:7px;background:rgba(255,255,255,.07);border-radius:4px;width:55%"></div>
+              </div>
+            </div>
+            <!-- post 2 – highlighted with Clippy bubble -->
+            <div style="position:relative;display:flex;gap:10px;padding:10px;border-radius:10px;background:rgba(98,72,220,.12);border:1px solid rgba(98,72,220,.25);margin-bottom:8px">
+              <div style="width:88px;height:50px;border-radius:7px;background:linear-gradient(135deg,#2a1e4a,#4a2d6a);flex:none;display:grid;place-items:center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,.4)"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <div style="flex:1">
+                <div style="height:9px;background:rgba(255,255,255,.2);border-radius:4px;width:90%;margin-bottom:7px"></div>
+                <div style="height:7px;background:rgba(255,255,255,.12);border-radius:4px;width:60%"></div>
+              </div>
+              <!-- 👍 👎 badge -->
+              <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);display:flex;gap:5px">
+                <span style="background:#22c55e;border-radius:99px;padding:3px 7px;font-size:11px;font-weight:800;color:#fff">👍</span>
+                <span style="background:rgba(255,255,255,.1);border-radius:99px;padding:3px 7px;font-size:11px;font-weight:800;color:#aaa">👎</span>
+              </div>
+            </div>
+            <!-- post 3 – dimmed -->
+            <div style="display:flex;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);opacity:.3">
+              <div style="width:88px;height:50px;border-radius:7px;background:linear-gradient(135deg,#1e3a2a,#2d5040);flex:none"></div>
+              <div style="flex:1">
+                <div style="height:9px;background:rgba(255,255,255,.1);border-radius:4px;width:75%;margin-bottom:7px"></div>
+                <div style="height:7px;background:rgba(255,255,255,.06);border-radius:4px;width:45%"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Clippy bubble -->
+          <div style="margin:0 14px 14px;padding:12px 14px;background:#fdfbf5;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.4)">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+              <div style="width:20px;height:20px;border-radius:6px;background:linear-gradient(145deg,#dbe6ff,#9faed4);display:grid;place-items:center">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="#27314d"><path d="M18 3a3 3 0 0 1 .75 5.91V19a3 3 0 0 1-6 0v-.18A3 3 0 0 1 9 16V8.91A3 3 0 1 1 12 6a2.99 2.99 0 0 1-.75.41V16a1 1 0 0 0 2 0V6.41A3 3 0 0 1 18 3z"/></svg>
+              </div>
+              <span style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#27314d;letter-spacing:.5px">CLIPPY</span>
+              <span style="margin-right:auto;font-family:'Space Mono',monospace;font-size:9px;color:#9a9182;direction:ltr">טכנולוגיה · 86%</span>
+            </div>
+            <p style="margin:0;font-family:'Assistant',sans-serif;font-size:13px;color:#202338;line-height:1.5;direction:rtl">צפית ב‑12 סרטונים דומים — האלגוריתם מדרג אותך כמשתמש טכנולוגי בעל זמן צפייה גבוה.</p>
+          </div>
         </div>
-        <div style="border-top:1px solid rgba(236,233,225,.12);padding-top:14px">
-          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#7d7567;text-transform:uppercase;direction:ltr;text-align:right;margin-bottom:6px">ner tamid · always-on transparency</div>
-          <p style="font-family:'Frank Ruhl Libre',serif;font-style:italic;font-size:18px;line-height:1.5;color:#cfc7b6;margin:0">"מהיום, כל החלטה שלי — גלויה, מוסברת, וניתנת לערעור."</p>
-        </div>
+        <!-- glow under frame -->
+        <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:70%;height:40px;background:rgba(98,72,220,.25);filter:blur(22px);pointer-events:none"></div>
       </div>
     </div>
   </header>
