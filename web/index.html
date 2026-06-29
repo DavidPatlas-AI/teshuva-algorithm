@@ -188,7 +188,7 @@
   body{background:var(--bg)!important;direction:ltr;overflow-x:hidden;max-width:100%}
   #root{background:var(--bg)!important;color:var(--ink)!important;isolation:isolate}
   #root:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(900px 620px at 88% -8%,rgba(128,107,255,.18),transparent 64%),radial-gradient(720px 560px at -5% 35%,rgba(85,230,239,.1),transparent 70%)}
-  nav{position:sticky!important;top:0;background:rgba(6,8,20,.76);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%)}
+  nav{position:sticky!important;top:0;background:rgba(6,8,20,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
   .hero-h1 span:last-child{background:linear-gradient(110deg,var(--accent),var(--violet),var(--cyan));background-clip:text;-webkit-background-clip:text;color:transparent!important}
   .theme-switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--ink);border-radius:99px;padding:8px 12px;cursor:pointer;font:700 11px 'Space Mono',monospace;white-space:nowrap}
   .motion-switch{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--muted);border-radius:99px;padding:8px 11px;cursor:pointer;font:700 11px 'Assistant',sans-serif;white-space:nowrap}
@@ -232,8 +232,8 @@
   @keyframes thumbExplain{0%,100%{box-shadow:0 0 0 0 rgba(128,107,255,0)}50%{box-shadow:0 0 0 8px rgba(128,107,255,.12),0 0 28px rgba(85,230,239,.3)}}
   @keyframes reasonBlink{0%,100%{opacity:.3}50%{opacity:1}}
   .scroll-progress{position:fixed;top:0;right:0;height:3px;width:var(--scroll,0%);z-index:100;background:linear-gradient(90deg,var(--accent),var(--violet),var(--cyan));box-shadow:0 0 18px var(--cyan);pointer-events:none}
-  .cursor-aura{position:fixed;z-index:90;width:280px;height:280px;border-radius:50%;pointer-events:none;opacity:.12;filter:blur(18px);background:radial-gradient(circle,var(--cyan),rgba(128,107,255,.45) 35%,transparent 68%);transform:translate3d(calc(var(--mx,50vw) - 140px),calc(var(--my,50vh) - 140px),0);transition:opacity .3s ease;mix-blend-mode:screen}
-  .aurora-field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}.aurora-field:before,.aurora-field:after{content:"";position:absolute;width:720px;height:420px;border-radius:50%;filter:blur(90px);animation:auroraDrift 14s ease-in-out infinite}.aurora-field:before{top:-250px;right:-120px;background:rgba(128,107,255,.18)}.aurora-field:after{top:20%;left:-340px;background:rgba(85,230,239,.11);animation-delay:-7s}
+  .cursor-aura{display:none}
+  .aurora-field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}.aurora-field:before,.aurora-field:after{content:"";position:absolute;width:600px;height:340px;border-radius:50%;filter:blur(54px);animation:auroraDrift 18s ease-in-out infinite;will-change:transform}.aurora-field:before{top:-200px;right:-80px;background:rgba(128,107,255,.13)}.aurora-field:after{top:20%;left:-280px;background:rgba(85,230,239,.08);animation-delay:-9s}
   nav>.sec{margin-top:12px;margin-bottom:12px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(110deg,rgba(255,255,255,.055),rgba(255,255,255,.015));box-shadow:0 18px 60px rgba(0,0,0,.22)}
   .sec-hero{display:flex;align-items:flex-start;isolation:isolate}.sec-hero:before{content:"";position:absolute;inset:50px 20px 20px;border:1px solid rgba(128,107,255,.16);border-radius:44px;background:linear-gradient(145deg,rgba(128,107,255,.07),transparent 42%,rgba(85,230,239,.035));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 55px 130px rgba(0,0,0,.25);z-index:-1}.sec-hero:after{content:"";position:absolute;inset:70px 40px 40px;border-radius:34px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 25%);mask:linear-gradient(#000,transparent 28%);z-index:-1}
   .hero-h1{font-size:clamp(64px,7.1vw,98px)!important;letter-spacing:-2.8px!important;text-wrap:balance}.hero-h1 span:last-child{background-size:220% 220%;animation:prismShift 7s ease infinite}
@@ -319,15 +319,7 @@
 <div id="root" dir="rtl" style="background:#f5f7ff;color:#17182b;font-family:'Assistant',sans-serif;min-height:100vh;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased">
 
   <div class="scroll-progress" aria-hidden="true"></div>
-  <div class="cursor-aura" aria-hidden="true"></div>
   <div class="aurora-field" aria-hidden="true"></div>
-
-  <!-- atmosphere -->
-  <div style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(680px 760px at 50% -6%,rgba(255,154,31,.14),transparent 62%),radial-gradient(900px 600px at 88% 8%,rgba(46,78,128,.16),transparent 60%)"></div>
-  <div style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'&gt;&lt;filter id='n'&gt;&lt;feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/&gt;&lt;/filter&gt;&lt;rect width='100%' height='100%' filter='url(%23n)'/&gt;&lt;/svg&gt;&quot;)"></div>
-  <div style="position:fixed;top:0;bottom:0;left:0;right:0;max-width:1200px;margin:0 auto;pointer-events:none;z-index:0;display:grid;grid-template-columns:repeat(4,1fr)">
-    <div style="border-right:1px solid rgba(236,233,225,.045)"></div><div style="border-right:1px solid rgba(236,233,225,.045)"></div><div style="border-right:1px solid rgba(236,233,225,.045)"></div><div style="border-right:1px solid rgba(236,233,225,.045)"></div>
-  </div>
 
   <!-- CONFESSION TICKER -->
   <div style="position:relative;z-index:6;border-bottom:1px solid rgba(236,233,225,.09);background:rgba(255,154,31,.04);overflow:hidden;white-space:nowrap">
@@ -359,7 +351,7 @@
         <button class="motion-switch desktop-theme" type="button" onclick="toggleMotion()" aria-label="החלף עוצמת אנימציות"><span class="motion-icon">◉</span><span class="motion-label">תנועה מלאה</span></button>
         <select class="language-select desktop-theme" aria-label="שפה" onchange="setLanguage(this.value)"><option value="he">עברית</option><option value="en">English</option><option value="ru">Русский</option></select>
         <button class="theme-switch desktop-theme" type="button" onclick="toggleTheme()" aria-label="החלף מצב יום ולילה"><span class="theme-icon">☾</span><span class="theme-label">לילה</span></button>
-        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="color:#0a0d12;background:var(--accent,#ff9a1f);text-decoration:none;font-weight:800;font-size:14px;padding:9px 17px;border-radius:8px;box-shadow:0 6px 22px rgba(255,154,31,.26)">הורד למחשב ↓</a>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="color:#0a0d12;background:var(--accent,#ff9a1f);text-decoration:none;font-weight:800;font-size:14px;padding:9px 17px;border-radius:8px;box-shadow:0 6px 22px rgba(255,154,31,.26);display:inline-flex;align-items:center;gap:7px"><svg width="14" height="14" viewBox="0 0 88 88" fill="none"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>הורד למחשב ↓</a>
       </div>
       <!-- mobile language + hamburger -->
       <div class="mobile-controls">
@@ -378,7 +370,7 @@
       <a href="#vision" onclick="toggleNav()">החזון</a>
       <button class="motion-switch" type="button" onclick="toggleMotion()"><span class="motion-icon">◉</span><span class="motion-label">תנועה מלאה</span></button>
       <div class="mobile-daylight-note" role="status" aria-label="תצוגת יום קבועה במובייל"><span aria-hidden="true">☀</span><span>תצוגת יום קבועה במובייל</span></div>
-      <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" class="nav-cta-m">הורד למחשב ↓</a>
+      <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" class="nav-cta-m" style="display:inline-flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 88 88" fill="none"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>הורד למחשב ↓</a>
     </div>
   </nav>
 
@@ -399,11 +391,14 @@
         </h1>
         <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:15px;color:#9a9182;margin:26px 0 0;text-align:right;line-height:1.6;max-width:520px;margin-right:0;margin-left:auto">"What if the algorithm stopped hiding<br>and started explaining itself?"</p>
         <div style="display:flex;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap">
-          <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:10px;box-shadow:0 12px 34px rgba(255,154,31,.32);display:inline-flex;align-items:center;gap:9px">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="#0a0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:10px;box-shadow:0 12px 34px rgba(255,154,31,.32);display:inline-flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>
             הורד למחשב · Windows
           </a>
-          <a href="#waitlist" style="background:transparent;color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:14px 20px;border-radius:10px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono',monospace">גישה מוקדמת ↙</a>
+          <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-extension-1.4.0.zip" download="" style="background:rgba(255,255,255,.08);color:var(--ink,#17182b);text-decoration:none;font-weight:700;font-size:15px;padding:14px 20px;border-radius:10px;border:1px solid rgba(98,72,220,.3);display:inline-flex;align-items:center;gap:9px">
+            <svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#4285F4"/><circle cx="12" cy="12" r="4.2" fill="white"/><path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.33 2.5L5.32 5.24A9.96 9.96 0 0 1 12 2z" fill="#EA4335"/><path d="M22 12a10 10 0 0 1-3.34 7.47l-4.33-7.5A5 5 0 0 0 12 7H3.34A9.97 9.97 0 0 1 12 2a10 10 0 0 1 10 10z" fill="#34A853"/><path d="M2 12a10 10 0 0 0 7.34 9.66l4.33-7.5A5 5 0 0 1 12 17H2.12A9.94 9.94 0 0 1 2 12z" fill="#FBBC04"/></svg>
+            תוסף Chrome
+          </a>
         </div>
       </div>
       <!-- flame -->
@@ -743,7 +738,7 @@
   </section>
 
   <!-- FAQ -->
-  <section class="sec" id="faq" style="position:relative;z-index:4;padding-top:74px;padding-bottom:64px">
+  <section class="sec" id="faq" style="position:relative;z-index:4;padding-top:74px;padding-bottom:64px;content-visibility:auto;contain-intrinsic-size:0 600px">
     <div style="text-align:center;margin-bottom:30px">
       <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;direction:ltr">// honest answers</div>
       <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:44px;margin:10px 0 0">לפני שמתקינים, שואלים.</h2>
@@ -758,7 +753,7 @@
   </section>
 
   <!-- PRODUCT ROADMAP -->
-  <section id="roadmap" class="sec" style="position:relative;z-index:4;padding-top:42px;padding-bottom:54px">
+  <section id="roadmap" class="sec" style="position:relative;z-index:4;padding-top:42px;padding-bottom:54px;content-visibility:auto;contain-intrinsic-size:0 400px">
     <div style="display:flex;align-items:end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:28px">
       <div><div style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--cyan);text-transform:uppercase;direction:ltr;text-align:right">// from vision to product</div><h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:46px;margin:10px 0 0">מה כבר קיים, ומה בפיתוח.</h2></div>
       <p style="color:var(--muted);font-size:16px;line-height:1.65;margin:0;max-width:410px">המטרה היא לבנות כלי קטן שמוכיח ערך עכשיו, וממנו לגדול למוצר שמייצג את המשתמש מול האלגוריתם.</p>
@@ -823,10 +818,10 @@
       <h2 class="cta-h" style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:46px;letter-spacing:-.8px;margin:0 auto;max-width:680px;line-height:1.08">תן לאלגוריתם הראשון בהיסטוריה<br>שמתוודה — לעבוד בשבילך.</h2>
       <div class="detected-os" id="detected-os">בודק איזו גרסה מתאימה למכשיר שלך…</div>
       <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap">
-        <a id="primary-download" data-track="download" href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:15px 30px;border-radius:11px;box-shadow:0 12px 34px rgba(255,154,31,.34)">הורד למחשב · Windows ↓</a>
-        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:transparent;color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:15px 24px;border-radius:11px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono'">⭐ Star on GitHub</a>
+        <a id="primary-download" data-track="download" href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:15px 30px;border-radius:11px;box-shadow:0 12px 34px rgba(255,154,31,.34);display:inline-flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 88 88" fill="none"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>הורד למחשב · Windows</a>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:rgba(255,255,255,.06);color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:15px 24px;border-radius:11px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono';display:inline-flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 98 96" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/></svg>Star on GitHub</a>
         <button class="utility-button" id="install-pwa" type="button" hidden>התקן כאפליקציה</button>
-        <button class="utility-button" type="button" onclick="shareSite()">שתף את הפרויקט</button>
+        <button class="utility-button" type="button" onclick="shareSite()" style="display:inline-flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>שתף את הפרויקט</button>
       </div>
       <div class="download-options"><span class="platform-pill available">Windows · זמין</span><span class="platform-pill">macOS · בקרוב</span><span class="platform-pill">Linux · בקרוב</span><span class="platform-pill">Browser · בקרוב</span></div>
     </div>
@@ -1124,10 +1119,6 @@
   }
 
   if (finePointer && !reduceMotion) {
-    addEventListener('pointermove', event => {
-      document.documentElement.style.setProperty('--mx', event.clientX + 'px');
-      document.documentElement.style.setProperty('--my', event.clientY + 'px');
-    }, {passive:true});
     const tiltCards = document.querySelectorAll('.feat-grid>div,.steps-grid>div,.ba-card,.demo-card');
     tiltCards.forEach(card => {
       card.addEventListener('pointermove', event => {
@@ -1141,8 +1132,7 @@
         card.style.setProperty('--tilt-x','0deg'); card.style.setProperty('--tilt-y','0deg');
       });
     });
-  } else if (aura) {
-    aura.style.display = 'none';
+  } else if (false) {
   }
 
   const demos = {
