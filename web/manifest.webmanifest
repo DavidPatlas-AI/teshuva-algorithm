@@ -1,0 +1,18 @@
+{
+  "name": "האלגוריתם שחזר בתשובה",
+  "short_name": "קליפי",
+  "description": "תוסף Chrome שמסביר למה הפיד שלך מציג מה שהוא מציג — ומאפשר לך לשלוט חזרה.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06080d",
+  "theme_color": "#ff9a1f",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any maskable" }
+  ],
+  "screenshots": [
+    { "src": "/screenshots/hero.png", "type": "image/png", "sizes": "1280x720", "form_factor": "wide" },
+    { "src": "/screenshots/01-clippy.png", "type": "image/png", "sizes": "390x844", "form_factor": "narrow" }
+  ]
+}

@@ -368,6 +368,7 @@
         <a href="#analyzer" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">נתח תוכן</a>
         <a href="#parents" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הורים</a>
         <a href="#trust-pledge" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">אמון</a>
+        <a href="#pricing" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">מחיר</a>
         <a href="#vision" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">החזון</a>
         <button class="motion-switch desktop-theme" type="button" onclick="toggleMotion()" aria-label="החלף עוצמת אנימציות"><span class="motion-icon">◉</span><span class="motion-label">תנועה מלאה</span></button>
         <select class="language-select desktop-theme" aria-label="שפה" onchange="setLanguage(this.value)"><option value="he">עברית</option><option value="en">English</option><option value="ru">Русский</option></select>
@@ -390,6 +391,7 @@
       <a href="#analyzer" onclick="toggleNav()">נתח תוכן</a>
       <a href="#parents" onclick="toggleNav()">הורים</a>
       <a href="#trust-pledge" onclick="toggleNav()">אמון</a>
+      <a href="#pricing" onclick="toggleNav()">מחיר</a>
       <a href="#vision" onclick="toggleNav()">החזון</a>
       <button class="motion-switch" type="button" onclick="toggleMotion()"><span class="motion-icon">◉</span><span class="motion-label">תנועה מלאה</span></button>
       <div class="mobile-daylight-note" role="status" aria-label="תצוגת יום קבועה במובייל"><span aria-hidden="true">☀</span><span>תצוגת יום קבועה במובייל</span></div>
@@ -1047,22 +1049,56 @@
   </section>
 
   <!-- PRICING TEASER -->
-  <section class="sec" style="position:relative;z-index:4;padding-top:20px;padding-bottom:48px">
-    <div style="max-width:760px;margin:0 auto;border:1px solid rgba(128,107,255,.22);border-radius:20px;padding:36px 40px;background:linear-gradient(135deg,rgba(98,72,220,.06),rgba(8,127,145,.04));display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center">
-      <div>
-        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;direction:ltr;margin-bottom:12px">// pricing</div>
-        <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:32px;margin:0 0 12px">גישה מוקדמת — <span style="color:#4ade80">חינם לגמרי.</span></h3>
-        <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0">גרסת ה-Pro העתידית תכלול כלים מתקדמים לסינון, איזון ודוחות שבועיים. מי שנרשם עכשיו יקבל גישה ראשונה ומחיר מועדף.</p>
+  <section id="pricing" class="sec" style="position:relative;z-index:4;padding-top:20px;padding-bottom:56px">
+    <div style="text-align:center;margin-bottom:30px">
+      <div style="font-family:'Space Mono';font-size:10px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;direction:ltr;margin-bottom:10px">// pricing</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:clamp(28px,4vw,40px);margin:0 0 8px">גישה מוקדמת — <span style="color:#4ade80">חינם לגמרי.</span></h2>
+      <p style="color:var(--muted);font-size:15px;margin:0 auto;max-width:480px;line-height:1.6">מי שנרשם עכשיו יקבל גישה ראשונה ל-Pro במחיר מועדף לכל החיים.</p>
+    </div>
+    <div class="three-col-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:860px;margin:0 auto">
+      <!-- Free -->
+      <div style="border:1px solid rgba(74,222,128,.25);border-radius:18px;padding:28px;background:rgba(74,222,128,.04);display:flex;flex-direction:column">
+        <div style="font-family:'Space Mono';font-size:10px;color:#4ade80;margin-bottom:10px;direction:ltr">// FREE</div>
+        <div style="font:900 36px 'Frank Ruhl Libre',serif;color:var(--ink);margin-bottom:4px">₪0</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px">לעולם · ללא כרטיס אשראי</div>
+        <ul style="list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:9px;flex:1">
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#4ade80;flex:none">✓</span>תוסף Chrome (v1.4)</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#4ade80;flex:none">✓</span>Desktop app לWindows</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#4ade80;flex:none">✓</span>ניתוח 9 קטגוריות</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#4ade80;flex:none">✓</span>כפתורי 👍/👎 חיים</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#4ade80;flex:none">✓</span>קוד פתוח · MIT</li>
+        </ul>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="display:block;text-align:center;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);color:#4ade80;text-decoration:none;font-weight:800;font-size:14px;padding:11px;border-radius:10px">הורד עכשיו</a>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px 16px">
-          <div style="font-weight:800;font-size:14px;color:#4ade80;margin-bottom:4px">✓ Free · גישה מוקדמת</div>
-          <div style="font-size:13px;color:var(--muted)">הורד, התקן, השתמש. בלי כרטיס אשראי.</div>
-        </div>
-        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(128,107,255,.2);border-radius:12px;padding:14px 16px">
-          <div style="font-weight:800;font-size:14px;color:var(--violet);margin-bottom:4px">Pro · עתידי</div>
-          <div style="font-size:13px;color:var(--muted)">סינון מניפולציות · איזון פיד · דוחות שבועיים · הגנה על ילדים</div>
-        </div>
+      <!-- Pro -->
+      <div style="border:2px solid rgba(128,107,255,.5);border-radius:18px;padding:28px;background:linear-gradient(145deg,rgba(98,72,220,.1),rgba(8,127,145,.06));display:flex;flex-direction:column;position:relative">
+        <div style="position:absolute;top:-13px;right:50%;transform:translateX(50%);background:var(--violet);color:#fff;font:700 11px 'Space Mono',monospace;padding:4px 12px;border-radius:99px;white-space:nowrap">בקרוב · Early Access</div>
+        <div style="font-family:'Space Mono';font-size:10px;color:var(--violet);margin-bottom:10px;direction:ltr">// PRO</div>
+        <div style="font:900 36px 'Frank Ruhl Libre',serif;color:var(--ink);margin-bottom:4px">$4.99<span style="font-size:16px;font-weight:400;color:var(--muted)">/חודש</span></div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px">מחיר מועדף לנרשמים מוקדמים</div>
+        <ul style="list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:9px;flex:1">
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:var(--violet);flex:none">✓</span>כל מה שב-Free</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:var(--violet);flex:none">✓</span>סינון מניפולציות אוטומטי</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:var(--violet);flex:none">✓</span>איזון פיד לפי ערכים שלך</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:var(--violet);flex:none">✓</span>AI dialogue עם קליפי</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:var(--violet);flex:none">✓</span>דוחות שבועיים</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:var(--violet);flex:none">✓</span>הגנה על ילדים (Pro Parents)</li>
+        </ul>
+        <a href="#waitlist" style="display:block;text-align:center;background:var(--violet);color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:11px;border-radius:10px">הצטרפו לרשימה</a>
+      </div>
+      <!-- Education -->
+      <div style="border:1px solid rgba(251,191,36,.2);border-radius:18px;padding:28px;background:rgba(251,191,36,.04);display:flex;flex-direction:column">
+        <div style="font-family:'Space Mono';font-size:10px;color:#fbbf24;margin-bottom:10px;direction:ltr">// EDUCATION</div>
+        <div style="font:900 36px 'Frank Ruhl Libre',serif;color:var(--ink);margin-bottom:4px">מותאם<span style="font-size:16px;font-weight:400;color:var(--muted)"> אישית</span></div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px">לבתי ספר ומוסדות חינוך</div>
+        <ul style="list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:9px;flex:1">
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#fbbf24;flex:none">✓</span>רישיון מרובה משתמשים</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#fbbf24;flex:none">✓</span>דשבורד מנהל / מורה</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#fbbf24;flex:none">✓</span>דוחות כיתתיים</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#fbbf24;flex:none">✓</span>הדרכה ותמיכה ייעודית</li>
+          <li style="display:flex;gap:8px;font-size:13.5px;color:var(--ink)"><span style="color:#fbbf24;flex:none">✓</span>גרסה ללא פרסומות</li>
+        </ul>
+        <a href="mailto:susp4514@gmail.com?subject=גרסת חינוך — האלגוריתם שחזר בתשובה" style="display:block;text-align:center;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#fbbf24;text-decoration:none;font-weight:800;font-size:14px;padding:11px;border-radius:10px">צרו קשר</a>
       </div>
     </div>
   </section>
@@ -1722,7 +1758,8 @@
     {platform:`<span style="width:20px;height:20px;background:#ff0000;border-radius:5px;display:inline-flex;align-items:center;justify-content:center">${_ytIcon}</span>YOUTUBE`,message:'פותחים את YouTube.',detail:'הפיד מציע עוד סרטון שמבטיח תשובה מהירה.',clippy:'קליפי מוכן להסביר'},
     {platform:`<span style="width:20px;height:20px;background:#ff0000;border-radius:5px;display:inline-flex;align-items:center;justify-content:center">${_ytIcon}</span>YOUTUBE`,message:'"הסרטון הוצג לך כי צפית ב־12 סרטונים דומים."',detail:'קליפי מציג את האותות, בלי לנחש ובלי להאשים.',clippy:'ראיתי את התבנית'},
     {platform:`<span style="width:20px;height:20px;background:linear-gradient(145deg,#dbe6ff,#9faed4);border-radius:5px;display:inline-flex;align-items:center;justify-content:center">${_clipIcon}</span>CLIPPY`,message:'"לחפש לך מידע מאוזן יותר?"',detail:'הבחירה נשארת אצל המשתמש. שום דבר לא משתנה אוטומטית.',clippy:'כן, הצג חלופות'},
-    {platform:`<span style="color:#28c840;font-size:14px">✓</span>YOUR FEED`,message:'עוברים לתוכן חלופי.',detail:'סיכום מבוסס מקורות מחליף את הכותרת שמושכת קליק.',clippy:'הפיד עובד בשבילך'}
+    {platform:`<span style="color:#28c840;font-size:14px">✓</span>YOUR FEED`,message:'עוברים לתוכן חלופי.',detail:'סיכום מבוסס מקורות מחליף את הכותרת שמושכת קליק.',clippy:'הפיד עובד בשבילך'},
+    {platform:`<span style="width:20px;height:20px;background:rgba(74,222,128,.2);border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px">👨‍👩‍👧</span>PARENTS`,message:'דוח שבועי מוכן.',detail:'ניתוח קטגוריות, זמן מסך ומגמות — בלי לקרוא הודעות פרטיות.',clippy:'4.8 שעות · בידור 52% · ⚠ loop TikTok'}
   ];
   let storyIndex = 0, storyTimer = null;
   function renderStory() {
