@@ -6,6 +6,7 @@
 <meta name="description" content="תן לאלגוריתם הראשון בהיסטוריה שמתוודה לעבוד בשבילך. תוסף Chrome + desktop agent שמסביר למה הפיד מציג מה שהוא מציג — ומאפשר לך לשלוט חזרה. קוד פתוח, מקומי, ללא חשבון.">
 <meta name="theme-color" content="#f5f7ff">
 <link rel="canonical" href="https://teshuva-algorithm.netlify.app/">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <meta property="og:type" content="website"><meta property="og:locale" content="he_IL"><meta property="og:title" content="האלגוריתם שחזר בתשובה — תוסף Chrome שמסביר את הפיד שלך"><meta property="og:description" content="תן לאלגוריתם הראשון שמתוודה לעבוד בשבילך. מסביר למה הפיד מציג מה שהוא מציג, מאזן קטגוריות, מגן על ילדים. קוד פתוח, מקומי, ללא חשבון."><meta property="og:url" content="https://teshuva-algorithm.netlify.app/"><meta property="og:image" content="https://teshuva-algorithm.netlify.app/og-image.svg">
@@ -409,7 +410,7 @@
           </a>
           <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" target="_blank" rel="noopener" style="background:rgba(255,255,255,.06);color:var(--ink,#b3ac9e);text-decoration:none;font-weight:700;font-size:14px;padding:13px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.13);display:inline-flex;align-items:center;gap:8px">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"/></svg>
-            ⭐ Star on GitHub
+            ⭐ Star on GitHub · <span data-gh-stars style="font-variant-numeric:tabular-nums"></span>
           </a>
           <button onclick="_shareProject()" style="background:rgba(255,255,255,.06);color:var(--ink,#b3ac9e);border:1px solid rgba(255,255,255,.13);font-weight:700;font-size:14px;padding:13px 18px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -949,10 +950,14 @@
       <p style="color:var(--muted);font-size:16px;margin:12px auto 0;max-width:560px;line-height:1.65">בלי אותיות קטנות ובלי הבטחות מעורפלות.</p>
     </div>
     <div class="faq-grid">
-      <details class="faq-item"><summary>האם התוסף קורא מידע אישי?</summary><div class="faq-answer">הניתוח מתבצע מקומית על המכשיר. המטרה היא להסביר את אותות ההמלצה בלי לשלוח היסטוריית גלישה לשרת חיצוני.</div></details>
-      <details class="faq-item"><summary>האם אפשר לבדוק את הקוד?</summary><div class="faq-answer">כן. הפרויקט פתוח ב־GitHub תחת רישיון MIT, כך שאפשר לקרוא, לבקר ולתרום לקוד.</div></details>
-      <details class="faq-item"><summary>אילו פלטפורמות נתמכות?</summary><div class="faq-answer">גרסת Windows זמינה כעת. תמיכה בדפדפן, macOS, Linux ומובייל נמצאת בתהליך פיתוח.</div></details>
-      <details class="faq-item"><summary>האם זה משנה את הפיד אוטומטית?</summary><div class="faq-answer">בשלב הראשון הוא מסביר ומציג אפשרויות. שינוי העדפות או משא ומתן עם פלטפורמות מתבצע רק לאחר בחירה מפורשת שלך.</div></details>
+      <details class="faq-item"><summary>האם התוסף קורא מידע אישי?</summary><div class="faq-answer">לא. הניתוח מתבצע מקומית על המכשיר בלבד. אנחנו לא קוראים הודעות פרטיות, לא שולחים היסטוריית גלישה לשרת חיצוני, ולא דורשים חשבון. מה שנשאר על המכשיר — נשאר שם.</div></details>
+      <details class="faq-item"><summary>האם אפשר לבדוק את הקוד?</summary><div class="faq-answer">כן, וזה ממש מה שאנחנו מציעים לעשות. הפרויקט פתוח ב-GitHub תחת רישיון MIT — כל שורת קוד, כולל הניתוח, הלוגיקה ומה שנשלח לאן. אם תמצאו בעיה, פתחו issue.</div></details>
+      <details class="faq-item"><summary>אילו פלטפורמות נתמכות?</summary><div class="faq-answer">כרגע: תוסף Chrome (v1.4) ו-desktop app ל-Windows (v0.4). בתכנון: macOS, Linux, Firefox. הדמו באתר עובד על כל דפדפן.</div></details>
+      <details class="faq-item"><summary>האם זה משנה את הפיד אוטומטית?</summary><div class="faq-answer">רק מה שביקשת. בשלב הראשון קליפי מסביר ומציג לחצני 👍/👎. "לא מעניין" אוטומטי מופעל רק אם הגדרת אותו בהגדרות — ואפשר לבטל בכל רגע.</div></details>
+      <details class="faq-item"><summary>כמה זה עולה?</summary><div class="faq-answer">גישה מוקדמת — חינם לגמרי. בעתיד מתוכננת גרסת Pro ($4.99/חודש) עם סינון מניפולציות, דוחות הורים מתקדמים ו-AI dialogue. הגרסה החינמית תישאר חינמית.</div></details>
+      <details class="faq-item"><summary>האם זה מתאים גם להורים?</summary><div class="faq-answer">כן, וזה אחד השימושים המרכזיים. הורים יכולים לראות איזה סוגי תוכן האלגוריתם מציג לילד — בלי לקרוא הודעות פרטיות. דוח שבועי עם זמן מסך, קטגוריות תוכן ומגמות חריגות מתוכנן ב-Pro.</div></details>
+      <details class="faq-item"><summary>מה ההבדל מ-Screen Time של Apple / Google?</summary><div class="faq-answer">Screen Time מגביל זמן מסך — אבל לא מסביר למה הפיד מציג מה שהוא מציג. קליפי עושה משהו אחר: חושף את ההיגיון מאחורי ההמלצות ומאפשר לך לאמן את האלגוריתם לפי הערכים שלך, לא לפי אלה של הפלטפורמה.</div></details>
+      <details class="faq-item"><summary>האם זה עובד ב-TikTok?</summary><div class="faq-answer">תוסף Chrome תומך ב-TikTok — מסווג תוכן ומציג כפתורי 👍/👎. זיהוי "לא מעניין" ב-TikTok נמצא בפיתוח פעיל (ה-DOM משתנה בתדירות גבוהה). Desktop app עובד ב-Windows ומציג ניתוח לכל פלטפורמה.</div></details>
     </div>
   </section>
 
@@ -1100,7 +1105,7 @@
       <div class="detected-os detected-os-all" id="detected-os">בודק איזו גרסה מתאימה למכשיר שלך…</div>
       <div style="display:flex;align-items:center;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap">
         <a id="primary-download" data-track="download" href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:15px 30px;border-radius:11px;box-shadow:0 12px 34px rgba(255,154,31,.34);display:inline-flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 88 88" fill="none"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>הורד למחשב · Windows</a>
-        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:rgba(255,255,255,.06);color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:15px 24px;border-radius:11px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono';display:inline-flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 98 96" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/></svg>Star on GitHub</a>
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="background:rgba(255,255,255,.06);color:#dcd6c9;text-decoration:none;font-weight:700;font-size:15px;padding:15px 24px;border-radius:11px;border:1px solid rgba(236,233,225,.16);font-family:'Space Mono';display:inline-flex;align-items:center;gap:9px"><svg width="18" height="18" viewBox="0 0 98 96" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/></svg>⭐ Star on GitHub <span data-gh-stars style="opacity:.65;font-size:12px;margin-right:4px"></span></a>
         <button class="utility-button" id="install-pwa" type="button" hidden>התקן כאפליקציה</button>
         <button class="utility-button" type="button" onclick="shareSite()" style="display:inline-flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>שתף את הפרויקט</button>
       </div>
@@ -1364,6 +1369,29 @@
     if (winPill && detectedPlatform === 'Windows') winPill.style.boxShadow = '0 0 12px rgba(74,222,128,.2)';
   }
   updateDetectedOS();
+
+  /* scroll-to-top */
+  (function(){
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-label','חזרה לראש הדף');
+    btn.style.cssText='position:fixed;bottom:82px;left:18px;z-index:850;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(14,16,32,.88);backdrop-filter:blur(10px);color:#b3ac9e;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.35);transition:opacity .2s';
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>';
+    btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+    document.body.appendChild(btn);
+    window.addEventListener('scroll',()=>{btn.style.display=window.scrollY>500?'flex':'none';},{passive:true});
+  })();
+
+  /* GitHub live star count */
+  (function(){
+    const starEls = document.querySelectorAll('[data-gh-stars]');
+    if(!starEls.length) return;
+    fetch('https://api.github.com/repos/DavidPatlas-AI/teshuva-algorithm',{headers:{Accept:'application/vnd.github.v3+json'}})
+      .then(r=>r.json()).then(d=>{
+        const n = d.stargazers_count;
+        if(!n) return;
+        starEls.forEach(el=>{ el.textContent = n >= 1000 ? (n/1000).toFixed(1)+'k' : String(n); });
+      }).catch(()=>{});
+  })();
 
   window._shareProject = function() {
     const url = 'https://teshuva-algorithm.netlify.app';
