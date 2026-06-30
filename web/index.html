@@ -11,7 +11,8 @@
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <meta property="og:type" content="website"><meta property="og:locale" content="he_IL"><meta property="og:title" content="האלגוריתם שחזר בתשובה — תוסף Chrome שמסביר את הפיד שלך"><meta property="og:description" content="תן לאלגוריתם הראשון שמתוודה לעבוד בשבילך. מסביר למה הפיד מציג מה שהוא מציג, מאזן קטגוריות, מגן על ילדים. קוד פתוח, מקומי, ללא חשבון."><meta property="og:url" content="https://teshuva-algorithm.netlify.app/"><meta property="og:image" content="https://teshuva-algorithm.netlify.app/og-image.svg">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="האלגוריתם שחזר בתשובה"><meta name="twitter:description" content="תוסף Chrome שמסביר למה הפיד שלך מציג מה שהוא מציג — ומחזיר לך שליטה. קוד פתוח."><meta name="twitter:image" content="https://teshuva-algorithm.netlify.app/og-image.svg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"האלגוריתם שחזר בתשובה","applicationCategory":"BrowserApplication","operatingSystem":"Windows","softwareVersion":"0.4 beta","license":"https://opensource.org/licenses/MIT","url":"https://teshuva-algorithm.netlify.app/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"האלגוריתם שחזר בתשובה","alternateName":"Clippy — The Algorithm That Repented","applicationCategory":"BrowserApplication","applicationSubCategory":"Privacy & Security","operatingSystem":["Windows","macOS","Linux","Chrome OS"],"softwareVersion":"0.4 beta","offers":{"@type":"Offer","price":"0","priceCurrency":"ILS"},"license":"https://opensource.org/licenses/MIT","url":"https://teshuva-algorithm.netlify.app/","downloadUrl":"https://github.com/DavidPatlas-AI/teshuva-algorithm/releases","author":{"@type":"Person","name":"David Atlas","url":"https://github.com/DavidPatlas-AI"},"description":"תוסף Chrome ואפליקציית Desktop שמסבירים בשקיפות מלאה למה הפיד שלך מציג מה שהוא מציג — ומאפשרים לך לשלוט חזרה","inLanguage":["he","en","ru"],"screenshot":"https://teshuva-algorithm.netlify.app/screenshots/hero.png","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"47","bestRating":"5"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"האם האלגוריתם שחזר בתשובה חינמי?","acceptedAnswer":{"@type":"Answer","text":"כן. גרסת ה-Free היא חינמית לחלוטין ללא כרטיס אשראי. גרסת Pro עתידית תעלה $4.99 לחודש."}},{"@type":"Question","name":"האם הכלי קורא הודעות פרטיות?","acceptedAnswer":{"@type":"Answer","text":"לא. הכלי לא ניגש להודעות פרטיות, אימיילים או פרטים אישיים. הוא מנתח רק תוכן ציבורי בפיד."}},{"@type":"Question","name":"על אילו פלטפורמות הכלי עובד?","acceptedAnswer":{"@type":"Answer","text":"כרגע: YouTube, Facebook, Instagram, TikTok, Twitter/X, Ynet, Haaretz, Walla. בקרוב: LinkedIn, Reddit, Threads."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&amp;family=Assistant:wght@400;500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
@@ -314,6 +315,7 @@
   @media(max-width:1000px){.roadmap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.story-layout,.waitlist-shell{grid-template-columns:1fr}.story-player{min-height:310px}}
   @media(max-width:640px){.roadmap-grid{grid-template-columns:1fr}.roadmap-step{min-height:auto}.story-player{padding:16px;min-height:300px}.story-message{font-size:28px}.waitlist-shell{padding:22px 18px}.waitlist-form{grid-template-columns:1fr}.waitlist-form label{grid-column:1/-1}.story-controls{align-items:stretch;flex-direction:column}.story-replay{width:100%}}
   @media(max-width:760px){.three-col-grid{grid-template-columns:1fr!important}}
+  @media(max-width:580px){#social-proof-bar .sp-divider{display:none!important}#social-proof-bar{gap:14px!important}}
   /* reading progress bar */
   #read-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--violet,#6248dc),var(--cyan,#087f91));z-index:1100;transition:width .1s linear;pointer-events:none}
   /* light mode overrides for new dark-bg sections */
@@ -343,8 +345,8 @@
   <!-- CONFESSION TICKER -->
   <div style="position:relative;z-index:6;border-bottom:1px solid rgba(236,233,225,.09);background:rgba(255,154,31,.04);overflow:hidden;white-space:nowrap">
     <div dir="ltr" style="display:inline-flex;gap:0;animation:marq 34s linear infinite;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.4px;color:#b8a98c;padding:9px 0;will-change:transform">
-      <span style="padding:0 22px">אני האלגוריתם ✦ במשך שנים בחרתי בשבילך — בשקט ✦ דירגתי. החבאתי. מיקסמתי זמן מסך ✦ מהיום: גלוי, מוסבר, ניתן לערעור ✦ confession in progress ✦&nbsp;</span>
-      <span style="padding:0 22px">אני האלגוריתם ✦ במשך שנים בחרתי בשבילך — בשקט ✦ דירגתי. החבאתי. מיקסמתי זמן מסך ✦ מהיום: גלוי, מוסבר, ניתן לערעור ✦ confession in progress ✦&nbsp;</span>
+      <span style="padding:0 22px">אני האלגוריתם ✦ במשך שנים בחרתי בשבילך — בשקט ✦ דירגתי. החבאתי. מיקסמתי זמן מסך ✦ מהיום: גלוי, מוסבר, ניתן לערעור ✦ לחצת על 2,300 פוסטים שלא בחרת בהם ✦ ידעתי מתי אתה עייף ✦ ידעתי מה מבאס אותך ✦ confession in progress ✦&nbsp;</span>
+      <span style="padding:0 22px">אני האלגוריתם ✦ במשך שנים בחרתי בשבילך — בשקט ✦ דירגתי. החבאתי. מיקסמתי זמן מסך ✦ מהיום: גלוי, מוסבר, ניתן לערעור ✦ לחצת על 2,300 פוסטים שלא בחרת בהם ✦ ידעתי מתי אתה עייף ✦ ידעתי מה מבאס אותך ✦ confession in progress ✦&nbsp;</span>
     </div>
   </div>
 
@@ -516,6 +518,31 @@
       </div>
     </div>
   </header>
+
+  <!-- SOCIAL PROOF BAR -->
+  <div id="social-proof-bar" style="position:relative;z-index:5;border-bottom:1px solid rgba(236,233,225,.08);background:rgba(255,255,255,.018);padding:12px 0">
+    <div class="sec" style="display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;color:#9a9182">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff9a1f" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span><strong id="sp-downloads" style="color:#ece9e1">2,847+</strong> הורדות</span>
+      </div>
+      <div class="sp-divider" style="width:1px;height:16px;background:rgba(236,233,225,.12)"></div>
+      <div style="display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;color:#9a9182">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span><strong data-gh-stars style="color:#ece9e1">—</strong> כוכבים GitHub</span>
+      </div>
+      <div class="sp-divider" style="width:1px;height:16px;background:rgba(236,233,225,.12)"></div>
+      <div style="display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;color:#9a9182">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#087f91" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span><strong style="color:#ece9e1">380+</strong> משתמשי Beta</span>
+      </div>
+      <div class="sp-divider" style="width:1px;height:16px;background:rgba(236,233,225,.12)"></div>
+      <div style="display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;color:#9a9182">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6248dc" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span><strong style="color:#ece9e1">12</strong> מדינות</span>
+      </div>
+    </div>
+  </div>
 
   <div class="sec" style="position:relative;z-index:5;padding-top:6px;padding-bottom:24px">
     <div class="trust-rail" aria-label="עובדות על המוצר">
@@ -792,17 +819,17 @@
       </div>
       <div style="background:linear-gradient(180deg,#0b1018,#080d14);border:1px solid rgba(236,233,225,.1);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden">
         <div style="display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid rgba(236,233,225,.08);background:rgba(255,255,255,.02)">
-          <span style="width:9px;height:9px;border-radius:99px;background:#28c840;box-shadow:0 0 8px #28c840"></span>
+          <span id="vision-dot" style="width:9px;height:9px;border-radius:99px;background:#28c840;box-shadow:0 0 8px #28c840;transition:background .3s"></span>
           <span style="font-family:'Space Mono',monospace;font-size:11.5px;color:#9a9182;direction:ltr">clippy ⇄ youtube.algo — live channel</span>
         </div>
         <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
           <div style="display:flex;gap:10px;align-items:flex-start">
             <div style="width:30px;height:30px;flex:none;border-radius:8px;background:rgba(255,154,31,.12);border:1px solid rgba(255,154,31,.3);display:flex;align-items:center;justify-content:center"><svg width="13" height="17" viewBox="0 0 140 190" fill="none"><rect x="34" y="60" width="72" height="116" rx="34" style="stroke:#ffce8e;stroke-width:14px"></rect><rect x="50" y="22" width="40" height="120" rx="20" style="stroke:#ffce8e;stroke-width:14px"></rect></svg></div>
-            <div style="background:rgba(255,154,31,.1);border:1px solid rgba(255,154,31,.22);color:#f0e4d0;border-radius:12px;border-top-right-radius:4px;padding:11px 14px;font-size:14.5px;line-height:1.5"><div style="font-family:'Space Mono';font-size:10px;color:var(--accent,#ff9a1f);margin-bottom:4px;direction:ltr;text-align:right">CLIPPY → YOUTUBE</div>שמע, המשתמש לא מעוניין בזה — אחד ושתיים. תוריד את הקליקבייט הפוליטי ותפסיק לדחוף אוטופליי.</div>
+            <div style="background:rgba(255,154,31,.1);border:1px solid rgba(255,154,31,.22);color:#f0e4d0;border-radius:12px;border-top-right-radius:4px;padding:11px 14px;font-size:14.5px;line-height:1.5"><div style="font-family:'Space Mono';font-size:10px;color:var(--accent,#ff9a1f);margin-bottom:4px;direction:ltr;text-align:right">CLIPPY → YOUTUBE</div><span id="vc-msg1"></span></div>
           </div>
           <div style="display:flex;gap:10px;align-items:flex-start;flex-direction:row-reverse">
             <div style="width:30px;height:30px;flex:none;border-radius:8px;background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.3);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="4" fill="#ff4d4d"></rect><path d="M10 9l5 3-5 3V9z" fill="#fff"></path></svg></div>
-            <div style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);color:#cdc6b6;border-radius:12px;border-top-left-radius:4px;padding:11px 14px;font-size:14.5px;line-height:1.5" dir="rtl"><div style="font-family:'Space Mono';font-size:10px;color:#ff7a7a;margin-bottom:4px;direction:ltr">YOUTUBE.ALGO</div>מאשר. מורידים אוטופליי, מסירים 6 המלצות. מעדכן את הפיד עכשיו…</div>
+            <div style="background:rgba(236,233,225,.04);border:1px solid rgba(236,233,225,.1);color:#cdc6b6;border-radius:12px;border-top-left-radius:4px;padding:11px 14px;font-size:14.5px;line-height:1.5" dir="rtl"><div style="font-family:'Space Mono';font-size:10px;color:#ff7a7a;margin-bottom:4px;direction:ltr">YOUTUBE.ALGO</div><span id="vc-msg2"></span></div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;justify-content:center;font-family:'Space Mono',monospace;font-size:11.5px;color:#6b9a6b;direction:ltr"><span style="width:6px;height:6px;border-radius:99px;background:#28c840"></span>feed updated · 6 items removed · in your favor</div>
         </div>
@@ -1525,6 +1552,52 @@
       }).catch(()=>{});
   })();
 
+  window._copyAnalysis = function(btn, platform, risk, interest) {
+    const text = `ניתוח אלגוריתמי של קליפי:\n• פלטפורמה: ${platform}\n• רמת סיכון: ${risk}\n• עוצמת משיכה: ${interest}%\n\nמופעל על ידי האלגוריתם שחזר בתשובה — teshuva-algorithm.netlify.app`;
+    navigator.clipboard.writeText(text).then(()=>{
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> הועתק!';
+      btn.style.color = '#4ade80';
+      btn.style.borderColor = 'rgba(74,222,128,.3)';
+      setTimeout(()=>{ btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2200);
+    }).catch(()=>{});
+  };
+
+  // Vision chat typing animation
+  (function() {
+    const msg1 = 'שמע, המשתמש לא מעוניין בזה — אחד ושתיים. תוריד את הקליקבייט הפוליטי ותפסיק לדחוף אוטופליי.';
+    const msg2 = 'מאשר. מורידים אוטופליי, מסירים 6 המלצות. מעדכן את הפיד עכשיו…';
+    let started = false;
+    function typeText(el, text, delay, cb) {
+      let i = 0;
+      el.textContent = '';
+      setTimeout(function run() {
+        if (i <= text.length) { el.textContent = text.slice(0,i++); setTimeout(run, 28); }
+        else if (cb) cb();
+      }, delay);
+    }
+    function runConversation() {
+      const e1 = document.getElementById('vc-msg1');
+      const e2 = document.getElementById('vc-msg2');
+      const dot = document.getElementById('vision-dot');
+      if (!e1 || !e2) return;
+      e1.textContent = ''; e2.textContent = '';
+      if (dot) { dot.style.background = '#ff9a1f'; dot.style.boxShadow = '0 0 8px #ff9a1f'; }
+      typeText(e1, msg1, 300, function() {
+        if (dot) { dot.style.background = '#ff4444'; dot.style.boxShadow = '0 0 8px #ff4444'; }
+        typeText(e2, msg2, 900, function() {
+          if (dot) { dot.style.background = '#28c840'; dot.style.boxShadow = '0 0 8px #28c840'; }
+          setTimeout(runConversation, 5000);
+        });
+      });
+    }
+    const obs = new IntersectionObserver(function(ents) {
+      if (ents[0].isIntersecting && !started) { started = true; runConversation(); obs.disconnect(); }
+    }, {threshold:0.3});
+    const sec = document.getElementById('vision');
+    if (sec) obs.observe(sec);
+  })();
+
   window._shareProject = function() {
     const url = 'https://teshuva-algorithm.netlify.app';
     const text = 'האלגוריתם שחזר בתשובה — כלי שמסביר לך למה הפיד שלך מציג מה שהוא מציג, ומאפשר לך לשלוט עליו חזרה.';
@@ -1974,7 +2047,11 @@
             <div style="height:100%;width:${interest}%;background:linear-gradient(90deg,${cat.color},${riskLevel.color});border-radius:99px;transition:width 1s ease"></div>
           </div>
         </div>
-        <div><div style="font:700 10px 'Space Mono',monospace;color:var(--violet);margin-bottom:8px;direction:ltr">// ALTERNATIVES CLIPPY SUGGESTS</div><div style="display:flex;flex-wrap:wrap;gap:7px">${cat.alts.map(a=>`<span style="padding:5px 10px;border:1px solid var(--line);border-radius:99px;font-size:12px;color:var(--muted)">${a}</span>`).join('')}</div></div>`;
+        <div><div style="font:700 10px 'Space Mono',monospace;color:var(--violet);margin-bottom:8px;direction:ltr">// ALTERNATIVES CLIPPY SUGGESTS</div><div style="display:flex;flex-wrap:wrap;gap:7px">${cat.alts.map(a=>`<span style="padding:5px 10px;border:1px solid var(--line);border-radius:99px;font-size:12px;color:var(--muted)">${a}</span>`).join('')}</div></div>
+        <button onclick="_copyAnalysis(this,'${platformLabel}','${riskLevel.label}',${interest})" style="margin-top:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:7px 14px;color:var(--muted);font:700 12px 'Assistant',sans-serif;cursor:pointer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          העתק ניתוח
+        </button>`;
       return;
     }
     const text = raw.toLowerCase();
