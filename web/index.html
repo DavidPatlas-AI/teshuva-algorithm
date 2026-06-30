@@ -1408,7 +1408,48 @@
   Object.assign(translations.en, {
     'נתח תוכן':'Analyze Content','נתח כל תוכן — מה האלגוריתם רואה?':'Analyze Any Content — What Does the Algorithm See?',
     'נתח ← האלגוריתם':'Analyze ← Algorithm',
-    'בידור':'Entertainment','חדשות':'News','בריאות':'Health','כלכלה':'Economy','דת ומסורת':'Religion & Tradition','מדע':'Science'
+    'בידור':'Entertainment','חדשות':'News','בריאות':'Health','כלכלה':'Economy','דת ומסורת':'Religion & Tradition','מדע':'Science',
+    // parents
+    'מה הילד שלך רואה?':'What is your child watching?','בלי לקרוא הודעות פרטיות.':'Without reading private messages.',
+    'תמונת מצב שקופה על דפוסי הגלישה. לא ניטור פולשני — שפת הורים שמבינה מה האלגוריתם מנסה לעשות לילד שלך.':'A transparent snapshot of browsing patterns. Not invasive monitoring — a parent-friendly language that explains what the algorithm is trying to do to your child.',
+    'זמן מסך':'Screen Time','ניתוח סוגי תוכן':'Content Type Analysis','סימני סיכון':'Risk Signals',
+    'דוח שבועי לדוגמה':'Sample Weekly Report',
+    // trust
+    'מה אנחנו לא עושים — לעולם':'What we will NEVER do',
+    'לא קוראים הודעות פרטיות':'No private messages','לא מוכרים מידע':'No data selling','לא משנים פיד בלי אישור':'No feed changes without approval','לא שומרים היסטוריית גלישה':'No browsing history stored','לא צריך חשבון':'No account required','קוד פתוח לביקורת':'Open source for inspection',
+    // pricing
+    'גישה מוקדמת — ':'Early access — ','חינם לגמרי.':'completely free.',
+    'מי שנרשם עכשיו יקבל גישה ראשונה ל-Pro במחיר מועדף לכל החיים.':'Those who register now will get first access to Pro at a lifetime discounted price.',
+    'לעולם · ללא כרטיס אשראי':'Forever · no credit card',
+    'מחיר מועדף לנרשמים מוקדמים':'Preferred price for early registrants',
+    'לבתי ספר ומוסדות חינוך':'For schools and educational institutions',
+    // testimonials
+    'מה אומרים עליו':'What they\'re saying','ראיונות ראשונים · גרסת Beta':'First interviews · Beta version',
+    // social proof bar
+    'הורדות':'Downloads','כוכבים GitHub':'GitHub Stars','משתמשי Beta':'Beta Users','מדינות':'Countries',
+    // story step 5
+    'דוח שבועי מוכן.':'Weekly report ready.','ניתוח קטגוריות, זמן מסך ומגמות — בלי לקרוא הודעות פרטיות.':'Category analysis, screen time and trends — without reading private messages.',
+    // nav
+    'מחיר':'Pricing','הורים':'Parents'
+  });
+  Object.assign(translations.ru, {
+    'נתח תוכן':'Анализ','נתח כל תוכן — מה האלגוריתם רואה?':'Анализируй любой контент — что видит алгоритм?',
+    'נתח ← האלגוריתם':'Анализировать ← Алгоритм',
+    'בידור':'Развлечения','חדשות':'Новости','בריאות':'Здоровье','כלכלה':'Экономика','דת ומסורת':'Религия и традиции','מדע':'Наука',
+    // parents
+    'מה הילד שלך רואה?':'Что смотрит ваш ребёнок?','בלי לקרוא הודעות פרטיות.':'Без доступа к личным сообщениям.',
+    'זמן מסך':'Экранное время','ניתוח סוגי תוכן':'Анализ типов контента','סימני סיכון':'Тревожные признаки',
+    'דוח שבועי לדוגמה':'Пример еженедельного отчёта',
+    // trust
+    'מה אנחנו לא עושים — לעולם':'Чего мы никогда не делаем',
+    'לא קוראים הודעות פרטיות':'Не читаем личные сообщения','לא מוכרים מידע':'Не продаём данные','לא משנים פיד בלי אישור':'Не меняем ленту без разрешения','לא שומרים היסטוריית גלישה':'Не храним историю','לא צריך חשבון':'Аккаунт не нужен','קוד פתוח לביקורת':'Открытый код для проверки',
+    // pricing
+    'לעולם · ללא כרטיס אשראי':'Навсегда · без карты',
+    'מחיר מועדף לנרשמים מוקדמים':'Льготная цена для ранних участников',
+    // nav
+    'מחיר':'Цена','הורים':'Родители',
+    // story 5
+    'דוח שבועי מוכן.':'Еженедельный отчёт готов.','ניתוח קטגוריות, זמן מסך ומגמות — בלי לקרוא הודעות פרטיות.':'Анализ категорий, экранного времени и тенденций без доступа к личным сообщениям.'
   });
   let currentLanguage = new URLSearchParams(location.search).get('lang') || localStorage.getItem('teshuva-language') || 'he';
   window.translateText = text => (translations[currentLanguage] && translations[currentLanguage][text]) || text;
