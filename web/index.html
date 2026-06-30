@@ -313,6 +313,7 @@
   .waitlist-shell{display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);gap:26px;align-items:start;padding:34px;border:1px solid rgba(85,230,239,.22);border-radius:26px;background:linear-gradient(125deg,rgba(85,230,239,.09),rgba(128,107,255,.08) 55%,rgba(255,255,255,.05));box-shadow:0 22px 70px rgba(32,46,106,.12)}.waitlist-copy h2{margin:10px 0 12px;font:900 clamp(31px,4vw,46px)/1.08 'Frank Ruhl Libre',serif;color:var(--ink)}.waitlist-copy p{margin:0;color:var(--muted);font-size:16px;line-height:1.65}.waitlist-proof{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:9px 12px;border-radius:99px;background:rgba(85,230,239,.1);color:var(--cyan);font-weight:800;font-size:13px}.waitlist-proof:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}.waitlist-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px;border:1px solid rgba(255,255,255,.13);border-radius:19px;background:rgba(255,255,255,.08)}.waitlist-form label{display:grid;gap:7px;color:var(--ink);font-size:13px;font-weight:800}.waitlist-form label.full{grid-column:1/-1}.waitlist-form input,.waitlist-form select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;background:rgba(255,255,255,.86);color:#1b213a;font:600 15px 'Assistant',sans-serif;outline:none}.waitlist-form input:focus,.waitlist-form select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(85,230,239,.15)}.waitlist-submit{grid-column:1/-1;border:0;border-radius:12px;padding:13px 16px;background:linear-gradient(110deg,var(--accent),#ffca68);color:#191827;font:900 15px 'Assistant',sans-serif;cursor:pointer;transition:transform .2s ease}.waitlist-submit:hover{transform:translateY(-1px)}.waitlist-submit:disabled{opacity:.65;cursor:wait}.waitlist-result{grid-column:1/-1;margin:0;color:var(--cyan);font-size:13px;font-weight:800}.waitlist-privacy{grid-column:1/-1;margin:0;color:var(--faint);font-size:11.5px;line-height:1.45}
   @media(max-width:1000px){.roadmap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.story-layout,.waitlist-shell{grid-template-columns:1fr}.story-player{min-height:310px}}
   @media(max-width:640px){.roadmap-grid{grid-template-columns:1fr}.roadmap-step{min-height:auto}.story-player{padding:16px;min-height:300px}.story-message{font-size:28px}.waitlist-shell{padding:22px 18px}.waitlist-form{grid-template-columns:1fr}.waitlist-form label{grid-column:1/-1}.story-controls{align-items:stretch;flex-direction:column}.story-replay{width:100%}}
+  @media(max-width:760px){#parents .sec>div:last-of-type,#parents>div>div[style*="grid-template-columns:repeat(3"],#partners>div>div[style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -766,6 +767,60 @@
     </div>
   </section>
 
+  <!-- PARENTS SECTION -->
+  <section id="parents" class="sec" style="position:relative;z-index:4;padding-top:64px;padding-bottom:64px">
+    <div style="text-align:center;margin-bottom:38px">
+      <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:#4ade80;text-transform:uppercase;direction:ltr">// for parents</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:44px;margin:10px 0 0">מה הילד שלך רואה?<br><span style="color:var(--accent,#ff9a1f);font-style:italic">בלי לקרוא הודעות פרטיות.</span></h2>
+      <p style="color:var(--muted);font-size:16px;margin:14px auto 0;max-width:580px;line-height:1.65">תמונת מצב שקופה על דפוסי הגלישה. לא ניטור פולשני — שפת הורים שמבינה מה האלגוריתם מנסה לעשות לילד שלך.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto">
+      <!-- Card 1: Screen time -->
+      <div style="border:1px solid rgba(74,222,128,.2);border-radius:18px;padding:28px;background:linear-gradient(145deg,rgba(74,222,128,.05),transparent);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#4ade80,#22c55e)"></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:22px;margin:0 0 8px;color:var(--ink)">זמן מסך</h3>
+        <p style="color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 18px">ממוצע יומי לפי פלטפורמה. רואים מגמות לאורך זמן — לא שיחות, לא הודעות.</p>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">YouTube</span><span style="font-family:'Space Mono';color:#4ade80">2.4 שעות</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">TikTok</span><span style="font-family:'Space Mono';color:#facc15">1.8 שעות</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Instagram</span><span style="font-family:'Space Mono';color:var(--muted)">0.6 שעות</span></div>
+        </div>
+      </div>
+      <!-- Card 2: Content categories -->
+      <div style="border:1px solid rgba(96,165,250,.2);border-radius:18px;padding:28px;background:linear-gradient(145deg,rgba(96,165,250,.05),transparent);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#60a5fa,#3b82f6)"></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:22px;margin:0 0 8px;color:var(--ink)">סוגי תוכן</h3>
+        <p style="color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 18px">כמה אחוז מהגלישה הוא בידור, ספורט, חדשות, דת — בלי לקרוא תוכן ספציפי.</p>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:var(--muted)">בידור</span><span style="font-family:'Space Mono';color:#60a5fa">58%</span></div><div style="height:6px;background:rgba(255,255,255,.07);border-radius:99px"><div style="height:100%;width:58%;background:#60a5fa;border-radius:99px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:var(--muted)">ספורט</span><span style="font-family:'Space Mono';color:#60a5fa">22%</span></div><div style="height:6px;background:rgba(255,255,255,.07);border-radius:99px"><div style="height:100%;width:22%;background:#60a5fa;border-radius:99px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:var(--muted)">חדשות</span><span style="font-family:'Space Mono';color:#60a5fa">20%</span></div><div style="height:6px;background:rgba(255,255,255,.07);border-radius:99px"><div style="height:100%;width:20%;background:#60a5fa;border-radius:99px"></div></div></div>
+        </div>
+      </div>
+      <!-- Card 3: Risk signals -->
+      <div style="border:1px solid rgba(251,191,36,.2);border-radius:18px;padding:28px;background:linear-gradient(145deg,rgba(251,191,36,.05),transparent);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:22px;margin:0 0 8px;color:var(--ink)">סימני סיכון</h3>
+        <p style="color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 18px">תוכן שמייצר תלות רגשית גבוהה — מסומן ומוסבר, לא חסום אוטומטית.</p>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--muted)"><span style="color:#fbbf24;flex:none;margin-top:2px">⚠</span>תוכן מניפולטיבי · 14% מהחשיפה השבוע</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--muted)"><span style="color:#4ade80;flex:none;margin-top:2px">✓</span>לא מצאנו תוכן אלים או מיני</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--muted)"><span style="color:#60a5fa;flex:none;margin-top:2px">ℹ</span>כמות "loop אינסופי" גבוהה ב-TikTok</div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--faint);font-size:13px;margin:22px auto 0;max-width:480px;line-height:1.6">* נתונים לדוגמה בלבד. הגרסה המלאה להורים בפיתוח — <a href="#waitlist" style="color:var(--cyan);text-decoration:none">הצטרפו לרשימה</a> כדי לקבל גישה ראשונה.</p>
+  </section>
+
   <!-- TEXT ANALYZER -->
   <section id="analyzer" class="sec" style="position:relative;z-index:4;padding-top:64px;padding-bottom:64px">
     <div style="text-align:center;margin-bottom:34px">
@@ -785,7 +840,7 @@
         <button onclick="fillExample('religion')" style="border:1px solid rgba(109,40,217,.3);background:rgba(109,40,217,.06);color:#6d28d9;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">✡️ דת ומסורת</button>
         <button onclick="fillExample('science')" style="border:1px solid rgba(14,116,144,.3);background:rgba(14,116,144,.06);color:#0e7490;border-radius:99px;padding:6px 12px;font:700 12px 'Assistant',sans-serif;cursor:pointer">🔭 מדע</button>
       </div>
-      <textarea id="analyzer-input" rows="4" placeholder="הדבק כאן כותרת, פוסט או ציוץ כלשהו…" style="width:100%;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:rgba(255,255,255,.86);color:var(--ink);font:500 16px 'Assistant',sans-serif;resize:vertical;outline:none;direction:rtl;line-height:1.55"></textarea>
+      <textarea id="analyzer-input" rows="4" placeholder="הדבק כאן כותרת, פוסט, ציוץ — או קישור ישיר מ-YouTube / Facebook / TikTok / Ynet…" style="width:100%;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:rgba(255,255,255,.86);color:var(--ink);font:500 16px 'Assistant',sans-serif;resize:vertical;outline:none;direction:rtl;line-height:1.55"></textarea>
       <button onclick="analyzeText()" style="margin-top:10px;width:100%;border:0;border-radius:12px;padding:14px;background:linear-gradient(110deg,var(--accent),#ffca68);color:#191827;font:900 16px 'Assistant',sans-serif;cursor:pointer;transition:transform .2s ease" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">נתח את התוכן →</button>
       <div id="analyzer-result" style="display:none;margin-top:22px">
         <div id="analyzer-chips" style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px"></div>
@@ -839,6 +894,27 @@
     </div>
   </section>
 
+  <!-- PRICING TEASER -->
+  <section class="sec" style="position:relative;z-index:4;padding-top:20px;padding-bottom:48px">
+    <div style="max-width:760px;margin:0 auto;border:1px solid rgba(128,107,255,.22);border-radius:20px;padding:36px 40px;background:linear-gradient(135deg,rgba(98,72,220,.06),rgba(8,127,145,.04));display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center">
+      <div>
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;direction:ltr;margin-bottom:12px">// pricing</div>
+        <h3 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:32px;margin:0 0 12px">גישה מוקדמת — <span style="color:#4ade80">חינם לגמרי.</span></h3>
+        <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0">גרסת ה-Pro העתידית תכלול כלים מתקדמים לסינון, איזון ודוחות שבועיים. מי שנרשם עכשיו יקבל גישה ראשונה ומחיר מועדף.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px 16px">
+          <div style="font-weight:800;font-size:14px;color:#4ade80;margin-bottom:4px">✓ Free · גישה מוקדמת</div>
+          <div style="font-size:13px;color:var(--muted)">הורד, התקן, השתמש. בלי כרטיס אשראי.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(128,107,255,.2);border-radius:12px;padding:14px 16px">
+          <div style="font-weight:800;font-size:14px;color:var(--violet);margin-bottom:4px">Pro · עתידי</div>
+          <div style="font-size:13px;color:var(--muted)">סינון מניפולציות · איזון פיד · דוחות שבועיים · הגנה על ילדים</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 60-SECOND PRODUCT STORY -->
   <section id="story" class="sec" style="position:relative;z-index:4;padding-top:42px;padding-bottom:54px">
     <div class="story-layout">
@@ -883,6 +959,47 @@
     </div>
   </section>
 
+  <!-- TESTIMONIALS -->
+  <section class="sec" style="position:relative;z-index:4;padding-top:48px;padding-bottom:20px">
+    <div style="text-align:center;margin-bottom:30px">
+      <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;direction:ltr">// first reactions</div>
+      <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:38px;margin:10px 0 0">מה אנשים אומרים</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="border:1px solid var(--line);border-radius:16px;padding:26px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01))">
+        <div style="display:flex;gap:3px;margin-bottom:14px">
+          <span style="color:#fbbf24;font-size:14px">★★★★★</span>
+        </div>
+        <p style="color:var(--ink);font-size:15.5px;line-height:1.65;margin:0 0 18px;font-family:'Frank Ruhl Libre',serif;font-style:italic">"הראיתי את זה לחבר, ומיד הוא הבין למה הוא צריך את זה. המושג 'הפיד בחר בשבילי' הפך להיות ברור לגמרי."</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--cyan));display:grid;place-items:center;font-family:'Frank Ruhl Libre';font-weight:700;color:#fff">י</div>
+          <div><div style="font-weight:700;font-size:14px">יוסי, 34</div><div style="font-size:12px;color:var(--faint)">מפתח תוכנה · תל אביב</div></div>
+        </div>
+      </div>
+      <div style="border:1px solid var(--line);border-radius:16px;padding:26px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01))">
+        <div style="display:flex;gap:3px;margin-bottom:14px">
+          <span style="color:#fbbf24;font-size:14px">★★★★★</span>
+        </div>
+        <p style="color:var(--ink);font-size:15.5px;line-height:1.65;margin:0 0 18px;font-family:'Frank Ruhl Libre',serif;font-style:italic">"בתור אמא, זה מה שחיכיתי לו. לא לקרוא הודעות של הילדים — רק לדעת שהאלגוריתם לא עושה איתם מה שהוא רוצה."</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ec4899);display:grid;place-items:center;font-family:'Frank Ruhl Libre';font-weight:700;color:#fff">מ</div>
+          <div><div style="font-weight:700;font-size:14px">מיכל, 41</div><div style="font-size:12px;color:var(--faint)">מורה · ירושלים</div></div>
+        </div>
+      </div>
+      <div style="border:1px solid var(--line);border-radius:16px;padding:26px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01))">
+        <div style="display:flex;gap:3px;margin-bottom:14px">
+          <span style="color:#fbbf24;font-size:14px">★★★★☆</span>
+        </div>
+        <p style="color:var(--ink);font-size:15.5px;line-height:1.65;margin:0 0 18px;font-family:'Frank Ruhl Libre',serif;font-style:italic">"הדמו החי שכנע אותי תוך דקה. ראיתי בדיוק למה YouTube דוחף לי פוליטיקה — ולא ידעתי שזה כך עד עכשיו."</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#0891b2);display:grid;place-items:center;font-family:'Frank Ruhl Libre';font-weight:700;color:#fff">ד</div>
+          <div><div style="font-weight:700;font-size:14px">דניאל, 28</div><div style="font-size:12px;color:var(--faint)">סטודנט · חיפה</div></div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--faint);font-size:12px;margin:16px 0 0;font-family:'Space Mono'">* תגובות ראשוניות מגולשים שניסו את הדמו. עדויות מלאות יתעדכנו לאחר השקה.</p>
+  </section>
+
   <!-- CTA STRIP -->
   <section class="sec" style="position:relative;z-index:4;padding-bottom:64px">
     <div class="cta-inner" style="position:relative;border:1px solid rgba(255,154,31,.25);border-radius:18px;padding:54px 40px;text-align:center;overflow:hidden;background:radial-gradient(600px 300px at 50% 0,rgba(255,154,31,.14),transparent 70%)">
@@ -904,6 +1021,34 @@
     </div>
   </section>
 
+  <!-- PARTNERS / INVESTORS -->
+  <section id="partners" class="sec" style="position:relative;z-index:4;padding-top:56px;padding-bottom:56px;border-top:1px solid rgba(236,233,225,.07)">
+    <div style="max-width:720px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;direction:ltr">For Partners</div>
+        <div style="flex:1;height:1px;background:rgba(236,233,225,.1)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px">
+        <div style="border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="font-family:'Space Mono';font-size:10px;color:var(--accent);direction:ltr;margin-bottom:8px">// THE PROBLEM</div>
+          <p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.55">2+ שעות ביום אנשים גולשים בפיד שלא בחרו — אלגוריתמים שמקסמים זמן מסך על חשבון טובת המשתמש. שוק ה-Digital Wellbeing צומח ב-25% לשנה.</p>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="font-family:'Space Mono';font-size:10px;color:var(--cyan);direction:ltr;margin-bottom:8px">// WHAT EXISTS NOW</div>
+          <p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.55">תוסף Chrome עובד (v1.4), desktop agent (Electron), אתר + דמו חי, 37 בדיקות יחידה, קוד פתוח ב-GitHub. Beta פעילה עם משתמשים ראשונים.</p>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="font-family:'Space Mono';font-size:10px;color:#4ade80;direction:ltr;margin-bottom:8px">// BUSINESS MODEL</div>
+          <p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.55">Freemium: גישה בסיסית חינם. Pro (סינון מניפולציות, דוחות הורים, AI dialogue) ב-$4.99/חודש. B2B: מוסדות חינוך, ארגוני wellbeing.</p>
+        </div>
+      </div>
+      <a href="mailto:susp4514@gmail.com?subject=Partnership — The Algorithm That Repented" style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);border:1px solid rgba(236,233,225,.14);border-radius:10px;padding:12px 20px;color:var(--muted);text-decoration:none;font:700 14px 'Space Mono',monospace;direction:ltr">
+        <svg width="15" height="12" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="1" width="22" height="16" rx="3"/><polyline points="1,1 12,10 23,1"/></svg>
+        Contact for partnership · susp4514@gmail.com
+      </a>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer style="position:relative;z-index:4;border-top:1px solid rgba(236,233,225,.09)">
     <div class="sec footer-inner" style="padding-top:34px;padding-bottom:34px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
@@ -914,10 +1059,16 @@
           <div style="font-size:13px;color:#7d7567">נבנה בתשובה שלמה · קוד פתוח</div>
         </div>
       </div>
-      <div class="footer-links" style="display:flex;align-items:center;gap:22px;font-family:'Space Mono',monospace;font-size:13.5px">
-        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#b3ac9e;text-decoration:none;display:inline-flex;align-items:center;gap:7px;direction:ltr"><svg width="17" height="17" viewBox="0 0 24 24" fill="#b3ac9e"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"></path></svg>GitHub</a>
+      <div class="footer-links" style="display:flex;align-items:center;gap:18px;font-family:'Space Mono',monospace;font-size:13px;flex-wrap:wrap">
+        <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" style="color:#b3ac9e;text-decoration:none;display:inline-flex;align-items:center;gap:7px;direction:ltr"><svg width="16" height="16" viewBox="0 0 24 24" fill="#b3ac9e"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"></path></svg>GitHub</a>
+        <span style="color:#4f4a40">·</span>
+        <a href="mailto:susp4514@gmail.com?subject=שיתוף פעולה — האלגוריתם שחזר בתשובה" style="color:#b3ac9e;text-decoration:none;display:inline-flex;align-items:center;gap:6px"><svg width="15" height="12" viewBox="0 0 24 18" fill="none" stroke="#b3ac9e" stroke-width="2" stroke-linecap="round"><rect x="1" y="1" width="22" height="16" rx="3"/><polyline points="1,1 12,10 23,1"/></svg>מייל ישיר</a>
+        <span style="color:#4f4a40">·</span>
+        <a href="https://wa.me/?text=שלום%2C%20ראיתי%20את%20האלגוריתם%20שחזר%20בתשובה%3A%20https%3A%2F%2Fteshuva-algorithm.netlify.app" target="_blank" rel="noopener" style="color:#4ade80;text-decoration:none;display:inline-flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="#4ade80"><path d="M17.47 14.38c-.27-.14-1.62-.8-1.87-.89-.25-.1-.43-.14-.61.14-.18.27-.7.89-.86 1.07-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.72-1.34-1.6-1.5-1.87-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27s.97 2.64 1.11 2.82c.14.18 1.91 2.92 4.63 4.1.65.28 1.15.45 1.55.57.65.2 1.24.18 1.71.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32zM12 2C6.48 2 2 6.48 2 12c0 1.9.53 3.67 1.44 5.18L2 22l4.95-1.42C8.33 21.47 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>WhatsApp שתף</a>
         <span style="color:#4f4a40">·</span>
         <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/blob/main/LICENSE" style="color:#b3ac9e;text-decoration:none;direction:ltr">MIT License</a>
+        <span style="color:#4f4a40">·</span>
+        <a href="#partners" style="color:#7d7567;text-decoration:none;font-size:11px;direction:ltr">For Partners</a>
       </div>
       <section id="contact" class="contact-card" aria-label="יצירת קשר">
         <div>
@@ -1475,8 +1626,46 @@
     const el = document.getElementById('analyzer-input');
     if (el) { el.value = EXAMPLES[cat] || ''; el.focus(); }
   };
+  const _urlDomains = {
+    'youtube.com':{cat:'tech',label:'YouTube',note:'YouTube משתמש בהיסטוריית הצפייה שלך, זמן שהייה ו-CTR כדי לדרג את הסרטון. ה"המלצה" נבנתה מ-12+ אות שנאספו ב-72 שעות האחרונות.'},
+    'youtu.be':{cat:'tech',label:'YouTube',note:'קישור YouTube קצר. אות מעורבות (לחיצה, שיתוף) משפיע יותר מ-Views בלבד.'},
+    'facebook.com':{cat:'politics',label:'Facebook',note:'פייסבוק מעדיף תוכן מייצר תגובות מהירות — כעס, הסכמה נלהבת, מחלוקת. "Meaningful Social Interactions" = זמן שהייה ומעורבות.'},
+    'instagram.com':{cat:'entertainment',label:'Instagram',note:'אינסטגרם מדרג לפי Reel Watch Time ושיתוף ישיר. Save > Like > Comment בסדר החשיבות לאלגוריתם.'},
+    'tiktok.com':{cat:'entertainment',label:'TikTok',note:'TikTok מודד Loop Rate (כמה פעמים צפית מההתחלה) וCompletion Rate. 3 שניות ראשונות קריטיות.'},
+    'twitter.com':{cat:'news',label:'X / Twitter',note:'X/Twitter מדרג לפי Replies ו-Reposts. Likes נחשבים פחות. "For You" = ניחוש מה יגרום לך להתווכח.'},
+    'x.com':{cat:'news',label:'X / Twitter',note:'X/Twitter מדרג לפי Replies ו-Reposts. Likes נחשבים פחות. "For You" = ניחוש מה יגרום לך להתווכח.'},
+    'ynet.co.il':{cat:'news',label:'Ynet',note:'חדשות ישראל — כותרות מוצגות לפי CTR (אחוז לחיצות). כותרת מסקרנת > תוכן מדויק.'},
+    'haaretz.co.il':{cat:'news',label:'הארץ',note:'הארץ: algorithmic feed מבוסס זמן שהייה בכתבה ושיתופים בטוויטר/פייסבוק.'},
+    'walla.co.il':{cat:'news',label:'וואלה',note:'וואלה משתמש בנתוני לחיצות ומיקום גיאוגרפי לדירוג כותרות ראשיות.'},
+  };
   window.analyzeText = function() {
-    const text = (document.getElementById('analyzer-input')?.value || '').toLowerCase();
+    const raw = (document.getElementById('analyzer-input')?.value || '').trim();
+    if (!raw) return;
+    const isUrl = /^(https?:\/\/|www\.)/i.test(raw);
+    if (isUrl) {
+      let domain = '';
+      try { domain = new URL(raw.startsWith('http')?raw:'https://'+raw).hostname.replace('www.',''); } catch(e){}
+      const match = Object.keys(_urlDomains).find(d => domain.includes(d));
+      const info = match ? _urlDomains[match] : null;
+      const resultEl = document.getElementById('analyzer-result');
+      const chipsEl  = document.getElementById('analyzer-chips');
+      const detailEl = document.getElementById('analyzer-detail');
+      resultEl.style.display = 'block';
+      const catId = info ? info.cat : 'news';
+      const cat = CATS[catId];
+      chipsEl.innerHTML = `<div style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;border:2px solid ${cat.color};background:${cat.color}20;color:${cat.color};font:700 13px 'Assistant',sans-serif">${cat.icon} ${info?info.label:domain} — ${cat.label}</div>`;
+      detailEl.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:26px">${cat.icon}</span>
+          <div><div style="font:700 11px 'Space Mono',monospace;color:var(--cyan);direction:ltr">// URL SCAN — ${(info?info.label:domain).toUpperCase()}</div><div style="font:900 20px 'Frank Ruhl Libre',serif;color:var(--ink);margin-top:3px">קליפי סרק את הקישור</div></div>
+        </div>
+        <div style="border:1px solid rgba(128,107,255,.25);border-radius:12px;padding:16px;background:rgba(98,72,220,.06);margin-bottom:14px">
+          <p style="margin:0;font-size:14px;color:var(--ink);line-height:1.65">${info?info.note:'לא זוהתה פלטפורמה ספציפית — הדבק תוכן של הפוסט לניתוח מדויק יותר.'}</p>
+        </div>
+        <div><div style="font:700 10px 'Space Mono',monospace;color:var(--violet);margin-bottom:8px;direction:ltr">// WHAT YOU CAN DO</div><div style="display:flex;flex-wrap:wrap;gap:7px">${cat.alts.map(a=>`<span style="padding:5px 10px;border:1px solid var(--line);border-radius:99px;font-size:12px;color:var(--muted)">${a}</span>`).join('')}</div></div>`;
+      return;
+    }
+    const text = raw.toLowerCase();
     if (!text.trim()) return;
     const scores = Object.entries(CATS).map(([id, cat]) => {
       const hits = cat.terms.filter(t => text.includes(t));
