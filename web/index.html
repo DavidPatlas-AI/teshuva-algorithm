@@ -388,20 +388,48 @@
           <span style="width:24px;height:1px;background:var(--accent,#ff9a1f)"></span>פרק 00 · הווידוי · v0.4 beta
         </div>
         <h1 class="hero-h1">
-          <span style="display:block">האלגוריתם ניהל</span>
-          <span style="display:block">אותך שנים.</span>
-          <span style="display:block;color:var(--accent,#ff9a1f);font-style:italic">עכשיו הוא חזר בתשובה.</span>
+          <span style="display:block">תן לאלגוריתם</span>
+          <span style="display:block">הראשון בהיסטוריה</span>
+          <span style="display:block;color:var(--accent,#ff9a1f);font-style:italic">שמתוודה — לעבוד בשבילך.</span>
         </h1>
-        <p dir="ltr" style="font-family:'Space Mono',monospace;font-size:15px;color:#9a9182;margin:26px 0 0;text-align:right;line-height:1.6;max-width:520px;margin-right:0;margin-left:auto">"What if the algorithm stopped hiding<br>and started explaining itself?"</p>
-        <div style="display:flex;align-items:center;gap:14px;margin-top:30px;flex-wrap:wrap">
-          <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:10px;box-shadow:0 12px 34px rgba(255,154,31,.32);display:inline-flex;align-items:center;gap:10px">
-            <svg width="18" height="18" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>
-            הורד למחשב · Windows
+        <!-- OS detection badge -->
+        <div id="hero-os-badge" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:8px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22);border-radius:99px;font-family:'Space Mono',monospace;font-size:12px;color:#4ade80">
+          <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;flex:none"></span>
+          <span id="detected-os">זוהה Windows — גרסה 0.4 מוכנה להורדה</span>
+        </div>
+        <!-- primary CTAs -->
+        <div style="display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap">
+          <a id="hero-download-btn" href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-algorithm-setup-0.4.0.exe" download="" style="background:var(--accent,#ff9a1f);color:#0a0d12;text-decoration:none;font-weight:800;font-size:16px;padding:14px 26px;border-radius:10px;box-shadow:0 12px 34px rgba(255,154,31,.32);display:inline-flex;align-items:center;gap:10px">
+            <svg id="hero-dl-icon" width="18" height="18" viewBox="0 0 88 88" fill="none"><rect x="0" y="0" width="40" height="40" rx="4" fill="#F25022"/><rect x="48" y="0" width="40" height="40" rx="4" fill="#7FBA00"/><rect x="0" y="48" width="40" height="40" rx="4" fill="#00A4EF"/><rect x="48" y="48" width="40" height="40" rx="4" fill="#FFB900"/></svg>
+            <span id="hero-dl-text">הורד למחשב · Windows ↓</span>
           </a>
-          <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm/releases/download/v0.4.0/teshuva-extension-1.4.0.zip" download="" style="background:rgba(255,255,255,.08);color:var(--ink,#17182b);text-decoration:none;font-weight:700;font-size:15px;padding:14px 20px;border-radius:10px;border:1px solid rgba(98,72,220,.3);display:inline-flex;align-items:center;gap:9px">
-            <svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#4285F4"/><circle cx="12" cy="12" r="4.2" fill="white"/><path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.33 2.5L5.32 5.24A9.96 9.96 0 0 1 12 2z" fill="#EA4335"/><path d="M22 12a10 10 0 0 1-3.34 7.47l-4.33-7.5A5 5 0 0 0 12 7H3.34A9.97 9.97 0 0 1 12 2a10 10 0 0 1 10 10z" fill="#34A853"/><path d="M2 12a10 10 0 0 0 7.34 9.66l4.33-7.5A5 5 0 0 1 12 17H2.12A9.94 9.94 0 0 1 2 12z" fill="#FBBC04"/></svg>
-            תוסף Chrome
+          <a href="https://github.com/DavidPatlas-AI/teshuva-algorithm" target="_blank" rel="noopener" style="background:rgba(255,255,255,.06);color:var(--ink,#b3ac9e);text-decoration:none;font-weight:700;font-size:14px;padding:13px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.13);display:inline-flex;align-items:center;gap:8px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2z"/></svg>
+            ⭐ Star on GitHub
           </a>
+          <button onclick="_shareProject()" style="background:rgba(255,255,255,.06);color:var(--ink,#b3ac9e);border:1px solid rgba(255,255,255,.13);font-weight:700;font-size:14px;padding:13px 18px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            שתף את הפרויקט
+          </button>
+        </div>
+        <!-- platform availability pills -->
+        <div style="display:flex;align-items:center;gap:8px;margin-top:18px;flex-wrap:wrap">
+          <div id="pill-windows" style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:99px;font-family:'Space Mono',monospace;font-size:11px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#4ade80">
+            <svg width="11" height="11" viewBox="0 0 88 88" fill="none"><rect x="0" y="0" width="40" height="40" rx="2" fill="#4ade80"/><rect x="48" y="0" width="40" height="40" rx="2" fill="#4ade80"/><rect x="0" y="48" width="40" height="40" rx="2" fill="#4ade80"/><rect x="48" y="48" width="40" height="40" rx="2" fill="#4ade80"/></svg>
+            Windows · זמין
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:99px;font-family:'Space Mono',monospace;font-size:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#6b7280">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            macOS · בקרוב
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:99px;font-family:'Space Mono',monospace;font-size:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#6b7280">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg>
+            Linux · בקרוב
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:99px;font-family:'Space Mono',monospace;font-size:11px;background:rgba(98,72,220,.12);border:1px solid rgba(98,72,220,.28);color:#9580ff">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Browser · בקרוב
+          </div>
         </div>
       </div>
       <!-- product mockup -->
@@ -1262,8 +1290,28 @@
   function updateDetectedOS() {
     if (!osText) return;
     osText.textContent = currentLanguage === 'en' ? (detectedPlatform === 'Windows' ? 'Windows detected — version 0.4 is ready' : detectedPlatform + ' detected — Windows is available now; more platforms are coming') : currentLanguage === 'ru' ? (detectedPlatform === 'Windows' ? 'Обнаружена Windows — версия 0.4 готова' : 'Обнаружена ' + detectedPlatform + ' — сейчас доступна Windows, остальные версии готовятся') : (detectedPlatform === 'Windows' ? 'זוהה Windows — גרסה 0.4 מוכנה להורדה' : 'זוהה ' + detectedPlatform + ' — כרגע גרסת Windows זמינה, גרסאות נוספות בקרוב');
+    const dlText = document.getElementById('hero-dl-text');
+    const dlBtn = document.getElementById('hero-download-btn');
+    if (dlText && detectedPlatform !== 'Windows') {
+      dlText.textContent = 'הורד למחשב · Windows ↓';
+      if (dlBtn) { dlBtn.title = 'כרגע זמין ל-Windows בלבד'; }
+    }
+    const winPill = document.getElementById('pill-windows');
+    if (winPill && detectedPlatform === 'Windows') winPill.style.boxShadow = '0 0 12px rgba(74,222,128,.2)';
   }
   updateDetectedOS();
+
+  window._shareProject = function() {
+    const url = 'https://teshuva-algorithm.netlify.app';
+    const text = 'האלגוריתם שחזר בתשובה — כלי שמסביר לך למה הפיד שלך מציג מה שהוא מציג, ומאפשר לך לשלוט עליו חזרה.';
+    if (navigator.share) {
+      navigator.share({ title: 'האלגוריתם שחזר בתשובה', text, url }).catch(() => {});
+    } else {
+      const wa = 'https://wa.me/?text=' + encodeURIComponent(text + '\n' + url);
+      window.open(wa, '_blank', 'noopener');
+    }
+    trackLocal('share-hero');
+  };
 
   function trackLocal(eventName) {
     try {
