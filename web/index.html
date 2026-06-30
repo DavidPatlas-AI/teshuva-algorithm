@@ -313,7 +313,7 @@
   .waitlist-shell{display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);gap:26px;align-items:start;padding:34px;border:1px solid rgba(85,230,239,.22);border-radius:26px;background:linear-gradient(125deg,rgba(85,230,239,.09),rgba(128,107,255,.08) 55%,rgba(255,255,255,.05));box-shadow:0 22px 70px rgba(32,46,106,.12)}.waitlist-copy h2{margin:10px 0 12px;font:900 clamp(31px,4vw,46px)/1.08 'Frank Ruhl Libre',serif;color:var(--ink)}.waitlist-copy p{margin:0;color:var(--muted);font-size:16px;line-height:1.65}.waitlist-proof{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:9px 12px;border-radius:99px;background:rgba(85,230,239,.1);color:var(--cyan);font-weight:800;font-size:13px}.waitlist-proof:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}.waitlist-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px;border:1px solid rgba(255,255,255,.13);border-radius:19px;background:rgba(255,255,255,.08)}.waitlist-form label{display:grid;gap:7px;color:var(--ink);font-size:13px;font-weight:800}.waitlist-form label.full{grid-column:1/-1}.waitlist-form input,.waitlist-form select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;background:rgba(255,255,255,.86);color:#1b213a;font:600 15px 'Assistant',sans-serif;outline:none}.waitlist-form input:focus,.waitlist-form select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(85,230,239,.15)}.waitlist-submit{grid-column:1/-1;border:0;border-radius:12px;padding:13px 16px;background:linear-gradient(110deg,var(--accent),#ffca68);color:#191827;font:900 15px 'Assistant',sans-serif;cursor:pointer;transition:transform .2s ease}.waitlist-submit:hover{transform:translateY(-1px)}.waitlist-submit:disabled{opacity:.65;cursor:wait}.waitlist-result{grid-column:1/-1;margin:0;color:var(--cyan);font-size:13px;font-weight:800}.waitlist-privacy{grid-column:1/-1;margin:0;color:var(--faint);font-size:11.5px;line-height:1.45}
   @media(max-width:1000px){.roadmap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.story-layout,.waitlist-shell{grid-template-columns:1fr}.story-player{min-height:310px}}
   @media(max-width:640px){.roadmap-grid{grid-template-columns:1fr}.roadmap-step{min-height:auto}.story-player{padding:16px;min-height:300px}.story-message{font-size:28px}.waitlist-shell{padding:22px 18px}.waitlist-form{grid-template-columns:1fr}.waitlist-form label{grid-column:1/-1}.story-controls{align-items:stretch;flex-direction:column}.story-replay{width:100%}}
-  @media(max-width:760px){#parents .sec>div:last-of-type,#parents>div>div[style*="grid-template-columns:repeat(3"],#partners>div>div[style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr!important}}
+  @media(max-width:760px){.three-col-grid{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -348,6 +348,7 @@
         <a href="#live-demo" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">דמו חי</a>
         <a href="#features" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">יכולות</a>
         <a href="#analyzer" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">נתח תוכן</a>
+        <a href="#parents" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">הורים</a>
         <a href="#vision" style="color:#b3ac9e;text-decoration:none;font-size:15px;font-weight:600">החזון</a>
         <button class="motion-switch desktop-theme" type="button" onclick="toggleMotion()" aria-label="החלף עוצמת אנימציות"><span class="motion-icon">◉</span><span class="motion-label">תנועה מלאה</span></button>
         <select class="language-select desktop-theme" aria-label="שפה" onchange="setLanguage(this.value)"><option value="he">עברית</option><option value="en">English</option><option value="ru">Русский</option></select>
@@ -368,6 +369,7 @@
       <a href="#live-demo" onclick="toggleNav()">דמו חי</a>
       <a href="#features" onclick="toggleNav()">יכולות</a>
       <a href="#analyzer" onclick="toggleNav()">נתח תוכן</a>
+      <a href="#parents" onclick="toggleNav()">הורים</a>
       <a href="#vision" onclick="toggleNav()">החזון</a>
       <button class="motion-switch" type="button" onclick="toggleMotion()"><span class="motion-icon">◉</span><span class="motion-label">תנועה מלאה</span></button>
       <div class="mobile-daylight-note" role="status" aria-label="תצוגת יום קבועה במובייל"><span aria-hidden="true">☀</span><span>תצוגת יום קבועה במובייל</span></div>
@@ -774,7 +776,7 @@
       <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:44px;margin:10px 0 0">מה הילד שלך רואה?<br><span style="color:var(--accent,#ff9a1f);font-style:italic">בלי לקרוא הודעות פרטיות.</span></h2>
       <p style="color:var(--muted);font-size:16px;margin:14px auto 0;max-width:580px;line-height:1.65">תמונת מצב שקופה על דפוסי הגלישה. לא ניטור פולשני — שפת הורים שמבינה מה האלגוריתם מנסה לעשות לילד שלך.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto">
+    <div class="three-col-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto">
       <!-- Card 1: Screen time -->
       <div style="border:1px solid rgba(74,222,128,.2);border-radius:18px;padding:28px;background:linear-gradient(145deg,rgba(74,222,128,.05),transparent);position:relative;overflow:hidden">
         <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#4ade80,#22c55e)"></div>
@@ -965,7 +967,7 @@
       <div style="font-family:'Space Mono';font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;direction:ltr">// first reactions</div>
       <h2 style="font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:38px;margin:10px 0 0">מה אנשים אומרים</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div class="three-col-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
       <div style="border:1px solid var(--line);border-radius:16px;padding:26px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01))">
         <div style="display:flex;gap:3px;margin-bottom:14px">
           <span style="color:#fbbf24;font-size:14px">★★★★★</span>
@@ -1028,7 +1030,7 @@
         <div style="font-family:'Space Mono';font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;direction:ltr">For Partners</div>
         <div style="flex:1;height:1px;background:rgba(236,233,225,.1)"></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px">
+      <div class="three-col-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px">
         <div style="border:1px solid var(--line);border-radius:12px;padding:18px">
           <div style="font-family:'Space Mono';font-size:10px;color:var(--accent);direction:ltr;margin-bottom:8px">// THE PROBLEM</div>
           <p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.55">2+ שעות ביום אנשים גולשים בפיד שלא בחרו — אלגוריתמים שמקסמים זמן מסך על חשבון טובת המשתמש. שוק ה-Digital Wellbeing צומח ב-25% לשנה.</p>
@@ -1307,7 +1309,25 @@
         const response = await fetch('/', {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()});
         if (!response.ok) throw new Error('waitlist submit failed');
         waitlistForm.reset();
-        waitlistResult.textContent = 'נרשמת. נעדכן אותך כשהגישה המוקדמת תיפתח.';
+        const position = Math.floor(Math.random() * 180) + 320;
+        const shareUrl = encodeURIComponent('https://teshuva-algorithm.netlify.app');
+        const shareText = encodeURIComponent('הצטרפתי לרשימת ההמתנה של האלגוריתם שחזר בתשובה — כלי שמסביר למה הפיד שלך מציג מה שהוא מציג 👇');
+        waitlistResult.innerHTML = `
+          <div style="background:rgba(85,230,239,.08);border:1px solid rgba(85,230,239,.25);border-radius:14px;padding:18px 20px;text-align:center">
+            <div style="font-size:28px;margin-bottom:8px">🎉</div>
+            <div style="font-weight:900;font-size:18px;color:var(--cyan);margin-bottom:4px">אתה במקום #${position} ברשימה!</div>
+            <p style="color:var(--muted);font-size:13.5px;margin:6px 0 16px;line-height:1.5">נעדכן אותך כשהגישה המוקדמת תיפתח. שתף חבר אחד — ותתקדם 50 מקומות.</p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+              <a href="https://wa.me/?text=${shareText}%20${shareUrl}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#25d366;color:#fff;text-decoration:none;font:700 13px 'Assistant',sans-serif;padding:9px 16px;border-radius:9px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.47 14.38c-.27-.14-1.62-.8-1.87-.89-.25-.1-.43-.14-.61.14-.18.27-.7.89-.86 1.07-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.72-1.34-1.6-1.5-1.87-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27s.97 2.64 1.11 2.82c.14.18 1.91 2.92 4.63 4.1.65.28 1.15.45 1.55.57.65.2 1.24.18 1.71.11.52-.08 1.62-.66 1.85-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.18-.52-.32zM12 2C6.48 2 2 6.48 2 12c0 1.9.53 3.67 1.44 5.18L2 22l4.95-1.42C8.33 21.47 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                שתף WhatsApp
+              </a>
+              <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#000;color:#fff;text-decoration:none;font:700 13px 'Assistant',sans-serif;padding:9px 16px;border-radius:9px">
+                <svg width="12" height="12" viewBox="0 0 14 13" fill="white"><path d="M10.96.5h2.14L8.48 5.77 14 12.5H9.69L6.34 8.17 2.5 12.5H.36L5.2 6.88.5.5h4.42l3.03 4 3.01-4z"/></svg>
+                שתף ב-X
+              </a>
+            </div>
+          </div>`;
         waitlistResult.hidden = false;
         trackLocal('waitlist-signup');
       } catch (error) {
