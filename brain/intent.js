@@ -34,7 +34,7 @@ export function buildIntent(categoryId, allTimeStats, weights) {
     heLabel:    cat?.heLabel ?? categoryId,
     percentage: pct,
     weight,
-    heText:     buildText(type, cat?.heLabel ?? categoryId, pct, weight),
+    heText:     buildText(type, cat?.heLabel ?? categoryId, pct),
   }
 }
 
@@ -48,7 +48,7 @@ function resolveType(count, pct, weight) {
   return INTENT_TYPE.TEST
 }
 
-function buildText(type, label, pct, weight) {
+function buildText(type, label, pct) {
   switch (type) {
     case INTENT_TYPE.FIRST_TIME:
       return `זו הפעם הראשונה שאתה נחשף ל${label}. האלגוריתם מנסה אותך.`

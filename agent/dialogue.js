@@ -5,8 +5,6 @@
  * Does NOT call external LLM APIs — all processing is local.
  */
 
-import { SPEAK_COOLDOWN_MS } from '../shared/constants.js'
-
 const MAX_TURNS = 10  // short-term context window
 
 const INTENT_KEYWORDS = {
