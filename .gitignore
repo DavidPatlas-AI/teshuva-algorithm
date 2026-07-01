@@ -1,16 +1,10 @@
 node_modules/
-.edge-profile/
-screenshots/
-!web/screenshots/
+.env
+__pycache__/
+.venv/
 dist/
-dist-installer/
-/build
-/out
-desktop/err*.log
-desktop/out*.log
-*.log
-.DS_Store
-Thumbs.db
-
-# Local Netlify folder
-.netlify
+build/
+*.zip
+*.exe
+גרסאות קודמות/
+.git-remote-linked

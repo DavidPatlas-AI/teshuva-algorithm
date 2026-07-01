@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:380px;font-family:'Segoe UI',Arial,sans-serif;background:#FAF5FF;color:#1F2937;direction:rtl;font-size:13px}
+.header{background:linear-gradient(135deg,#7C3AED,#A78BFA);padding:14px 16px;display:flex;align-items:center;gap:10px}
+.header-text h1{font-size:15px;font-weight:700;color:white}
+.header-text p{font-size:11px;color:#E9D5FF;margin-top:2px}
+.clippy-icon{width:48px;height:52px;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 52"><rect x="18" y="2" width="12" height="28" rx="4" fill="white" stroke="%23DDD" stroke-width="1.5"/><rect x="20" y="32" width="8" height="10" rx="2" fill="white" stroke="%23DDD" stroke-width="1.5"/><circle cx="24" cy="10" r="5" fill="%23FCD34D" stroke="%23F59E0B" stroke-width="1"/><line x1="21" y1="10" x2="27" y2="10" stroke="%23333" stroke-width="1.5"/><line x1="24" y1="7" x2="24" y2="13" stroke="%23333" stroke-width="1.5"/></svg>') center/contain no-repeat;flex-shrink:0}
+.tabs{display:flex;border-bottom:2px solid #EDE9FE;background:white}
+.tab{flex:1;padding:9px 0;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:#6B7280;border:none;background:none}
+.tab.active{color:#7C3AED;border-bottom:2px solid #7C3AED;margin-bottom:-2px}
+.tab-content{display:none;padding:14px 16px;max-height:420px;overflow-y:auto}
+.tab-content.active{display:block}
+
+/* Section headers */
+.section-title{font-size:11px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;margin-top:14px}
+.section-title:first-child{margin-top:0}
+
+/* Bar rows */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-label{width:88px;color:#374151;flex-shrink:0;font-size:12px}
+.bar-track{flex:1;background:#EDE9FE;border-radius:99px;height:9px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.bar-count{font-size:11px;color:#6B7280;min-width:28px;text-align:left}
+
+/* Domain list */
+.domain-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #F3F4F6}
+.domain-name{color:#374151;font-size:12px}
+.domain-count{font-size:11px;color:#7C3AED;font-weight:600}
+.domain-bar{height:3px;background:#EDE9FE;border-radius:99px;margin-top:3px}
+.domain-bar-fill{height:100%;border-radius:99px;background:#A78BFA}
+
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-card{background:white;border:1.5px solid #EDE9FE;border-radius:10px;padding:10px 12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700;color:#7C3AED}
+.stat-label{font-size:10px;color:#9CA3AF;margin-top:2px}
+
+/* History insight */
+.insight{background:white;border:1.5px solid #EDE9FE;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.insight-icon{font-size:18px;margin-bottom:4px}
+.insight-text{font-size:12px;color:#374151;line-height:1.5}
+
+/* Time chart */
+.time-bars{display:flex;align-items:flex-end;gap:3px;height:50px;margin-bottom:4px}
+.time-bar{flex:1;background:#A78BFA;border-radius:3px 3px 0 0;min-height:2px}
+.time-labels{display:flex;gap:3px}
+.time-label{flex:1;font-size:9px;color:#9CA3AF;text-align:center}
+
+.empty{color:#9CA3AF;text-align:center;padding:16px;font-size:12px}
+.loading{color:#A78BFA;text-align:center;padding:16px;font-size:12px}
+.actions{padding:10px 16px;display:flex;gap:8px;border-top:1px solid #EDE9FE}
+button{flex:1;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none}
+.btn-primary{background:#7C3AED;color:white}
+.btn-ghost{background:#EDE9FE;color:#7C3AED}
+.tagline{text-align:center;font-size:10px;color:#C4B5FD;padding:6px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="clippy-icon"></div>
+  <div class="header-text">
+    <h1>האלגוריתם שחזר בתשובה</h1>
+    <p id="header-sub">טוען נתונים...</p>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('overview')">סקירה</button>
+  <button class="tab" onclick="showTab('categories')">קטגוריות</button>
+  <button class="tab" onclick="showTab('history')">היסטוריה</button>
+  <button class="tab" onclick="showTab('insights')">תובנות</button>
+</div>
+
+<!-- TAB 1: Overview -->
+<div id="tab-overview" class="tab-content active">
+  <div id="stats-grid" class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="stat-visits">—</div><div class="stat-label">ביקורים 7 ימים</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-social">—</div><div class="stat-label">ברשתות חברתיות</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-categories">—</div><div class="stat-label">קטגוריות זוהו</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-top-cat">—</div><div class="stat-label">קטגוריה מובילה</div></div>
+  </div>
+  <div class="section-title">הרשתות שביקרת בהן</div>
+  <div id="social-sites"></div>
+</div>
+
+<!-- TAB 2: Categories -->
+<div id="tab-categories" class="tab-content">
+  <div class="section-title">תוכן שזוהה בזמן גלישה</div>
+  <div id="cat-bars-live"></div>
+  <div class="section-title">לפי היסטוריית URL</div>
+  <div id="cat-bars-history"></div>
+</div>
+
+<!-- TAB 3: History -->
+<div id="tab-history" class="tab-content">
+  <div class="section-title">שעות גלישה (7 ימים)</div>
+  <div class="time-bars" id="time-bars"></div>
+  <div class="time-labels" id="time-labels"></div>
+  <div class="section-title">אתרים שביקרת בהם הכי הרבה</div>
+  <div id="top-domains"></div>
+</div>
+
+<!-- TAB 4: Insights -->
+<div id="tab-insights" class="tab-content">
+  <div id="insights-list"><div class="loading">מנתח...</div></div>
+</div>
+
+<div class="actions">
+  <button class="btn-ghost" id="btn-reset">אפס נתונים</button>
+  <button class="btn-primary" onclick="window.close()">סגור</button>
+</div>
+<p class="tagline">האלגוריתם הזה לא מסתיר כלום ממך</p>
+
+<script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Teshuva Algorithm — האלגוריתם שחזר בתשובה",
+  "version": "1.1.0",
+  "description": "קליפי מסביר למה אתה רואה מה שאתה רואה — מנתח היסטוריית גלישה ותוכן ברשתות",
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "history"
+  ],
+  "host_permissions": [
+    "https://twitter.com/*",
+    "https://x.com/*",
+    "https://www.facebook.com/*",
+    "https://www.instagram.com/*",
+    "https://www.youtube.com/*",
+    "https://www.tiktok.com/*",
+    "http://localhost/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://twitter.com/*",
+        "https://x.com/*",
+        "https://www.facebook.com/*",
+        "https://www.instagram.com/*",
+        "https://www.youtube.com/*",
+        "https://www.tiktok.com/*",
+        "http://localhost/*"
+      ],
+      "js": ["content/bundle.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Teshuva Algorithm"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

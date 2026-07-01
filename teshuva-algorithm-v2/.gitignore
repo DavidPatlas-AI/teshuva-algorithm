@@ -1,0 +1,11 @@
+node_modules/
+.edge-profile/
+screenshots/
+dist/
+/build
+/out
+desktop/err*.log
+desktop/out*.log
+*.log
+.DS_Store
+Thumbs.db

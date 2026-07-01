@@ -1,0 +1,40 @@
+{
+  "name": "teshuva-algorithm",
+  "version": "0.1.0",
+  "description": "The Algorithm That Repented — Clippy mascot that explains why you see what you see on social media",
+  "main": "desktop/main.js",
+  "scripts": {
+    "start": "electron ./desktop/main.js",
+    "build": "npx esbuild extension/content/bundle-entry.js --bundle --format=iife --outfile=extension/content/bundle.js && npx esbuild desktop/renderer-entry.js --bundle --format=iife --outfile=desktop/renderer.js && npx esbuild extension/background-entry.js --bundle --format=iife --outfile=extension/background.js && npx esbuild extension/popup/popup-entry.js --bundle --format=iife --outfile=extension/popup/popup.js",
+    "desktop": "electron desktop/main.js",
+    "extension": "echo Load the extension/ folder in chrome://extensions",
+    "lint": "echo TODO",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern=tests/"
+  },
+  "jest": {
+    "transform": {},
+    "extensionsToTreatAsEsm": [".js"]
+  },
+  "keywords": [
+    "clippy",
+    "browser-extension",
+    "social-media",
+    "algorithm",
+    "transparency",
+    "privacy"
+  ],
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^42.4.0",
+    "esbuild": "^0.28.0",
+    "playwright": "^1.60.0"
+  },
+  "dependencies": {
+    "clippyjs": "^0.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/teshuva-algorithm"
+  }
+}

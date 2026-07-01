@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 340px;
+      height: 340px;
+      background: transparent !important;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Override clippyjs absolute positioning — pin Clippy to bottom-center */
+    .clippy-container {
+      position: fixed !important;
+      bottom: 10px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      top: auto !important;
+      right: auto !important;
+      cursor: grab !important;
+    }
+
+    /* Speech bubble RTL fix */
+    .clippy-balloon {
+      direction: rtl !important;
+      font-family: 'Segoe UI', Arial, sans-serif !important;
+      font-size: 13px !important;
+    }
+
+    /* Drag handle feel */
+    .clippy-container:active {
+      cursor: grabbing !important;
+    }
+  </style>
+</head>
+<body>
+  <script src="renderer.js"></script>
+</body>
+</html>
