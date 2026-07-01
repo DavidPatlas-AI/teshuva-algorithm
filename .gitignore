@@ -23,3 +23,7 @@ Thumbs.db
 # Playwright test artifacts
 screenshots/
 *.jpeg
+
+# Local notes / chat exports
+*קליפי*.txt
+WhatsApp Image*.jpeg
