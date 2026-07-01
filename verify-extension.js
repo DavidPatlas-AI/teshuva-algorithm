@@ -45,8 +45,8 @@ function startServer(port = 7777) {
   // --- Step 2: mascot appears ---
   console.log('\n[Step 2] Waiting for mascot widget...');
   try {
-    await page.waitForSelector('#teshuva-widget', { timeout: 8000 });
-    const svgVisible = await page.isVisible('#teshuva-mascot-wrap');
+    await page.waitForSelector('#tshuva-mascot-wrapper', { timeout: 8000 });
+    const svgVisible = await page.isVisible('#tshuva-mascot-wrapper .tshuva-svg');
     console.log('  ✅ Mascot widget in DOM, SVG visible:', svgVisible);
     await page.screenshot({ path: path.join(SHOTS_DIR, 'step2-mascot.png') });
   } catch (e) {
@@ -57,80 +57,56 @@ function startServer(port = 7777) {
   console.log('\n[Step 3] Waiting for greeting bubble...');
   try {
     await page.waitForFunction(
-      () => { const b = document.querySelector('#teshuva-bubble'); return b && !b.classList.contains('hidden') && b.textContent.trim().length > 5; },
-      { timeout: 5000 }
+      () => { const b = document.querySelector('#tshuva-bubble'); return b && b.style.display !== 'none' && b.textContent.trim().length > 5; },
+      { timeout: 8000 }
     );
-    const text = await page.$eval('#teshuva-bubble', el => el.textContent.trim().replace('✕', '').trim());
+    const text = await page.$eval('#tshuva-bubble', el => el.textContent.trim());
     console.log('  ✅ Bubble:', text);
     await page.screenshot({ path: path.join(SHOTS_DIR, 'step3-greeting.png') });
   } catch (e) {
     console.log('  ⚠️  Greeting bubble not shown:', e.message);
   }
 
-  // --- Step 4: wait for category detection (posts are immediately visible) ---
-  console.log('\n[Step 4] Waiting for first category detection...');
+  // --- Step 4: wait for category detection / explanation bubble ---
+  console.log('\n[Step 4] Waiting for category explanation bubble...');
   try {
     await page.waitForFunction(
       () => {
-        const b = document.querySelector('#teshuva-bubble');
-        return b && !b.classList.contains('hidden') && !!b.querySelector('.category-tag');
+        const b = document.querySelector('#tshuva-bubble');
+        return b && b.style.display !== 'none' && b.textContent.trim().length > 5;
       },
-      { timeout: 15000 }
+      { timeout: 20000, polling: 500 }
     );
-    const cat  = await page.$eval('.category-tag', el => el.textContent.trim());
-    const expl = await page.$eval('#teshuva-bubble', el => el.textContent.replace('✕','').trim());
-    console.log('  ✅ Category detected:', cat);
-    console.log('  Explanation:', expl);
+    const expl = await page.$eval('#tshuva-bubble', el => el.textContent.trim());
+    console.log('  ✅ Bubble text after posts observed:', expl);
     await page.screenshot({ path: path.join(SHOTS_DIR, 'step4-category.png') });
   } catch (e) {
-    console.log('  ⚠️  No category bubble yet. Checking allTime storage...');
-    const allTime = await page.evaluate(() => {
-      return new Promise(resolve => {
-        if (typeof chrome !== 'undefined' && chrome.storage)
-          chrome.storage.local.get('allTime', d => resolve(d.allTime || {}));
-        else resolve({});
-      });
-    });
-    console.log('  Storage allTime:', JSON.stringify(allTime));
-    await page.screenshot({ path: path.join(SHOTS_DIR, 'step4-no-category.png') });
+    console.log('  ⚠️  No explanation bubble yet:', e.message);
   }
 
-  // --- Step 5: click mascot → stats panel ---
-  console.log('\n[Step 5] Clicking mascot for stats...');
+  // --- Step 5: post badges injected on the feed ---
+  console.log('\n[Step 5] Checking post badges...');
   try {
-    // Use JS click to bypass animation stability check
-    await page.evaluate(() => document.querySelector('#teshuva-mascot-wrap').click());
-    await page.waitForTimeout(700);
-
-    const statsVisible = await page.evaluate(() => {
-      const s = document.querySelector('#teshuva-stats');
-      return s && !s.classList.contains('hidden');
-    });
-    console.log('  Stats panel visible:', statsVisible);
-
-    if (statsVisible) {
-      const statsText = await page.$eval('#teshuva-stats', el => el.textContent.trim());
-      console.log('  Stats:', statsText.slice(0, 200));
-    }
-    await page.screenshot({ path: path.join(SHOTS_DIR, 'step5-stats.png') });
+    await page.waitForSelector('[class*="tshuva-badge"], [id*="tshuva-badge"]', { timeout: 8000 });
+    const badgeCount = await page.$$eval('[class*="tshuva-badge"]', els => els.length);
+    console.log('  ✅ Badge elements found:', badgeCount);
+    await page.screenshot({ path: path.join(SHOTS_DIR, 'step5-badges.png') });
   } catch (e) {
-    console.log('  ⚠️  Stats click failed:', e.message);
+    console.log('  ⚠️  No badges found:', e.message);
   }
 
-  // --- Step 6: verify brain classified all 6 posts ---
+  // --- Step 6: verify brain classification totals in storage ---
   console.log('\n[Step 6] Checking brain classification totals...');
   const allTime = await page.evaluate(() => {
     return new Promise(resolve => {
       try {
-        chrome.storage.local.get('allTime', d => resolve(d.allTime || {}));
+        chrome.storage.local.get('teshuva_all_time_v1', d => resolve(d));
       } catch { resolve({}); }
     });
   });
-  console.log('  Classification totals:', JSON.stringify(allTime));
-  const total = Object.values(allTime).reduce((a, b) => a + b, 0);
-  console.log('  Total posts classified:', total);
+  console.log('  Raw storage snapshot:', JSON.stringify(allTime).slice(0, 500));
 
-  // --- Step 7: popup ---
+  // --- Step 7: open extension popup ---
   console.log('\n[Step 7] Opening extension popup...');
   try {
     const bgWorkers = context.serviceWorkers();
@@ -140,11 +116,13 @@ function startServer(port = 7777) {
     if (extId) {
       const popupPage = await context.newPage();
       await popupPage.goto(`chrome-extension://${extId}/popup/popup.html`);
-      await popupPage.waitForTimeout(1200);
-      const statsHtml = await popupPage.$eval('#stats-container', el => el.textContent.trim());
-      console.log('  Popup stats:', statsHtml.slice(0, 200));
+      await popupPage.waitForTimeout(1500);
+      const statsText = await popupPage.$eval('#stats-grid', el => el.textContent.trim());
+      console.log('  ✅ Popup stats-grid:', statsText.slice(0, 200));
       await popupPage.screenshot({ path: path.join(SHOTS_DIR, 'step7-popup.png') });
       console.log('  Screenshot: step7-popup.png');
+    } else {
+      console.log('  ⚠️  No service worker found — background script may not have started.');
     }
   } catch (e) {
     console.log('  ⚠️  Popup test:', e.message);

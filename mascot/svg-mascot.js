@@ -4,23 +4,30 @@
 const WRAPPER_ID = 'tshuva-mascot-wrapper'
 const CSS_ID     = 'tshuva-mascot-css'
 
+// אותה דמות מטאלית של קליפי כמו בדף הנחיתה (web/index.html #clippy-root) — עניבה מכופפת עם עיניים
 const SVG_MARKUP = `
-<svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg" width="80" height="90" class="tshuva-svg">
-  <ellipse cx="40" cy="10" rx="18" ry="6" fill="none" stroke="#FCD34D" stroke-width="3.5" stroke-dasharray="4 2"/>
-  <line x1="40" y1="16" x2="40" y2="22" stroke="#6D28D9" stroke-width="2.5" stroke-linecap="round"/>
-  <circle cx="40" cy="14" r="3.5" fill="#FCD34D"/>
-  <rect x="12" y="22" width="56" height="52" rx="16" fill="#7C3AED"/>
-  <rect x="14" y="24" width="52" height="48" rx="14" fill="#8B5CF6"/>
-  <circle cx="29" cy="38" r="10" fill="white"/>
-  <circle cx="51" cy="38" r="10" fill="white"/>
-  <circle class="tshuva-pupil-l" cx="30" cy="39" r="6" fill="#1E1B4B"/>
-  <circle class="tshuva-pupil-r" cx="52" cy="39" r="6" fill="#1E1B4B"/>
-  <circle cx="31.5" cy="36.5" r="2.2" fill="white"/>
-  <circle cx="53.5" cy="36.5" r="2.2" fill="white"/>
-  <ellipse cx="20" cy="46" rx="6" ry="3.5" fill="#F9A8D4" opacity="0.6"/>
-  <ellipse cx="60" cy="46" rx="6" ry="3.5" fill="#F9A8D4" opacity="0.6"/>
-  <path class="tshuva-mouth" d="M 27 52 Q 40 62 53 52" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M 40 66 C 40 63.5,36 61,36 64 C 36 66.5,40 69.5,40 69.5 C 40 69.5,44 66.5,44 64 C 44 61,40 63.5,40 66 Z" fill="#FCA5A5"/>
+<svg viewBox="0 0 120 170" xmlns="http://www.w3.org/2000/svg" width="80" height="113" class="tshuva-svg">
+  <defs><linearGradient id="tshuvaClipMetal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fbfdff"/>
+    <stop offset=".35" stop-color="#c6d0db"/>
+    <stop offset=".7" stop-color="#8c97a6"/>
+    <stop offset="1" stop-color="#5d6776"/>
+  </linearGradient></defs>
+  <g transform="rotate(-6 60 95)">
+    <rect x="28" y="54" width="64" height="102" rx="32" fill="none" stroke="url(#tshuvaClipMetal)" stroke-width="12"/>
+    <rect x="44" y="30" width="32" height="104" rx="16" fill="none" stroke="url(#tshuvaClipMetal)" stroke-width="12"/>
+    <path d="M33 72 Q30 104 37 134" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M39 41 Q50 33 61 40" stroke="url(#tshuvaClipMetal)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+    <path d="M70 40 Q82 33 93 42" stroke="url(#tshuvaClipMetal)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="51" cy="63" rx="14" ry="16.5" fill="#fff" stroke="#2a3340" stroke-width="2"/>
+    <ellipse cx="79" cy="63" rx="14" ry="16.5" fill="#fff" stroke="#2a3340" stroke-width="2"/>
+    <g class="tshuva-eyes">
+      <circle class="tshuva-pupil-l" cx="53" cy="66" r="6.6" fill="#11161f"/>
+      <circle class="tshuva-pupil-r" cx="81" cy="66" r="6.6" fill="#11161f"/>
+      <circle cx="50.4" cy="62.6" r="2.1" fill="#fff"/>
+      <circle cx="78.4" cy="62.6" r="2.1" fill="#fff"/>
+    </g>
+  </g>
 </svg>`
 
 const MASCOT_CSS = `
@@ -40,12 +47,20 @@ const MASCOT_CSS = `
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 #${WRAPPER_ID} .tshuva-svg {
-  filter: drop-shadow(0 4px 12px rgba(124,58,237,.5));
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.45));
   transition: transform .15s ease;
   display: block;
 }
 #${WRAPPER_ID}:hover .tshuva-svg {
   transform: scale(1.07);
+}
+#${WRAPPER_ID} .tshuva-eyes {
+  animation: tshuva-look 5s ease-in-out infinite;
+}
+@keyframes tshuva-look {
+  0%, 100% { transform: translate(0,0); }
+  30%      { transform: translate(-3px,2px); }
+  60%      { transform: translate(3px,1px); }
 }
 #${WRAPPER_ID} .tshuva-bubble {
   max-width: 240px;

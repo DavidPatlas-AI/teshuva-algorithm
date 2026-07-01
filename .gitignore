@@ -3,8 +3,19 @@ node_modules/
 __pycache__/
 .venv/
 dist/
+dist-installer/
 build/
+/build
+/out
 *.zip
 *.exe
+desktop/err*.log
+desktop/out*.log
+*.log
+.DS_Store
+Thumbs.db
 גרסאות קודמות/
 .git-remote-linked
+
+# Local Netlify folder
+.netlify
