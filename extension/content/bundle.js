@@ -943,7 +943,7 @@
       heLabel: cat?.heLabel ?? categoryId,
       percentage: pct,
       weight,
-      heText: buildText(type, cat?.heLabel ?? categoryId, pct, weight)
+      heText: buildText(type, cat?.heLabel ?? categoryId, pct)
     };
   }
   function resolveType(count, pct, weight) {
@@ -953,7 +953,7 @@
     if (pct >= 15) return INTENT_TYPE.RECURRING;
     return INTENT_TYPE.TEST;
   }
-  function buildText(type, label, pct, weight) {
+  function buildText(type, label, pct) {
     switch (type) {
       case INTENT_TYPE.FIRST_TIME:
         return `\u05D6\u05D5 \u05D4\u05E4\u05E2\u05DD \u05D4\u05E8\u05D0\u05E9\u05D5\u05E0\u05D4 \u05E9\u05D0\u05EA\u05D4 \u05E0\u05D7\u05E9\u05E3 \u05DC${label}. \u05D4\u05D0\u05DC\u05D2\u05D5\u05E8\u05D9\u05EA\u05DD \u05DE\u05E0\u05E1\u05D4 \u05D0\u05D5\u05EA\u05DA.`;
@@ -1279,7 +1279,6 @@
   var MAX_TURNS, INTENT_KEYWORDS;
   var init_dialogue = __esm({
     "agent/dialogue.js"() {
-      init_constants();
       MAX_TURNS = 10;
       INTENT_KEYWORDS = {
         question: ["\u05DC\u05DE\u05D4", "\u05DE\u05D4", "\u05D0\u05D9\u05DA", "\u05DE\u05EA\u05D9", "\u05DB\u05DE\u05D4", "why", "what", "how", "when"],
@@ -2064,7 +2063,6 @@
       (async () => {
         const svgMascot = createSVGMascot();
         svgMascot.init();
-        const clippyEl = svgMascot._el;
         const mascot = {
           say: (text) => svgMascot.say(text),
           animate: (name) => svgMascot.animate(name ?? ""),

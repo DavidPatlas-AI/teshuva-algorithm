@@ -19,7 +19,6 @@ import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
   // ── Mascot (SVG — CSP-safe, no eval/new Function) ─────────
   const svgMascot = createSVGMascot()
   svgMascot.init()
-  const clippyEl = svgMascot._el
 
   // ── IMascot adapter ────────────────────────────────────────
   const mascot = {

@@ -1,9 +1,6 @@
 // post-badge.js — תגית הסבר שמופיעה מתחת לכל פוסט מזוהה
 // מציגה: קטגוריה + 3 אותות עם % + כפתור דחייה
 
-const BADGE_ID_PREFIX = 'tshuva-badge-'
-let badgeCount = 0
-
 const CSS = `
   .tshuva-badge {
     display: inline-flex;
