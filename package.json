@@ -11,7 +11,7 @@
     "desktop": "electron desktop/main.js",
     "extension": "echo Load the extension/ folder in chrome://extensions",
     "lint": "echo TODO",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ^tests/"
   },
   "build": {
     "appId": "ai.davidpatlas.teshuva-algorithm",
@@ -52,7 +52,8 @@
     }
   },
   "jest": {
-    "transform": {}
+    "transform": {},
+    "testPathIgnorePatterns": ["/node_modules/", "_לסקירה"]
   },
   "keywords": [
     "clippy",
