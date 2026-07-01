@@ -77,18 +77,24 @@ import { MSG, SETTINGS_KEY }             from '../../shared/constants.js'
           cat?.heLabel ?? catId,
           cat?.color   ?? '#ff9a1f',
           signals,
-          () => {
+          async () => {
             brain.negative(catId)
-            dismissPost(el)
-            const label   = cat?.heLabel ?? catId
-            const w       = brain.getStats().weights?.[catId] ?? 1.0
-            const replies = [
-              `הבנתי! מפחית ${label} בפיד שלך.`,
-              `קיבלתי — פחות ${label} מעכשיו.`,
-              `רשמתי. ${label} לא מעניין אותך עכשיו.`,
-              w < 0.5 ? `שוב ${label}? כבר מסיר אוטומטית.` : `פחות ${label} — נלמד.`,
-            ]
-            mascot.say(replies[Math.floor(Math.random() * replies.length)])
+            const label  = cat?.heLabel ?? catId
+            const result = dismissPost ? await dismissPost(el) : { ok: false, reason: 'unsupported' }
+
+            if (result.ok) {
+              const w       = brain.getStats().weights?.[catId] ?? 1.0
+              const replies = [
+                `הבנתי! מפחית ${label} בפיד שלך.`,
+                `קיבלתי — פחות ${label} מעכשיו.`,
+                `רשמתי. ${label} לא מעניין אותך עכשיו.`,
+                w < 0.5 ? `שוב ${label}? כבר מסיר אוטומטית.` : `פחות ${label} — נלמד.`,
+              ]
+              mascot.say(replies[Math.floor(Math.random() * replies.length)])
+            } else {
+              console.debug(`[תשובה] dismiss failed on ${location.hostname}: ${result.reason}`)
+              mascot.say(`רשמתי שפחות ${label} מעניין אותך — גם אם לא הצלחתי להסתיר את הפוסט אוטומטית כאן.`)
+            }
             mascot.animate()
           },
         )
