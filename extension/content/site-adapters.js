@@ -10,6 +10,7 @@ export const SITE_SELECTORS = {
   'linkedin.com':  ".feed-shared-update-v2__description span, .update-components-text span",
   'reddit.com':    "[data-testid='post-content'] h3, .Post h3",
   'threads.net':   "div[dir='auto'] span",
+  'threads.com':   "div[dir='auto'] span",
   'localhost':     "[data-testid='tweetText']",
 }
 

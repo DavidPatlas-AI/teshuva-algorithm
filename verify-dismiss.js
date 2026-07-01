@@ -22,9 +22,11 @@ const LABEL = process.argv[3] || 'site';
 
   const page = await context.newPage();
   page.on('console', msg => console.log('  [page]', msg.text()));
+  page.on('pageerror', err => console.log('  [pageerror]', err.message));
 
   console.log(`\n[${LABEL}] Loading:`, SITE);
   await page.goto(SITE, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  console.log(`[${LABEL}] Final URL:`, page.url());
   await page.waitForTimeout(4000);
   for (let i = 0; i < 4; i++) { await page.mouse.wheel(0, 700); await page.waitForTimeout(1200); }
   await page.screenshot({ path: path.join(SHOTS_DIR, `dismiss-${LABEL}-1-feed.png`) });
@@ -32,6 +34,16 @@ const LABEL = process.argv[3] || 'site';
   const badgeCount = await page.evaluate(() => document.querySelectorAll('.tshuva-badge').length);
   console.log(`[${LABEL}] Badges found:`, badgeCount);
   if (badgeCount === 0) {
+    const debug = await page.evaluate(() => ({
+      mascotPresent: !!document.getElementById('tshuva-mascot-wrapper'),
+      selectorMatches: document.querySelectorAll(({
+        'reddit.com':'[data-testid=\'post-content\'] h3, .Post h3',
+        'threads.net':'div[dir=\'auto\'] span',
+        'linkedin.com':'.feed-shared-update-v2__description span, .update-components-text span',
+      })[location.hostname.replace('www.','')] || 'NONE').length,
+      textSample: [...document.querySelectorAll('div[dir="auto"] span')].slice(0,3).map(e=>e.textContent.slice(0,40)),
+    }));
+    console.log(`[${LABEL}] Debug:`, JSON.stringify(debug));
     console.log(`[${LABEL}] No badges — cannot test dismiss.`);
     await context.close();
     return;

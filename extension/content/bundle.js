@@ -1463,6 +1463,7 @@
         "linkedin.com": ".feed-shared-update-v2__description span, .update-components-text span",
         "reddit.com": "[data-testid='post-content'] h3, .Post h3",
         "threads.net": "div[dir='auto'] span",
+        "threads.com": "div[dir='auto'] span",
         "localhost": "[data-testid='tweetText']"
       };
     }
@@ -1633,6 +1634,7 @@
           [/not interested/i, /hide/i, /mute/i, /block/i, /unfollow/i]
         )
       };
+      PLATFORMS["threads.com"] = PLATFORMS["threads.net"];
     }
   });
 
@@ -2105,18 +2107,23 @@
                 cat?.heLabel ?? catId,
                 cat?.color ?? "#ff9a1f",
                 signals,
-                () => {
+                async () => {
                   brain.negative(catId);
-                  dismissPost(el);
                   const label = cat?.heLabel ?? catId;
-                  const w = brain.getStats().weights?.[catId] ?? 1;
-                  const replies = [
-                    `\u05D4\u05D1\u05E0\u05EA\u05D9! \u05DE\u05E4\u05D7\u05D9\u05EA ${label} \u05D1\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA.`,
-                    `\u05E7\u05D9\u05D1\u05DC\u05EA\u05D9 \u2014 \u05E4\u05D7\u05D5\u05EA ${label} \u05DE\u05E2\u05DB\u05E9\u05D9\u05D5.`,
-                    `\u05E8\u05E9\u05DE\u05EA\u05D9. ${label} \u05DC\u05D0 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA \u05E2\u05DB\u05E9\u05D9\u05D5.`,
-                    w < 0.5 ? `\u05E9\u05D5\u05D1 ${label}? \u05DB\u05D1\u05E8 \u05DE\u05E1\u05D9\u05E8 \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.` : `\u05E4\u05D7\u05D5\u05EA ${label} \u2014 \u05E0\u05DC\u05DE\u05D3.`
-                  ];
-                  mascot.say(replies[Math.floor(Math.random() * replies.length)]);
+                  const result = dismissPost ? await dismissPost(el) : { ok: false, reason: "unsupported" };
+                  if (result.ok) {
+                    const w = brain.getStats().weights?.[catId] ?? 1;
+                    const replies = [
+                      `\u05D4\u05D1\u05E0\u05EA\u05D9! \u05DE\u05E4\u05D7\u05D9\u05EA ${label} \u05D1\u05E4\u05D9\u05D3 \u05E9\u05DC\u05DA.`,
+                      `\u05E7\u05D9\u05D1\u05DC\u05EA\u05D9 \u2014 \u05E4\u05D7\u05D5\u05EA ${label} \u05DE\u05E2\u05DB\u05E9\u05D9\u05D5.`,
+                      `\u05E8\u05E9\u05DE\u05EA\u05D9. ${label} \u05DC\u05D0 \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA \u05E2\u05DB\u05E9\u05D9\u05D5.`,
+                      w < 0.5 ? `\u05E9\u05D5\u05D1 ${label}? \u05DB\u05D1\u05E8 \u05DE\u05E1\u05D9\u05E8 \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA.` : `\u05E4\u05D7\u05D5\u05EA ${label} \u2014 \u05E0\u05DC\u05DE\u05D3.`
+                    ];
+                    mascot.say(replies[Math.floor(Math.random() * replies.length)]);
+                  } else {
+                    console.debug(`[\u05EA\u05E9\u05D5\u05D1\u05D4] dismiss failed on ${location.hostname}: ${result.reason}`);
+                    mascot.say(`\u05E8\u05E9\u05DE\u05EA\u05D9 \u05E9\u05E4\u05D7\u05D5\u05EA ${label} \u05DE\u05E2\u05E0\u05D9\u05D9\u05DF \u05D0\u05D5\u05EA\u05DA \u2014 \u05D2\u05DD \u05D0\u05DD \u05DC\u05D0 \u05D4\u05E6\u05DC\u05D7\u05EA\u05D9 \u05DC\u05D4\u05E1\u05EA\u05D9\u05E8 \u05D0\u05EA \u05D4\u05E4\u05D5\u05E1\u05D8 \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA \u05DB\u05D0\u05DF.`);
+                  }
                   mascot.animate();
                 }
               );

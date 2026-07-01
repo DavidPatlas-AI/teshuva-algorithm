@@ -161,6 +161,9 @@ PLATFORMS['threads.net'] = {
     ),
 }
 
+// Meta migrated threads.net → threads.com; keep both live
+PLATFORMS['threads.com'] = PLATFORMS['threads.net']
+
 // ── Public API ────────────────────────────────────────────────────────────────
 
 export async function dismissPost(el) {

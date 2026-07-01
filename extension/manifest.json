@@ -33,7 +33,8 @@
         "https://www.tiktok.com/*",
         "https://www.linkedin.com/*",
         "https://www.reddit.com/*",
-        "https://www.threads.net/*"
+        "https://www.threads.net/*",
+        "https://www.threads.com/*"
       ],
       "js": ["content/bundle.js"],
       "run_at": "document_idle"
@@ -53,6 +54,7 @@
     "https://www.tiktok.com/*",
     "https://www.linkedin.com/*",
     "https://www.reddit.com/*",
-    "https://www.threads.net/*"
+    "https://www.threads.net/*",
+    "https://www.threads.com/*"
   ]
 }
