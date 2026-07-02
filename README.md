@@ -1,11 +1,23 @@
 # 📎 האלגוריתם שחזר בתשובה
 ### *The Algorithm That Repented — v0.4.0*
 
+![Status](https://img.shields.io/badge/Status-Production-22c55e?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-7c6af5?style=flat-square&logo=netlify&logoColor=white)](https://teshuva-algorithm.netlify.app)
+
 > **What if the algorithm stopped hiding and started explaining itself?**
 
 Every day, social media algorithms decide what you see — and they never tell you why.
 
 This project is a small act of rebellion: a browser extension + desktop agent (Clippy, naturally) that sits with you while you browse, watches what the algorithm shows you, **tells you the truth** — and then **clicks "Not interested" on your behalf**.
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="screenshots/real-step2-mascot.png" width="32%" />
+  <img src="screenshots/real-step4-final.png" width="32%" />
+  <img src="screenshots/real-step5-popup.png" width="32%" />
+</p>
 
 ---
 
