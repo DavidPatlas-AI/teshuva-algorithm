@@ -17,6 +17,9 @@ npm test
 # Run a single test file
 node --experimental-vm-modules node_modules/jest/bin/jest.js tests/brain.test.js
 
+# Lint (ESLint 9 flat config)
+npm run lint
+
 # Start Electron desktop app
 npm start
 
@@ -101,6 +104,6 @@ Defines `STORAGE_KEY`, `SETTINGS_KEY`, all `MSG.*` types for content↔backgroun
 
 ## Known Gaps
 
-- LinkedIn/Reddit/Threads action-engine selectors are best-effort — they need real-browser testing to verify menu button discovery works on current DOM
-- No real linting (`"lint": "echo TODO"`)
+- LinkedIn/Reddit/Threads action-engine selectors are best-effort — they need real-browser testing with a logged-in account to verify menu button discovery works on current DOM (Reddit also blocks automated/headless browsers, so it can't be verified via Playwright either)
 - `desktop/renderer.js` bundle is 1.9 MB (includes clippyjs assets) — normal, but slow to rebuild
+- `web/index.html` has a `SoftwareApplication` JSON-LD block with a hardcoded `aggregateRating` (4.8, 47 ratings) and a MIT-license `Offer` — there is no Chrome Web Store listing or review source backing that number; treat it as placeholder copy, not real data, before touching SEO/schema on the landing page
