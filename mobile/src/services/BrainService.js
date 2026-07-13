@@ -1,14 +1,16 @@
 /**
- * BrainService — singleton that holds the brain state and
- * provides a simple pub/sub for components to react to changes.
+ * BrainService — wraps the real brain/brain-api.js running fully on-device
+ * (AsyncStorage, no server) and exposes UI-friendly derived shapes, plus a
+ * simple pub/sub for components to react to changes.
  */
-import * as brainApi from '../api/brain';
+import {createBrain} from '../../../brain/brain-api.js';
+import {createReactNativeAdapter} from '../../../brain/adapters/react-native-adapter.js';
 
 class BrainService {
   constructor() {
-    this._stats      = null;
-    this._mood       = null;
-    this._listeners  = new Set();
+    this._brain     = createBrain(createReactNativeAdapter());
+    this._loaded    = false;
+    this._listeners = new Set();
   }
 
   subscribe(fn) {
@@ -20,42 +22,69 @@ class BrainService {
     this._listeners.forEach(fn => fn({event, payload}));
   }
 
-  async loadStats() {
-    try {
-      this._stats = await brainApi.getStats();
-      this._emit('stats', this._stats);
-    } catch (_) { /* offline – use cached */ }
-    return this._stats;
+  async init() {
+    if (this._loaded) return;
+    await this._brain.load();
+    this._loaded = true;
   }
 
-  async loadMood() {
-    try {
-      this._mood = await brainApi.getMood();
-      this._emit('mood', this._mood);
-    } catch (_) { /* offline */ }
-    return this._mood;
+  getGreeting() {
+    return this._brain.greeting();
   }
 
-  async explain(content) {
-    const result = await brainApi.explain(content);
+  getHomeStats() {
+    const stats = this._brain.getStats();
+    const totalSeen = Object.values(stats.allTime).reduce((sum, n) => sum + n, 0);
+    const dismissedTotal = stats.dismissedTotal;
+    const dismissalRatePct = totalSeen > 0 ? Math.round((dismissedTotal / totalSeen) * 100) : 0;
+
+    const breakdown = stats.ids
+      .map(id => ({
+        id,
+        label: stats.categories[id].heLabel,
+        color: stats.categories[id].color,
+        count: stats.allTime[id] ?? 0,
+        pct: totalSeen > 0 ? Math.round(((stats.allTime[id] ?? 0) / totalSeen) * 100) : 0,
+      }))
+      .filter(item => item.count > 0)
+      .sort((a, b) => b.count - a.count);
+
+    return {totalSeen, dismissedTotal, dismissalRatePct, breakdown};
+  }
+
+  explainText(text) {
+    const categoryId = this._brain.observe(text);
+    const result = {
+      categoryId,
+      label: categoryId === 'uncategorized' ? null : this._brain.getStats().categories[categoryId]?.heLabel,
+      explanation: categoryId === 'uncategorized' ? null : this._brain.explain(categoryId),
+      signals: categoryId === 'uncategorized' ? [] : this._brain.signals(categoryId),
+    };
     this._emit('explain', result);
     return result;
   }
 
-  async positive(category) {
-    const result = await brainApi.sendFeedback(category, true);
-    this._emit('feedback', {category, positive: true, result});
-    return result;
+  getWeeklyInsights() {
+    const stats = this._brain.getStats();
+    return this._brain.weeklyInsights(stats.allTime, {});
   }
 
-  async negative(category) {
-    const result = await brainApi.sendFeedback(category, false);
-    this._emit('feedback', {category, positive: false, result});
-    return result;
+  positive(categoryId) {
+    if (!categoryId) return;
+    this._brain.positive(categoryId);
+    this._emit('feedback', {categoryId, positive: true});
   }
 
-  getStats() { return this._stats; }
-  getMood()  { return this._mood;  }
+  negative(categoryId) {
+    if (!categoryId) return;
+    this._brain.negative(categoryId);
+    this._emit('feedback', {categoryId, positive: false});
+  }
+
+  async reset() {
+    await this._brain.reset();
+    this._emit('reset', null);
+  }
 }
 
 export const brainService = new BrainService();

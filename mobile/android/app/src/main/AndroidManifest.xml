@@ -6,7 +6,8 @@
   <!-- Foreground service — keeps Clippy alive when app is backgrounded -->
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-  <!-- Internet — brain-api calls -->
+  <!-- Internet — required by React Native's own debug bridge/Metro connection,
+       even though the app itself makes no runtime network calls anymore -->
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application

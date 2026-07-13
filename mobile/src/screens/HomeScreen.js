@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
   StyleSheet, RefreshControl,
@@ -6,33 +6,25 @@ import {
 import {brainService} from '../services/BrainService';
 import {COLORS, FONTS, RADIUS, SHADOW} from '../styles/theme';
 
-const MOOD_ICON  = {positive: '😊', neutral: '😐', negative: '😕', unknown: '🤔'};
-const MOOD_COLOR = {positive: '#4caf50', neutral: COLORS.accent, negative: COLORS.danger, unknown: COLORS.textMuted};
+const EMPTY_STATS = {totalSeen: 0, dismissedTotal: 0, dismissalRatePct: 0, breakdown: []};
 
 export default function HomeScreen({navigation}) {
-  const [stats, setStats]       = useState(null);
-  const [mood,  setMood]        = useState(null);
-  const [refreshing, setRef]    = useState(false);
+  const [stats, setStats]     = useState(EMPTY_STATS);
+  const [greeting, setGreeting] = useState('');
+  const [refreshing, setRef]  = useState(false);
 
-  async function load() {
-    const [s, m] = await Promise.all([
-      brainService.loadStats(),
-      brainService.loadMood(),
-    ]);
-    setStats(s ?? MOCK_STATS);
-    setMood(m ?? MOCK_MOOD);
-  }
+  const load = useCallback(() => {
+    setStats(brainService.getHomeStats());
+    setGreeting(brainService.getGreeting());
+  }, []);
 
   async function onRefresh() {
     setRef(true);
-    await load();
+    load();
     setRef(false);
   }
 
-  useEffect(() => { load(); }, []);
-
-  const s = stats ?? MOCK_STATS;
-  const moodKey = mood?.mood ?? 'unknown';
+  useEffect(() => { load(); }, [load]);
 
   return (
     <ScrollView
@@ -48,22 +40,20 @@ export default function HomeScreen({navigation}) {
         <Text style={styles.greetTitle}>שלום, הנה מה שקרה היום</Text>
       </View>
 
-      {/* mood card */}
+      {/* greeting card */}
       <View style={styles.moodCard}>
-        <Text style={styles.moodIcon}>{MOOD_ICON[moodKey]}</Text>
+        <Text style={styles.moodIcon}>👋</Text>
         <View style={styles.moodText}>
-          <Text style={styles.moodLabel}>מצב האלגוריתם</Text>
-          <Text style={[styles.moodValue, {color: MOOD_COLOR[moodKey]}]}>
-            {mood?.description ?? 'ממתין לנתונים…'}
-          </Text>
+          <Text style={styles.moodLabel}>ברכה</Text>
+          <Text style={styles.moodValue}>{greeting}</Text>
         </View>
       </View>
 
       {/* quick stats */}
       <View style={styles.statsRow}>
-        <StatCard value={s.totalSeen  ?? 0} label="נראו"       accent={false} />
-        <StatCard value={s.dismissed  ?? 0} label="הוסרו"      accent />
-        <StatCard value={`${s.accuracy ?? 0}%`} label="דיוק"   accent={false} />
+        <StatCard value={stats.totalSeen}              label="נראו"       accent={false} />
+        <StatCard value={stats.dismissedTotal}          label="הוסרו"      accent />
+        <StatCard value={`${stats.dismissalRatePct}%`}  label="אחוז הסרה" accent={false} />
       </View>
 
       {/* quick actions */}
@@ -84,34 +74,36 @@ export default function HomeScreen({navigation}) {
         <ActionCard
           icon="⚙️"
           label="הגדרות"
-          sub="API, סף מחיקה"
+          sub="התנהגות, איפוס"
           onPress={() => navigation.navigate('Settings')}
         />
       </View>
 
       {/* category breakdown preview */}
-      {s.breakdown && (
-        <>
-          <Text style={styles.sectionTitle}>פילוח השבוע</Text>
-          <View style={styles.catCard}>
-            {s.breakdown.map(item => (
-              <View key={item.label} style={styles.catRow}>
-                <Text style={styles.catLabel}>{item.label}</Text>
-                <View style={styles.barTrack}>
-                  <View style={[styles.barFill, {width: `${item.pct}%`, backgroundColor: item.color ?? COLORS.accent}]} />
-                </View>
-                <Text style={[styles.catPct, {color: item.color ?? COLORS.accent}]}>{item.pct}%</Text>
+      <Text style={styles.sectionTitle}>פילוח</Text>
+      <View style={styles.catCard}>
+        {stats.breakdown.length === 0 ? (
+          <Text style={styles.emptyText}>
+            עוד לא צברת מספיק נתונים. נסה "הסבר פוסט" עם טקסט אמיתי כדי להתחיל.
+          </Text>
+        ) : (
+          stats.breakdown.map(item => (
+            <View key={item.id} style={styles.catRow}>
+              <Text style={styles.catLabel}>{item.label}</Text>
+              <View style={styles.barTrack}>
+                <View style={[styles.barFill, {width: `${item.pct}%`, backgroundColor: item.color}]} />
               </View>
-            ))}
-            <TouchableOpacity
-              style={styles.moreBtn}
-              onPress={() => navigation.navigate('Insights')}
-            >
-              <Text style={styles.moreBtnText}>תובנות מלאות ›</Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
+              <Text style={[styles.catPct, {color: item.color}]}>{item.pct}%</Text>
+            </View>
+          ))
+        )}
+        <TouchableOpacity
+          style={styles.moreBtn}
+          onPress={() => navigation.navigate('Insights')}
+        >
+          <Text style={styles.moreBtnText}>תובנות מלאות ›</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* confession quote */}
       <View style={styles.quoteCard}>
@@ -143,18 +135,6 @@ function ActionCard({icon, label, sub, onPress}) {
   );
 }
 
-// ── mock data shown while API is offline ───────────────
-const MOCK_STATS = {
-  totalSeen: 342, dismissed: 87, accuracy: 91,
-  breakdown: [
-    {label: 'פוליטיקה', pct: 47, color: COLORS.accent},
-    {label: 'ספורט',    pct: 21, color: '#e7842a'},
-    {label: 'טכנולוגיה',pct: 18, color: '#b9772f'},
-    {label: 'אחר',      pct: 14, color: '#6f6a60'},
-  ],
-};
-const MOCK_MOOD = {mood: 'neutral', description: 'מנטר בשקיפות מלאה'};
-
 // ── styles ─────────────────────────────────────────────
 const styles = StyleSheet.create({
   root:  {flex: 1, backgroundColor: COLORS.bg},
@@ -173,7 +153,7 @@ const styles = StyleSheet.create({
   moodIcon:  {fontSize: 38},
   moodText:  {flex: 1},
   moodLabel: {fontFamily: FONTS.mono, fontSize: 10, color: COLORS.textDim, textAlign: 'right', textTransform: 'uppercase'},
-  moodValue: {fontSize: 16, fontWeight: '700', textAlign: 'right', marginTop: 2},
+  moodValue: {fontSize: 16, fontWeight: '700', textAlign: 'right', marginTop: 2, color: COLORS.text},
 
   statsRow: {flexDirection: 'row', gap: 10, marginBottom: 24},
   statCard: {
@@ -214,6 +194,7 @@ const styles = StyleSheet.create({
   catPct:    {fontFamily: FONTS.mono, fontSize: 12, width: 34, textAlign: 'left'},
   moreBtn:   {marginTop: 6, alignSelf: 'flex-end'},
   moreBtnText:{color: COLORS.accent, fontWeight: '700', fontSize: 13},
+  emptyText: {fontSize: 14, color: COLORS.textMuted, textAlign: 'right', lineHeight: 20},
 
   quoteCard: {
     backgroundColor: 'rgba(255,154,31,0.06)',

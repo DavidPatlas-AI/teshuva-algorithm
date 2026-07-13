@@ -4,12 +4,12 @@
 
 ## סטטוס נוכחי
 
-השלד קיים ועובד ברמת ה-UI (מסכים, ניווט, מסכת קליפי מונפשת, מודול native לבועה צפה באנדרואיד), אבל **עדיין לא מחובר ללוגיקה אמיתית**. הוא קורא היום לשרת HTTP מדומה (`src/api/brain-server-stub.js`) שמחזיר נתונים רנדומליים קבועים מראש — אין שרת אמיתי ולא יהיה.
+ה-`brain/` האמיתי מחובר ופועל מקומית במכשיר (AsyncStorage, בלי שרת) — סיווג טקסט, הסברים, תובנות שבועיות ומשוב חיובי/שלילי כולם אמיתיים, לא מדומים. `src/api/brain-server-stub.js` וה-fetch client הישן (`src/api/brain.js`) הוצאו משימוש והועברו ל-`_לסקירה/pre-phase2-network-stub/`.
 
 | שלב | מה | סטטוס |
 |-----|-----|--------|
 | 1 | הרצת השלד הקיים על Android (נתונים מזויפים) — הוכחת toolchain | ✅ הושלם (2026-07-13, אחרי שדרוג ל-RN 0.81.6 — ראו CLAUDE.md) |
-| 2 | חיבור ה-`brain/` האמיתי מקומית במכשיר (בלי שרת) | ⏳ ממתין |
+| 2 | חיבור ה-`brain/` האמיתי מקומית במכשיר (בלי שרת) | ✅ הושלם (2026-07-13 — ראו CLAUDE.md) |
 | 3 | חיזוק Android ל-production (חתימה, אייקונים, בועה צפה אמיתית) | ⏳ ממתין |
 | 4 | פרסום ל-Google Play | ⏳ ממתין לאישור |
 | 5 | יציבות אחרי השקה + החלטת מונטיזציה | ⏳ ממתין |
@@ -17,31 +17,28 @@
 
 ## ארכיטקטורה — למה בלי שרת
 
-`brain/brain-api.js` (בשורש הפרויקט) הוא JS טהור, בלי תלות ב-DOM, עם ממשק אחסון ניתן-להזרקה (`{get(key), set(key,value)}`). התוסף (`chrome-adapter.js`) וה-desktop (`electron-adapter.js`) כבר מריצים אותו מקומית, כל אחד עם ה-storage המתאים לו. המובייל יעבוד באותה שיטה בדיוק:
+`brain/brain-api.js` (בשורש הפרויקט) הוא JS טהור, בלי תלות ב-DOM, עם ממשק אחסון ניתן-להזרקה (`{get(key), set(key,value)}`). התוסף (`chrome-adapter.js`), ה-desktop (`electron-adapter.js`) והמובייל (`react-native-adapter.js`) כולם מריצים אותו מקומית, כל אחד עם ה-storage המתאים לו:
 
 ```
-brain/adapters/react-native-adapter.js   ← @react-native-async-storage/async-storage (שלב 2, טרם נכתב)
+brain/adapters/react-native-adapter.js   ← @react-native-async-storage/async-storage
 ```
 
-**אין ואינו מתוכנן שרת HTTP אמיתי.** זה גם מפשט מאוד את הצהרת הפרטיות מול Play/Apple: שום תוכן לא עוזב את המכשיר.
+**אין שרת HTTP.** זה גם מפשט מאוד את הצהרת הפרטיות מול Play/Apple: שום תוכן לא עוזב את המכשיר. `brain/` ו-`shared/` נמצאים מחוץ ל-root של Metro (`mobile/`) — `metro.config.js` חושף אותם דרך `watchFolders` + `resolver.nodeModulesPaths` (כדי ש-imports כמו `@react-native-async-storage/async-storage` בתוך `brain/adapters/` יפלו חזרה ל-`mobile/node_modules`).
 
 ```
 mobile/
-├── config.json               ← פרמטרים (brain_api יוסר בשלב 2)
+├── config.json               ← פרמטרים כלליים (בלי brain_api — הוסר, אין יותר שרת)
 ├── index.js                  ← נקודת כניסה
 ├── src/
-│   ├── App.js                ← ניווט + FloatingBubble עטוף בכל המסכים
-│   ├── api/
-│   │   ├── brain.js               ← כרגע fetch לשרת מדומה; בשלב 2 ייבוא ישיר מ-brain/brain-api.js
-│   │   └── brain-server-stub.js   ← שרת http() גולמי (לא Express, למרות התיעוד הפנימי) עם נתונים מזויפים — ייצא משימוש בשלב 2
+│   ├── App.js                ← ניווט + FloatingBubble + brainService.init() לפני mount (מונע race מול AsyncStorage)
 │   ├── mascot/Clippy.js       ← SVG + Reanimated (bob, look, excited, confused)
 │   ├── components/
-│   │   ├── SpeechBubble.js
-│   │   └── FloatingBubble.js
+│   │   ├── SpeechBubble.js, FloatingBubble.js
+│   │   └── RichText.js            ← מפרק <b>...</b> מ-weeklyInsights() ל-<Text> מודגש אמיתי
 │   ├── screens/
 │   │   ├── InsightsScreen.js, ExplainScreen.js, SettingsScreen.js, MascotMenu.js
 │   ├── services/
-│   │   ├── BrainService.js        ← כרגע מדבר בשפת ה-stub (explain/getMood/sendFeedback); בשלב 2 ישוכתב לשפת brain-api.js האמיתית (observe/positive/negative/recordDismiss/getStats/signals)
+│   │   ├── BrainService.js        ← עוטף createBrain(createReactNativeAdapter()); getHomeStats/explainText/getWeeklyInsights/positive/negative/reset
 │   │   └── FloatingService.js     ← SYSTEM_ALERT_WINDOW + lifecycle (Android בלבד)
 │   ├── hooks/
 │   │   ├── useClippyMessages.js, useBrainApi.js
@@ -51,12 +48,13 @@ mobile/
 │   └── app/src/main/
 │       ├── AndroidManifest.xml
 │       └── java/com/teshuva/
-│           ├── FloatingService.java, OverlayPermissionModule.java, OverlayPermissionPackage.java, MainApplication.java
+│           ├── FloatingService.java, OverlayPermissionModule.java, OverlayPermissionPackage.java
+│           └── MainApplication.kt, MainActivity.kt   ← Kotlin (RN 0.81 template API), לא Java
 └── ios/
     └── TeshuvaAlgorithm.xcodeproj   ← קיים, אבל בלי .xcassets/AppIcon — ייבנה בשלב 6
 ```
 
-⚠️ **9 הקטגוריות האמיתיות** (politics/sports/entertainment/tech/news/health/economy/religion/science, ב-`brain/categories.js`) שונות מ-5 הקטגוריות המזויפות שמופיעות היום ב-`brain-server-stub.js`. הן יתעדכנו בשלב 2 יחד עם החיבור האמיתי.
+**9 הקטגוריות האמיתיות** (politics/sports/entertainment/tech/news/health/economy/religion/science, ב-`brain/categories.js`) הן היחידות שמוצגות באפליקציה כעת — אין יותר קטגוריות מזויפות מה-stub הישן. שני נתונים שהיו מומצאים לגמרי בעבר ("מצב רוח" של האלגוריתם, "דיוק: 91%") הוסרו/הוחלפו בנתונים אמיתיים (ברכה לפי שעה, אחוז הסרה מחושב).
 
 ---
 
@@ -76,15 +74,7 @@ npx react-native run-android
 - Node 18+, Java 17, Android SDK (`ANDROID_HOME`)
 - **מכשיר Android פיזי עם USB debugging מופעל (מומלץ)** או Android Virtual Device
 
-### חיבור לשרת המדומה (זמני, יוסר בשלב 2)
-
-```bash
-npm run stub   # מריץ שרת מדומה על localhost:3000
-```
-
-- `config.json` כרגע מצביע על `http://localhost:3000/api` — זה **לא יעבוד** לא באמולטור (צריך `10.0.2.2`) ולא בטלפון פיזי כמו שהוא.
-- לטלפון פיזי דרך USB: `adb reverse tcp:3000 tcp:3000` פותר את זה בלי לגעת ב-config.
-- לאמולטור: לשנות ל-`http://10.0.2.2:3000/api`.
+אין יותר שרת מדומה להריץ — ה-brain רץ מקומית מהרגע שהאפליקציה עולה.
 
 ---
 
@@ -94,7 +84,7 @@ npm run stub   # מריץ שרת מדומה על localhost:3000
 |-------|-----|
 | `SYSTEM_ALERT_WINDOW` | Floating bubble מעל אפליקציות אחרות |
 | `FOREGROUND_SERVICE` / `FOREGROUND_SERVICE_SPECIAL_USE` | FloatingService רץ ברקע — שתיהן דורשות justification נפרד ב-Play Console בשלב 4 |
-| `INTERNET` | כרגע ל-fetch לשרת המדומה בלבד — יוסר בשלב 2 |
+| `INTERNET` | **לא בשימוש ע"י האפליקציה עצמה** (אין fetch/network calls) — נשאר רק כי React Native's own Metro/debug bridge בפיתוח דורש אותו. אפשר להוציא ב-release build ייעודי אם רוצים manifest מינימלי יותר |
 
 בהרצה ראשונה באנדרואיד: האפליקציה תפתח אוטומטית את מסך ההגדרות לאשר "הצג מעל אפליקציות אחרות".
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
   ScrollView, StyleSheet, ActivityIndicator,
@@ -6,15 +6,22 @@ import {
 import {useBrainApi} from '../hooks/useBrainApi';
 import {COLORS, FONTS, RADIUS, SHADOW} from '../styles/theme';
 
-export default function ExplainScreen() {
-  const [content, setContent]     = useState('');
-  const [result,  setResult]      = useState(null);
-  const {explain, loading, error} = useBrainApi();
+const SIGNAL_COLOR = {positive: '#4caf50', neutral: COLORS.accent, negative: COLORS.danger};
 
-  async function onExplain() {
+export default function ExplainScreen() {
+  const [content, setContent] = useState('');
+  const [result,  setResult]  = useState(null);
+  const {explainText, positive, negative, loading} = useBrainApi();
+
+  function onExplain() {
     if (!content.trim()) return;
-    const data = await explain(content.trim());
+    const data = explainText(content.trim());
     if (data) setResult(data);
+  }
+
+  function onFeedback(isPositive) {
+    if (!result?.categoryId || result.categoryId === 'uncategorized') return;
+    if (isPositive) positive(result.categoryId); else negative(result.categoryId);
   }
 
   return (
@@ -46,37 +53,43 @@ export default function ExplainScreen() {
         }
       </TouchableOpacity>
 
-      {error && <Text style={styles.error}>שגיאה: {error}</Text>}
-
       {result && (
         <View style={styles.card}>
           <Text style={styles.cardLabel}>CLIPPY EXPLAINS</Text>
-          <Text style={styles.cardTitle}>{result.category ?? 'לא מזוהה'}</Text>
-          <Text style={styles.cardBody}>{result.explanation ?? JSON.stringify(result, null, 2)}</Text>
-
-          {result.signals && (
+          {result.categoryId === 'uncategorized' ? (
+            <Text style={styles.cardBody}>
+              לא זיהיתי קטגוריה ברורה בטקסט הזה. נסה טקסט עם מילות מפתח ברורות יותר (חדשות, ספורט, פוליטיקה וכו').
+            </Text>
+          ) : (
             <>
-              <Text style={styles.signalsTitle}>אותות שזוהו:</Text>
-              {result.signals.map((s, i) => (
-                <View key={i} style={styles.signalRow}>
-                  <Text style={styles.signalPct}>{s.weight ?? '—'}</Text>
-                  <View style={styles.signalBar}>
-                    <View style={[styles.signalFill, {width: `${(s.score ?? 0) * 100}%`}]} />
-                  </View>
-                  <Text style={styles.signalLabel}>{s.label ?? s.name}</Text>
-                </View>
-              ))}
+              <Text style={styles.cardTitle}>{result.label}</Text>
+              <Text style={styles.cardBody}>{result.explanation}</Text>
+
+              {result.signals.length > 0 && (
+                <>
+                  <Text style={styles.signalsTitle}>אותות שזוהו:</Text>
+                  {result.signals.map((s, i) => (
+                    <View key={i} style={styles.signalRow}>
+                      <Text style={styles.signalPct}>{s.value}%</Text>
+                      <View style={styles.signalBar}>
+                        <View style={[styles.signalFill, {width: `${s.value}%`, backgroundColor: SIGNAL_COLOR[s.type]}]} />
+                      </View>
+                      <Text style={styles.signalLabel}>{s.label}</Text>
+                    </View>
+                  ))}
+                </>
+              )}
+
+              <View style={styles.feedbackRow}>
+                <TouchableOpacity style={styles.fbBtn} onPress={() => onFeedback(true)}>
+                  <Text style={styles.fbBtnText}>👍 מדויק</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.fbBtn, styles.fbBtnAlt]} onPress={() => onFeedback(false)}>
+                  <Text style={[styles.fbBtnText, styles.fbBtnAltText]}>👎 פספוס</Text>
+                </TouchableOpacity>
+              </View>
             </>
           )}
-
-          <View style={styles.feedbackRow}>
-            <TouchableOpacity style={styles.fbBtn}>
-              <Text style={styles.fbBtnText}>👍 מדויק</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.fbBtn, styles.fbBtnAlt]}>
-              <Text style={[styles.fbBtnText, styles.fbBtnAltText]}>👎 פספוס</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       )}
     </ScrollView>
@@ -169,7 +182,6 @@ const styles = StyleSheet.create({
   },
   signalFill: {
     height: '100%',
-    backgroundColor: COLORS.accent,
     borderRadius: 99,
   },
   signalLabel: {

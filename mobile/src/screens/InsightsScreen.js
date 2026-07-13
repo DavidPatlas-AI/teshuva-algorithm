@@ -1,46 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View, Text, ScrollView, StyleSheet,
-  TouchableOpacity, ActivityIndicator, RefreshControl,
+  TouchableOpacity, RefreshControl,
 } from 'react-native';
+import {brainService} from '../services/BrainService';
 import {useBrainApi} from '../hooks/useBrainApi';
-import {COLORS, FONTS, RADIUS, SHADOW} from '../styles/theme';
+import RichText from '../components/RichText';
+import {COLORS, FONTS, RADIUS} from '../styles/theme';
 
-const MOCK_INSIGHTS = {
-  weekly: {
-    totalSeen:   342,
-    dismissed:   87,
-    topCategory: 'פוליטיקה',
-    breakdown: [
-      {label: 'פוליטיקה', pct: 47, color: COLORS.accent},
-      {label: 'ספורט',    pct: 21, color: '#e7842a'},
-      {label: 'טכנולוגיה',pct: 18, color: '#b9772f'},
-      {label: 'אחר',      pct: 14, color: '#6f6a60'},
-    ],
-    mood: 'neutral',
-    message: '47% מהפיד שלך הייתה פוליטיקה השבוע. הסרתי 87 פריטים בשמך.',
-  },
-};
+const NO_DATA_INSIGHT = 'עוד לא צברת מספיק נתונים. נסה "הסבר פוסט" עם טקסט אמיתי כדי להתחיל.';
 
 export default function InsightsScreen() {
-  const [data, setData]           = useState(null);
+  const [stats, setStats]           = useState(null);
+  const [insights, setInsights]     = useState([NO_DATA_INSIGHT]);
   const [refreshing, setRefreshing] = useState(false);
-  const {getWeeklyInsights, loading, error} = useBrainApi();
+  const {positive, negative}        = useBrainApi();
 
-  async function load() {
-    const res = await getWeeklyInsights();
-    setData(res ?? MOCK_INSIGHTS.weekly);
-  }
+  const load = useCallback(() => {
+    setStats(brainService.getHomeStats());
+    setInsights(brainService.getWeeklyInsights());
+  }, []);
 
   async function onRefresh() {
     setRefreshing(true);
-    await load();
+    load();
     setRefreshing(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [load]);
 
-  const insights = data ?? MOCK_INSIGHTS.weekly;
+  const topCategoryId = stats?.breakdown[0]?.id ?? null;
+
+  function onFeedback(isPositive) {
+    if (!topCategoryId) return;
+    if (isPositive) positive(topCategoryId); else negative(topCategoryId);
+    load();
+  }
 
   return (
     <ScrollView
@@ -51,48 +46,56 @@ export default function InsightsScreen() {
       <Text style={styles.title}>תובנות שבועיות</Text>
       <Text style={styles.sub}>מה האלגוריתם עשה בשמך השבוע</Text>
 
-      {loading && !data && <ActivityIndicator color={COLORS.accent} style={{marginTop: 40}} />}
-      {error   && !data && <Text style={styles.error}>שגיאה: {error}</Text>}
-
-      {insights && (
+      {stats && (
         <>
           {/* summary strip */}
           <View style={styles.strip}>
-            <StatBox value={insights.totalSeen} label="פריטים נראו" />
-            <StatBox value={insights.dismissed}  label="הוסרו" accent />
-            <StatBox value={`${Math.round((insights.dismissed / (insights.totalSeen || 1)) * 100)}%`} label="הסרה" />
+            <StatBox value={stats.totalSeen}             label="פריטים נראו" />
+            <StatBox value={stats.dismissedTotal}         label="הוסרו" accent />
+            <StatBox value={`${stats.dismissalRatePct}%`} label="הסרה" />
           </View>
 
-          {/* clippy message */}
+          {/* clippy messages */}
           <View style={styles.msgCard}>
             <Text style={styles.msgLabel}>CLIPPY SAYS</Text>
-            <Text style={styles.msgText}>{insights.message}</Text>
-          </View>
-
-          {/* category breakdown */}
-          <Text style={styles.sectionTitle}>פילוח קטגוריות</Text>
-          <View style={styles.catCard}>
-            {insights.breakdown.map(item => (
-              <View key={item.label} style={styles.catRow}>
-                <Text style={styles.catLabel}>{item.label}</Text>
-                <View style={styles.barTrack}>
-                  <View style={[styles.barFill, {width: `${item.pct}%`, backgroundColor: item.color}]} />
-                </View>
-                <Text style={[styles.catPct, {color: item.color}]}>{item.pct}%</Text>
-              </View>
+            {insights.map((line, i) => (
+              <RichText
+                key={i}
+                text={line}
+                style={styles.msgText}
+                boldStyle={styles.msgTextBold}
+              />
             ))}
           </View>
 
-          {/* feedback prompt */}
-          <Text style={styles.sectionTitle}>דרג את השבוע</Text>
-          <View style={styles.fbRow}>
-            <TouchableOpacity style={styles.fbBtn}>
-              <Text style={styles.fbText}>👍 עשית טוב</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.fbBtn, styles.fbBtnAlt]}>
-              <Text style={[styles.fbText, {color: COLORS.textMuted}]}>👎 פספסת</Text>
-            </TouchableOpacity>
-          </View>
+          {/* category breakdown */}
+          {stats.breakdown.length > 0 && (
+            <>
+              <Text style={styles.sectionTitle}>פילוח קטגוריות</Text>
+              <View style={styles.catCard}>
+                {stats.breakdown.map(item => (
+                  <View key={item.id} style={styles.catRow}>
+                    <Text style={styles.catLabel}>{item.label}</Text>
+                    <View style={styles.barTrack}>
+                      <View style={[styles.barFill, {width: `${item.pct}%`, backgroundColor: item.color}]} />
+                    </View>
+                    <Text style={[styles.catPct, {color: item.color}]}>{item.pct}%</Text>
+                  </View>
+                ))}
+              </View>
+
+              {/* feedback prompt */}
+              <Text style={styles.sectionTitle}>דרג את השבוע</Text>
+              <View style={styles.fbRow}>
+                <TouchableOpacity style={styles.fbBtn} onPress={() => onFeedback(true)}>
+                  <Text style={styles.fbText}>👍 עשית טוב</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.fbBtn, styles.fbBtnAlt]} onPress={() => onFeedback(false)}>
+                  <Text style={[styles.fbText, {color: COLORS.textMuted}]}>👎 פספסת</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </>
       )}
     </ScrollView>
@@ -146,7 +149,7 @@ const styles = StyleSheet.create({
   msgCard: {
     backgroundColor: 'rgba(255,154,31,0.08)',
     borderWidth: 1, borderColor: 'rgba(255,154,31,0.25)',
-    borderRadius: RADIUS.lg, padding: 18, marginBottom: 24,
+    borderRadius: RADIUS.lg, padding: 18, marginBottom: 24, gap: 10,
   },
   msgLabel: {
     fontFamily: FONTS.mono, fontSize: 9,
@@ -154,9 +157,10 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase', marginBottom: 5,
   },
   msgText: {
-    fontFamily: FONTS.serif, fontSize: 18,
-    lineHeight: 26, color: COLORS.text, textAlign: 'right',
+    fontFamily: FONTS.serif, fontSize: 16,
+    lineHeight: 24, color: COLORS.text, textAlign: 'right',
   },
+  msgTextBold: {fontWeight: '900'},
   sectionTitle: {
     fontWeight: '700', fontSize: 16,
     color: COLORS.text, textAlign: 'right',

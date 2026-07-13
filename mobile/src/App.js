@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, StatusBar, StyleSheet} from 'react-native';
 import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -10,7 +10,6 @@ import InsightsScreen   from './screens/InsightsScreen';
 import SettingsScreen   from './screens/SettingsScreen';
 import ExplainScreen    from './screens/ExplainScreen';
 import FloatingBubble   from './components/FloatingBubble';
-import ConnectionBanner from './components/ConnectionBanner';
 
 import {floatingService} from './services/FloatingService';
 import {brainService}    from './services/BrainService';
@@ -44,19 +43,29 @@ const SCREEN_OPTIONS = {
 
 export default function App() {
   const navRef = useRef(null);
+  const [brainReady, setBrainReady] = useState(false);
 
   useEffect(() => {
     floatingService.start();
-    brainService.loadStats();
-    brainService.loadMood();
+    // Screens read/mutate brain state synchronously — they must not mount
+    // until the persisted state has finished loading from AsyncStorage,
+    // otherwise an early observe()/getStats() call can race the load and
+    // silently lose data (load() overwrites in-memory state with disk state).
+    brainService.init().then(() => setBrainReady(true));
   }, []);
+
+  if (!brainReady) {
+    return (
+      <View style={[styles.root, styles.loading]}>
+        <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-
-        <ConnectionBanner />
 
         <NavigationContainer theme={NAV_THEME} ref={navRef}>
           <Stack.Navigator screenOptions={SCREEN_OPTIONS}>
@@ -98,6 +107,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   root: {flex: 1, backgroundColor: COLORS.bg},
+  loading: {alignItems: 'center', justifyContent: 'center'},
   overlay: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 9000,

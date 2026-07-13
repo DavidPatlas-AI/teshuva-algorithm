@@ -4,21 +4,17 @@ import {
   TouchableOpacity, ScrollView, StyleSheet, Alert,
 } from 'react-native';
 import config from '../../config.json';
+import {brainService} from '../services/BrainService';
 import {COLORS, FONTS, RADIUS} from '../styles/theme';
 
 export default function SettingsScreen() {
-  const [apiUrl,          setApiUrl]          = useState(config.brain_api);
   const [autoDismiss,     setAutoDismiss]      = useState(true);
   const [dismissThreshold,setDismissThreshold] = useState(String(config.auto_dismiss_threshold));
   const [intervalSec,    setIntervalSec]       = useState(String(config.clippy_messages_interval_ms / 1000));
   const [floatEnabled,   setFloatEnabled]      = useState(true);
 
   function onSave() {
-    Alert.alert(
-      'נשמר',
-      'ההגדרות עודכנו. הפעל מחדש את האפליקציה כדי להחיל שינויים ב-API URL.',
-      [{text: 'אוקיי'}],
-    );
+    Alert.alert('נשמר', 'ההגדרות עודכנו.', [{text: 'אוקיי'}]);
   }
 
   function onReset() {
@@ -27,7 +23,13 @@ export default function SettingsScreen() {
       'כל הלמידה והמשקולות יאופסו. בטוח?',
       [
         {text: 'ביטול', style: 'cancel'},
-        {text: 'אפס', style: 'destructive', onPress: () => {/* call brain.reset() */}},
+        {
+          text: 'אפס', style: 'destructive',
+          onPress: async () => {
+            await brainService.reset();
+            Alert.alert('אופס', 'כל הנתונים אופסו.', [{text: 'אוקיי'}]);
+          },
+        },
       ],
     );
   }
@@ -36,18 +38,9 @@ export default function SettingsScreen() {
     <ScrollView style={styles.root} contentContainerStyle={styles.inner}>
       <Text style={styles.title}>הגדרות</Text>
 
-      <Section label="חיבור ל‑Brain API">
-        <Row label="כתובת שרת">
-          <TextInput
-            style={styles.input}
-            value={apiUrl}
-            onChangeText={setApiUrl}
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="url"
-            placeholder="http://localhost:3000/api"
-            placeholderTextColor={COLORS.textDim}
-          />
+      <Section label="Brain">
+        <Row label="חיבור">
+          <Text style={styles.disabledValue}>מקומי (AsyncStorage) — אין שרת</Text>
         </Row>
       </Section>
 
@@ -158,6 +151,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.mono,
   },
   inputNarrow: {flex: 0, width: 80},
+  disabledValue: {fontSize: 13, color: COLORS.textDim, fontFamily: FONTS.mono, textAlign: 'left'},
   saveBtn: {
     backgroundColor: COLORS.accent,
     borderRadius: RADIUS.md, paddingVertical: 14,

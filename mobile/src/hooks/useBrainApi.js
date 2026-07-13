@@ -1,16 +1,15 @@
 import {useState, useCallback} from 'react';
-import * as brain from '../api/brain';
+import {brainService} from '../services/BrainService';
 
 export function useBrainApi() {
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState(null);
 
-  const call = useCallback(async (fn, ...args) => {
+  const call = useCallback((fn, ...args) => {
     setLoading(true);
     setError(null);
     try {
-      const result = await fn(...args);
-      return result;
+      return fn(...args);
     } catch (e) {
       setError(e.message);
       return null;
@@ -19,11 +18,10 @@ export function useBrainApi() {
     }
   }, []);
 
-  const explain          = useCallback(content => call(brain.explain, content), [call]);
-  const getWeeklyInsights = useCallback(() => call(brain.getWeeklyInsights), [call]);
-  const getMood          = useCallback(() => call(brain.getMood), [call]);
-  const sendFeedback     = useCallback((cat, pos) => call(brain.sendFeedback, cat, pos), [call]);
-  const getStats         = useCallback(() => call(brain.getStats), [call]);
+  const explainText       = useCallback(content => call(brainService.explainText.bind(brainService), content), [call]);
+  const getWeeklyInsights = useCallback(() => call(brainService.getWeeklyInsights.bind(brainService)), [call]);
+  const positive          = useCallback(categoryId => call(brainService.positive.bind(brainService), categoryId), [call]);
+  const negative          = useCallback(categoryId => call(brainService.negative.bind(brainService), categoryId), [call]);
 
-  return {explain, getWeeklyInsights, getMood, sendFeedback, getStats, loading, error};
+  return {explainText, getWeeklyInsights, positive, negative, loading, error};
 }

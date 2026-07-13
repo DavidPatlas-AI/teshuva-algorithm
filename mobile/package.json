@@ -7,10 +7,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
-    "stub": "node src/api/brain-server-stub.js"
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "3.1.1",
     "@react-navigation/native": "^7.3.8",
     "@react-navigation/stack": "^7.10.11",
     "react": "19.1.4",
