@@ -38,6 +38,7 @@ brain/          ← shared intelligence (pure JS, no DOM)
 mascot/         ← SVG Clippy figure and controller
 extension/      ← Chrome MV3 content script + popup + background
 desktop/        ← Electron always-on-top transparent window
+mobile/         ← React Native app (Android + iOS) — see Mobile section below
 web/            ← Netlify landing page (static HTML, no build step)
 shared/         ← constants (MSG types, storage keys, timing)
 tests/          ← Jest ESM tests for brain
@@ -97,6 +98,24 @@ Electron window: 340×340, transparent, always-on-top, bottom-right corner. Mous
 Static `web/index.html` — no build step, deployed to Netlify via `publish = "web"` in `netlify.toml`. Supports Hebrew/English/Russian (i18n via `setLanguage()`), dark/light theme, and motion toggle. Contains an interactive text analyzer (9 categories), live demo, animated story player, and a Netlify Forms waitlist.
 
 **Deployment:** Netlify may be connected to GitHub (auto-deploy) or deployed manually. The live site at `teshuva-algorithm.netlify.app` reflects whichever was last deployed. After pushing `web/index.html` to `master`, verify the live site matches.
+
+### Mobile (`mobile/`)
+
+React Native 0.81.6 (bare CLI, not Expo) app for Android + iOS. Full setup/build details are in `mobile/README.md` — read it before touching this surface. Critical facts not obvious from the code:
+
+- **The whole repo must live at an ASCII-only path.** It used to live under `Desktop\פרויקטים\האלגוריתום שחזר בתשובה` — Android's NDK/CMake/Ninja toolchain cannot compile native C++ code (needed by `react-native-reanimated`) when the path contains Hebrew characters; it fails with a Windows-specific `chdir ... Invalid argument` error that looks unrelated. That's why the project now lives at `Desktop\teshuva-algorithm`. Don't move it back to a non-ASCII path.
+- Android toolchain lives outside the repo: SDK at `C:\Users\DAVID\Android\Sdk`, JDK 17 at `C:\Program Files\Eclipse Adoptium\jdk-17.0.19.10-hotspot`, AVD named `Clippy_Test`.
+- `mobile/android/gradlew.bat` fails with "Could not find or load main class" when run via `cmd.exe`/PowerShell on some setups — invoke the wrapper jar directly instead: `java -cp gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain <task>` from Git Bash.
+- Brain integration is **not wired yet** — `mobile/src/api/brain.js` still calls a fake HTTP stub (`brain-server-stub.js`), not the real `brain/brain-api.js`. That's planned Phase 2 work (a `react-native-adapter.js` mirroring `electron-adapter.js`, using AsyncStorage, running the brain fully on-device — no server).
+
+**RESOLVED 2026-07-13 — the `UnsatisfiedLinkError: libhermes_executor.so not found` launch crash is fixed.** Root cause confirmed as an upstream RN 0.76.5 old-architecture+Hermes packaging bug (see git history for the full investigation that ruled out cache/JSC/New Architecture as fixes). Fix was upgrading the whole `mobile/` app from RN 0.76.5 → **0.81.6** — the last version that still supports Legacy Architecture (0.82 removes the old-arch opt-out entirely, which would have forced a Turbo Modules migration for `OverlayPermissionModule`/`FloatingService`). `newArchEnabled` stays `false` on purpose. Mechanics of the upgrade:
+- Generated a reference scaffold via `npx @react-native-community/cli@18 init RefScaffold --version 0.81.6` in a scratch dir and diffed it against `mobile/android/` to update `build.gradle` (×2), `gradle.properties`, `gradle-wrapper.properties` (Gradle 8.14.3, NDK 27.1.12297006, compileSdk/targetSdk 36) — same method to use for any future RN bump.
+- `MainApplication.java`/`MainActivity.java` were **converted to Kotlin** (`.kt`) to match the new template's `ReactHost`/`loadReactNative()` bootstrap API exactly, rather than hand-translating it back to Java — lower risk of subtle bridge/bridgeless mismatches. The old `.java` versions are preserved under `mobile/_לסקירה/android-java-pre-rn0.81/` (not deleted). Custom native modules (`OverlayPermissionModule`, `OverlayPermissionPackage`, `FloatingService`) needed **no changes** — old-arch bridge APIs (`ReactContextBaseJavaModule`, `ReactPackage`) are untouched between 0.76 and 0.81.
+- `react-native-screens` has a real peer-dependency floor that jumps around between patch releases (`4.25.0+` requires `react-native>=0.82.0`, `4.26.0+` requires `>=0.84.0`) — pinned to `4.24.0` for 0.81.6 compat. Always check `npm view <pkg>@<version> peerDependencies` before bumping RN ecosystem libs, don't just take "latest".
+- `react-native-reanimated` deliberately stayed on the **3.x line** (`3.19.5`), not 4.x — Reanimated 4 requires the New Architecture.
+- `metro.config.js` had a `resolver.sourceExts` override that *replaced* (rather than extended) the default extension list, silently dropping `ts`/`tsx` — broke resolving `react-native-gesture-handler`'s TS entrypoint after the bump. Fixed to spread `getDefaultConfig(__dirname).resolver.sourceExts` first.
+- `@react-navigation/native` 6→7 is a breaking major: `NavigationContainer`'s `theme` prop now requires a `fonts` key or internals like `HeaderTitle` throw `Cannot read property 'medium' of undefined`. Fix in `mobile/src/App.js`: build `NAV_THEME` by spreading `DarkTheme` (from `@react-navigation/native`) instead of a bare custom object.
+- Verified end-to-end on the `Clippy_Test` AVD: `assembleDebug` → install → launch → Metro bundle → full Hebrew UI renders (Insights screen, stats tiles, weekly breakdown chart, Clippy mascot + speech bubble) with **no native crash**. The custom overlay-permission dialog (`OverlayPermissionModule`) still fires correctly post-upgrade.
 
 ### Shared Constants (`shared/constants.js`)
 

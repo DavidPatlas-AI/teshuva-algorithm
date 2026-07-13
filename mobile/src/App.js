@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {View, StatusBar, StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -19,8 +19,9 @@ import {COLORS}          from './styles/theme';
 const Stack = createStackNavigator();
 
 const NAV_THEME = {
-  dark: true,
+  ...DarkTheme,
   colors: {
+    ...DarkTheme.colors,
     primary:      COLORS.accent,
     background:   COLORS.bg,
     card:         COLORS.surface,
