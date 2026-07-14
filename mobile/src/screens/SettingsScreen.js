@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View, Text, Switch, TextInput,
   TouchableOpacity, ScrollView, StyleSheet, Alert,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import config from '../../config.json';
 import {brainService} from '../services/BrainService';
 import {COLORS, FONTS, RADIUS} from '../styles/theme';
@@ -12,6 +13,15 @@ export default function SettingsScreen() {
   const [dismissThreshold,setDismissThreshold] = useState(String(config.auto_dismiss_threshold));
   const [intervalSec,    setIntervalSec]       = useState(String(config.clippy_messages_interval_ms / 1000));
   const [floatEnabled,   setFloatEnabled]      = useState(true);
+  const [feedWatcherOn,  setFeedWatcherOn]     = useState(false);
+
+  // Android won't let us grant SYSTEM's accessibility toggle programmatically —
+  // the user flips it in system Settings and comes back, so re-check on focus.
+  useFocusEffect(
+    useCallback(() => {
+      brainService.isFeedWatcherEnabled().then(setFeedWatcherOn);
+    }, []),
+  );
 
   function onSave() {
     Alert.alert('נשמר', 'ההגדרות עודכנו.', [{text: 'אוקיי'}]);
@@ -80,6 +90,29 @@ export default function SettingsScreen() {
             trackColor={{false: '#333', true: 'rgba(255,154,31,0.5)'}}
           />
         </Row>
+      </Section>
+
+      <Section label="ניטור פיד (Instagram / TikTok / Twitter)">
+        <Row label="סטטוס">
+          <Text style={[styles.disabledValue, feedWatcherOn && styles.statusOn]}>
+            {feedWatcherOn ? 'פעיל' : 'לא פעיל'}
+          </Text>
+        </Row>
+        <View style={styles.feedWatcherInfo}>
+          <Text style={styles.feedWatcherText}>
+            קליפי קורא טקסט גלוי באפליקציות שנבחרו כדי לסווג פוסטים ולדלג אוטומטית
+            על תוכן לא רצוי. גרסה זו אינה מפורסמת ב-Google Play (מגבלת מדיניות על
+            שימוש ב-Accessibility API) — להתקנה ידנית (sideload) בלבד. ההפעלה
+            עצמה חייבת להתבצע בהגדרות המערכת של אנדרואיד, לא ניתן להעניק אותה
+            מתוך האפליקציה.
+          </Text>
+          <TouchableOpacity
+            style={styles.feedWatcherBtn}
+            onPress={() => brainService.openAccessibilitySettings()}
+          >
+            <Text style={styles.feedWatcherBtnText}>פתח הגדרות נגישות</Text>
+          </TouchableOpacity>
+        </View>
       </Section>
 
       <TouchableOpacity style={styles.saveBtn} onPress={onSave}>
@@ -152,6 +185,15 @@ const styles = StyleSheet.create({
   },
   inputNarrow: {flex: 0, width: 80},
   disabledValue: {fontSize: 13, color: COLORS.textDim, fontFamily: FONTS.mono, textAlign: 'left'},
+  statusOn: {color: COLORS.accent, fontWeight: '700'},
+  feedWatcherInfo: {paddingHorizontal: 16, paddingVertical: 14, gap: 12},
+  feedWatcherText: {fontSize: 13, color: COLORS.textMuted, textAlign: 'right', lineHeight: 19},
+  feedWatcherBtn: {
+    backgroundColor: 'rgba(255,154,31,0.12)',
+    borderWidth: 1, borderColor: 'rgba(255,154,31,0.3)',
+    borderRadius: RADIUS.sm, paddingVertical: 10, alignItems: 'center',
+  },
+  feedWatcherBtnText: {fontWeight: '700', fontSize: 14, color: COLORS.accent},
   saveBtn: {
     backgroundColor: COLORS.accent,
     borderRadius: RADIUS.md, paddingVertical: 14,

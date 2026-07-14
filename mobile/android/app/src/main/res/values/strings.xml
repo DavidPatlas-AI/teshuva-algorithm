@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">האלגוריתם שחזר בתשובה</string>
+    <string name="feed_watcher_description">קליפי קורא את הטקסט הגלוי על המסך באפליקציות רשתות חברתיות נבחרות (אינסטגרם/טיקטוק/טוויטר) כדי לסווג תוכן ולדלג אוטומטית על פוסטים שלא ביקשת. לא נשלח שום מידע החוצה מהמכשיר.</string>
 </resources>

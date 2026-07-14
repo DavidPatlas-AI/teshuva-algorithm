@@ -16,14 +16,14 @@ export default function InsightsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const {positive, negative}        = useBrainApi();
 
-  const load = useCallback(() => {
-    setStats(brainService.getHomeStats());
-    setInsights(brainService.getWeeklyInsights());
+  const load = useCallback(async () => {
+    setStats(await brainService.getHomeStats());
+    setInsights(await brainService.getWeeklyInsights());
   }, []);
 
   async function onRefresh() {
     setRefreshing(true);
-    load();
+    await load();
     setRefreshing(false);
   }
 

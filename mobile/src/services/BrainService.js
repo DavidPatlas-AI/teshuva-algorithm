@@ -3,8 +3,25 @@
  * (AsyncStorage, no server) and exposes UI-friendly derived shapes, plus a
  * simple pub/sub for components to react to changes.
  */
+import {NativeModules, Platform} from 'react-native';
 import {createBrain} from '../../../brain/brain-api.js';
 import {createReactNativeAdapter} from '../../../brain/adapters/react-native-adapter.js';
+
+// Real feed activity (Instagram/TikTok/Twitter, via FeedWatcherService — an
+// Android AccessibilityService, sideload-only, see CLAUDE.md) is tracked
+// natively in SharedPreferences, separate from brain-api.js's AsyncStorage
+// state (which only reflects manual "explain text" testing in-app). Merged
+// together in getHomeStats() so the UI shows the fuller picture.
+async function getNativeFeedStats() {
+  if (Platform.OS !== 'android' || !NativeModules.OverlayPermission) {
+    return {seen: {}, dismissed: {}};
+  }
+  try {
+    return await NativeModules.OverlayPermission.getFeedWatcherStats();
+  } catch (_) {
+    return {seen: {}, dismissed: {}};
+  }
+}
 
 class BrainService {
   constructor() {
@@ -32,10 +49,23 @@ class BrainService {
     return this._brain.greeting();
   }
 
-  getHomeStats() {
+  async _getCombinedAllTime() {
     const stats = this._brain.getStats();
-    const totalSeen = Object.values(stats.allTime).reduce((sum, n) => sum + n, 0);
-    const dismissedTotal = stats.dismissedTotal;
+    const native = await getNativeFeedStats();
+
+    const allTimeCombined = {};
+    for (const id of stats.ids) {
+      allTimeCombined[id] = (stats.allTime[id] ?? 0) + (native.seen?.[id] ?? 0);
+    }
+    const nativeDismissed = Object.values(native.dismissed ?? {}).reduce((sum, n) => sum + n, 0);
+    return {stats, allTimeCombined, nativeDismissed};
+  }
+
+  async getHomeStats() {
+    const {stats, allTimeCombined, nativeDismissed} = await this._getCombinedAllTime();
+
+    const totalSeen = Object.values(allTimeCombined).reduce((sum, n) => sum + n, 0);
+    const dismissedTotal = stats.dismissedTotal + nativeDismissed;
     const dismissalRatePct = totalSeen > 0 ? Math.round((dismissedTotal / totalSeen) * 100) : 0;
 
     const breakdown = stats.ids
@@ -43,13 +73,28 @@ class BrainService {
         id,
         label: stats.categories[id].heLabel,
         color: stats.categories[id].color,
-        count: stats.allTime[id] ?? 0,
-        pct: totalSeen > 0 ? Math.round(((stats.allTime[id] ?? 0) / totalSeen) * 100) : 0,
+        count: allTimeCombined[id],
+        pct: totalSeen > 0 ? Math.round((allTimeCombined[id] / totalSeen) * 100) : 0,
       }))
       .filter(item => item.count > 0)
       .sort((a, b) => b.count - a.count);
 
     return {totalSeen, dismissedTotal, dismissalRatePct, breakdown};
+  }
+
+  async isFeedWatcherEnabled() {
+    if (Platform.OS !== 'android' || !NativeModules.OverlayPermission) return false;
+    try {
+      return await NativeModules.OverlayPermission.isFeedWatcherEnabled();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  openAccessibilitySettings() {
+    if (Platform.OS === 'android' && NativeModules.OverlayPermission) {
+      NativeModules.OverlayPermission.openAccessibilitySettings();
+    }
   }
 
   explainText(text) {
@@ -64,9 +109,9 @@ class BrainService {
     return result;
   }
 
-  getWeeklyInsights() {
-    const stats = this._brain.getStats();
-    return this._brain.weeklyInsights(stats.allTime, {});
+  async getWeeklyInsights() {
+    const {allTimeCombined} = await this._getCombinedAllTime();
+    return this._brain.weeklyInsights(allTimeCombined, {});
   }
 
   positive(categoryId) {

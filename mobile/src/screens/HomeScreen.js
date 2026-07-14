@@ -13,14 +13,14 @@ export default function HomeScreen({navigation}) {
   const [greeting, setGreeting] = useState('');
   const [refreshing, setRef]  = useState(false);
 
-  const load = useCallback(() => {
-    setStats(brainService.getHomeStats());
+  const load = useCallback(async () => {
+    setStats(await brainService.getHomeStats());
     setGreeting(brainService.getGreeting());
   }, []);
 
   async function onRefresh() {
     setRef(true);
-    load();
+    await load();
     setRef(false);
   }
 
