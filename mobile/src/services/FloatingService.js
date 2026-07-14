@@ -54,10 +54,22 @@ class FloatingService {
     if (this._active) return;
     const granted = await this.requestPermission();
     if (!granted) return;
+
+    if (Platform.OS === 'android') {
+      const {NativeModules} = require('react-native');
+      const OverlayModule   = NativeModules.OverlayPermission;
+      if (OverlayModule) await OverlayModule.startFloatingService();
+    }
+
     this._active = true;
   }
 
   stop() {
+    if (Platform.OS === 'android') {
+      const {NativeModules} = require('react-native');
+      const OverlayModule   = NativeModules.OverlayPermission;
+      if (OverlayModule) OverlayModule.stopFloatingService();
+    }
     this._active = false;
   }
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Static idle-pose Clippy for the SYSTEM_ALERT_WINDOW overlay (FloatingService).
+     Mirrors mobile/src/mascot/Clippy.js's SVG body, minus the Reanimated
+     eye-tracking/blink/mood states — those stay exclusive to the in-app
+     experience. Bob animation is applied natively in FloatingService.java. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="72dp"
+    android:viewportWidth="80"
+    android:viewportHeight="90">
+
+  <!-- halo -->
+  <path
+      android:pathData="M22,10 a18,5.5 0 1,0 36,0 a18,5.5 0 1,0 -36,0"
+      android:strokeColor="#FCD34D"
+      android:strokeWidth="3"
+      android:fillColor="#00000000" />
+
+  <!-- antenna -->
+  <path
+      android:pathData="M40,16 L40,22"
+      android:strokeColor="#7C3AED"
+      android:strokeWidth="2.4"
+      android:strokeLineCap="round"
+      android:fillColor="#00000000" />
+  <path
+      android:pathData="M36.8,14 a3.2,3.2 0 1,0 6.4,0 a3.2,3.2 0 1,0 -6.4,0"
+      android:fillColor="#FCD34D" />
+
+  <!-- body -->
+  <path
+      android:pathData="M28,22 L52,22 A16,16 0 0 1 68,38 L68,58 A16,16 0 0 1 52,74 L28,74 A16,16 0 0 1 12,58 L12,38 A16,16 0 0 1 28,22 Z"
+      android:fillColor="#7C4FD8" />
+
+  <!-- body highlight -->
+  <path
+      android:pathData="M21,30 a19,7 0 1,0 38,0 a19,7 0 1,0 -38,0"
+      android:fillColor="#38c4b5fd" />
+
+  <!-- eye whites -->
+  <path
+      android:pathData="M19,38 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0"
+      android:fillColor="#ffffff" />
+  <path
+      android:pathData="M41,38 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0"
+      android:fillColor="#ffffff" />
+
+  <!-- pupils (centered — no eye-tracking in the overlay) -->
+  <path
+      android:pathData="M24.8,38 a4.2,4.2 0 1,0 8.4,0 a4.2,4.2 0 1,0 -8.4,0"
+      android:fillColor="#1e1b4b" />
+  <path
+      android:pathData="M46.8,38 a4.2,4.2 0 1,0 8.4,0 a4.2,4.2 0 1,0 -8.4,0"
+      android:fillColor="#1e1b4b" />
+
+  <!-- pupil shine -->
+  <path
+      android:pathData="M25.8,35.6 a1.7,1.7 0 1,0 3.4,0 a1.7,1.7 0 1,0 -3.4,0"
+      android:fillColor="#ffffff"
+      android:fillAlpha="0.85" />
+  <path
+      android:pathData="M47.8,35.6 a1.7,1.7 0 1,0 3.4,0 a1.7,1.7 0 1,0 -3.4,0"
+      android:fillColor="#ffffff"
+      android:fillAlpha="0.85" />
+
+  <!-- blush -->
+  <path
+      android:pathData="M13.5,46 a5.5,3 0 1,0 11,0 a5.5,3 0 1,0 -11,0"
+      android:fillColor="#f9a8d4"
+      android:fillAlpha="0.5" />
+  <path
+      android:pathData="M55.5,46 a5.5,3 0 1,0 11,0 a5.5,3 0 1,0 -11,0"
+      android:fillColor="#f9a8d4"
+      android:fillAlpha="0.5" />
+
+  <!-- mouth -->
+  <path
+      android:pathData="M32,54 Q40,60 48,54"
+      android:strokeColor="#ffffff"
+      android:strokeWidth="2"
+      android:strokeLineCap="round"
+      android:strokeAlpha="0.75"
+      android:fillColor="#00000000" />
+
+  <!-- drop shadow -->
+  <path
+      android:pathData="M19,76 a21,4.5 0 1,0 42,0 a21,4.5 0 1,0 -42,0"
+      android:fillColor="#000000"
+      android:fillAlpha="0.16" />
+
+</vector>

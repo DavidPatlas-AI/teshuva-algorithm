@@ -1,5 +1,7 @@
 package com.teshuva;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -25,10 +28,11 @@ public class FloatingService extends Service {
     private static final String CHANNEL_ID   = "clippy_overlay";
     private static final int    NOTIF_ID     = 1;
 
-    private WindowManager windowManager;
-    private View          floatView;
-    private int           initialX, initialY;
-    private float         initialTouchX, initialTouchY;
+    private WindowManager  windowManager;
+    private View           floatView;
+    private ObjectAnimator bobAnimator;
+    private int            initialX, initialY;
+    private float          initialTouchX, initialTouchY;
 
     @Override
     public void onCreate() {
@@ -38,10 +42,15 @@ public class FloatingService extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        // Inflate a minimal view — the JS layer renders the real Clippy SVG.
-        // This Java view is just the draggable anchor for SYSTEM_ALERT_WINDOW.
-        floatView = new View(this);
-        floatView.setBackgroundResource(android.R.color.transparent);
+        // Static idle-pose Clippy (clippy_overlay.xml) so something is actually
+        // visible floating over other apps. The full interactive Reanimated+SVG
+        // Clippy (mascot/Clippy.js, eye-tracking/mood/blink) stays exclusive to
+        // the in-app experience — reimplementing all of that natively here isn't
+        // worth it for a bubble glimpsed between apps.
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.clippy_overlay);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        floatView = imageView;
 
         int overlayType = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -86,11 +95,23 @@ public class FloatingService extends Service {
         });
 
         windowManager.addView(floatView, params);
+
+        // Gentle bob, mirroring Clippy.js's JS bob loop (withRepeat/withSequence,
+        // 1400ms each way, ease-in-out) — real signs of life on the overlay.
+        bobAnimator = ObjectAnimator.ofFloat(floatView, "translationY", 0f, -9f);
+        bobAnimator.setDuration(1400);
+        bobAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        bobAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        bobAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        bobAnimator.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (bobAnimator != null) {
+            bobAnimator.cancel();
+        }
         if (floatView != null && windowManager != null) {
             windowManager.removeView(floatView);
         }

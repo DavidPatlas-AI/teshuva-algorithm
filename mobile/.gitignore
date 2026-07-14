@@ -5,6 +5,7 @@ android/app/build/
 android/.kotlin/
 *.keystore
 !debug.keystore
+android/keystore.properties
 
 # iOS
 ios/build/

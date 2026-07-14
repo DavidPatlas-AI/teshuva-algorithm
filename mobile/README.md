@@ -10,7 +10,7 @@
 |-----|-----|--------|
 | 1 | הרצת השלד הקיים על Android (נתונים מזויפים) — הוכחת toolchain | ✅ הושלם (2026-07-13, אחרי שדרוג ל-RN 0.81.6 — ראו CLAUDE.md) |
 | 2 | חיבור ה-`brain/` האמיתי מקומית במכשיר (בלי שרת) | ✅ הושלם (2026-07-13 — ראו CLAUDE.md) |
-| 3 | חיזוק Android ל-production (חתימה, אייקונים, בועה צפה אמיתית) | ⏳ ממתין |
+| 3 | חיזוק Android ל-production (חתימה, אייקונים, בועה צפה אמיתית) | ✅ הושלם (2026-07-13/14 — ראו CLAUDE.md) |
 | 4 | פרסום ל-Google Play | ⏳ ממתין לאישור |
 | 5 | יציבות אחרי השקה + החלטת מונטיזציה | ⏳ ממתין |
 | 6 | פורט ל-iOS (build בענן — אין Mac מקומי) | ⏳ ממתין לאישור |
@@ -87,6 +87,12 @@ npx react-native run-android
 | `INTERNET` | **לא בשימוש ע"י האפליקציה עצמה** (אין fetch/network calls) — נשאר רק כי React Native's own Metro/debug bridge בפיתוח דורש אותו. אפשר להוציא ב-release build ייעודי אם רוצים manifest מינימלי יותר |
 
 בהרצה ראשונה באנדרואיד: האפליקציה תפתח אוטומטית את מסך ההגדרות לאשר "הצג מעל אפליקציות אחרות".
+
+**הבועה הצפה מעל אפליקציות אחרות (מ-2026-07-13) מציגה קליפי אמיתי** — vector drawable נייטיבי (`res/drawable/clippy_overlay.xml`) עם אנימציית "bob" נייטיבית (`ObjectAnimator`), לא רק נקודה שקופה. הקליפי המלא והאינטראקטיבי (עיניים עוקבות, מצבי-רוח, תפריט) נשאר בלעדי לתוך האפליקציה עצמה — ה-overlay הוא גרסה סטטית+bob בלבד, בכוונה, כדי לא לשכפל את כל מנוע ה-Reanimated בנייטיב. לחיצה על הבועה הצפה עדיין פותחת את האפליקציה; גרירה עדיין עובדת.
+
+## חתימת Production
+
+`mobile/android/app/release.keystore` + `mobile/android/keystore.properties` — **שניהם gitignored, אף פעם לא ב-git.** ה-`keystore.properties` (לא committed) חייב backup מחוץ לריפו (מנהל סיסמאות) — Google Play דורש את אותו מפתח חתימה לכל עדכון עתידי; אובדן שלו = אי-אפשר לעדכן את האפליקציה יותר תחת אותו רישום. `app/build.gradle` טוען את הקובץ הזה אוטומטית אם קיים ומחתים את ה-`release` build type איתו; בלעדיו, release build נופל חזרה לחתימת debug (לא ראוי לפרסום, אבל עדיין ניתן ל-build). לוודא שה-APK/AAB באמת חתום עם המפתח הנכון: `apksigner verify --print-certs app-release.apk` ולהשוות ל-fingerprint מ-`keytool -list -v -keystore release.keystore`.
 
 ## iOS
 
