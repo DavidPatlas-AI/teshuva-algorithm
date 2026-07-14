@@ -147,34 +147,28 @@ export default function FloatingBubble({navigation}) {
         />
       )}
 
-      {/* Speech bubble + Clippy row */}
-      <View
-        style={[
-          styles.row,
-          bubbleOnRight ? styles.rowRight : styles.rowLeft,
-        ]}
-        {...panResponder.panHandlers}
-      >
-        {/* Speech bubble on the side away from the edge */}
-        {!bubbleOnRight && (
-          <SpeechBubble
-            message={message}
-            visible={visible && !menuOpen}
-            onPress={() => setMenuOpen(true)}
-            tailSide="left"
-          />
-        )}
-
+      {/* Clippy + speech bubble. The bubble is absolutely positioned off
+          Clippy's edge (not a flex sibling) — it used to sit in the same
+          auto-width flex row as Clippy, which silently grew the whole
+          absolutely-positioned root container by the bubble's width and
+          pushed everything off the right edge of the screen whenever the
+          bubble was visible and docked on the right (the default side). */}
+      <View style={styles.row} {...panResponder.panHandlers}>
         <Clippy size={BUBBLE_W} mood={mood} />
-
-        {bubbleOnRight && (
+        <View
+          style={[
+            styles.bubbleAnchor,
+            bubbleOnRight ? styles.bubbleAnchorLeft : styles.bubbleAnchorRight,
+          ]}
+          pointerEvents="box-none"
+        >
           <SpeechBubble
             message={message}
             visible={visible && !menuOpen}
             onPress={() => setMenuOpen(true)}
-            tailSide="right"
+            tailSide={bubbleOnRight ? 'right' : 'left'}
           />
-        )}
+        </View>
       </View>
     </Animated.View>
   );
@@ -187,15 +181,15 @@ const styles = StyleSheet.create({
     zIndex:   9999,
   },
   row: {
-    flexDirection: 'row',
-    alignItems:    'flex-end',
+    // Fixed to Clippy's own size — must NOT auto-grow with the speech
+    // bubble, since root's `left` is anchored assuming this exact width.
+    width: BUBBLE_W,
   },
-  rowRight: {
-    // Clippy on the left, speech bubble to the right — but we're at right edge
-    // so speech bubble actually goes left. Reverse order:
-    flexDirection: 'row-reverse',
+  bubbleAnchor: {
+    position: 'absolute',
+    bottom: 0,
   },
-  rowLeft: {
-    flexDirection: 'row',
-  },
+  // Bubble appears on the side away from whichever edge Clippy is docked to.
+  bubbleAnchorLeft:  {right: '100%'},
+  bubbleAnchorRight: {left:  '100%'},
 });
