@@ -1,7 +1,7 @@
 /**
- * Clippy — mascot component based on mascot.svg (purple body, halo, animated eyes).
- *
- * Animations (Reanimated v3):
+ * Clippy — an actual paperclip mascot (bent-wire loop, matching the app icon
+ * and brand accent color), not the purple rounded-body character this used
+ * to be. Animations unchanged (Reanimated v3):
  *   bob         — gentle up-down float, runs forever
  *   idle-look   — auto look-around every ~3s when mood === 'idle'
  *   excited     — rapid scale bounce
@@ -22,18 +22,23 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, {
   Defs, RadialGradient, Stop,
-  Circle, Ellipse, Rect, Line, Path, G,
+  Circle, Ellipse, Line, Path,
 } from 'react-native-svg';
 
 const AnimatedCircle  = Animated.createAnimatedComponent(Circle);
 const AnimatedEllipse = Animated.createAnimatedComponent(Ellipse);
 
 // SVG coordinate space: viewBox="0 0 80 90"
-const L_EYE   = {cx: 29, cy: 38};
-const R_EYE   = {cx: 51, cy: 38};
+// Face sits inside the open loop of the paperclip (see PAPERCLIP_PATH below).
+const L_EYE   = {cx: 24, cy: 50};
+const R_EYE   = {cx: 54, cy: 50};
 const EYE_RX  = 10;
 const EYE_RY  = 10;
 const PUPIL_R = 4.2;
+
+// Classic bent-wire paperclip silhouette (same shape language as the app
+// icon's ic_launcher_foreground.xml, scaled up for the mascot's viewBox).
+const PAPERCLIP_PATH = 'M18,74 a22,22 0 0,0 45,0 l0,-42 a14,14 0 0,0 -28,0 l0,39';
 
 // Look offsets per mood / idle-look-direction
 const LOOK_DIRS = [
@@ -188,10 +193,6 @@ export default function Clippy({size = 80, mood = 'idle', onPress}) {
       <Animated.View style={containerStyle}>
         <Svg width={w} height={h} viewBox="0 0 80 90">
           <Defs>
-            <RadialGradient id="bodyG" cx="50%" cy="40%" r="60%">
-              <Stop offset="0%"   stopColor="#a78bfa" />
-              <Stop offset="100%" stopColor="#5b21b6" />
-            </RadialGradient>
             <RadialGradient id="glowG" cx="50%" cy="50%" r="50%">
               <Stop offset="0%"   stopColor="#ff9a1f" stopOpacity="0.3" />
               <Stop offset="100%" stopColor="#ff9a1f" stopOpacity="0"   />
@@ -208,16 +209,19 @@ export default function Clippy({size = 80, mood = 'idle', onPress}) {
             strokeDasharray="4 2.5"
           />
 
-          {/* antenna */}
-          <Line x1="40" y1="16" x2="40" y2="22"
-            stroke="#7C3AED" strokeWidth="2.4" strokeLinecap="round" />
+          {/* antenna, connecting down into the paperclip's top hook */}
+          <Line x1="40" y1="16" x2="40" y2="30"
+            stroke="#d97706" strokeWidth="2.4" strokeLinecap="round" />
           <Circle cx="40" cy="14" r="3.2" fill="#FCD34D" />
 
-          {/* body */}
-          <Rect x="12" y="22" width="56" height="52" rx="16" fill="url(#bodyG)" />
-
-          {/* body highlight */}
-          <Ellipse cx="40" cy="30" rx="19" ry="7" fill="#c4b5fd" opacity="0.22" />
+          {/* paperclip body — bent-wire loop, same shape language as the app icon */}
+          <Path
+            d={PAPERCLIP_PATH}
+            fill="none"
+            stroke="#ff9a1f"
+            strokeWidth="9"
+            strokeLinecap="round"
+          />
 
           {/* eye whites */}
           <AnimatedEllipse
@@ -238,14 +242,14 @@ export default function Clippy({size = 80, mood = 'idle', onPress}) {
           <Circle cx={R_EYE.cx - 1.5} cy={R_EYE.cy - 2.4} r={1.7} fill="#fff" opacity="0.85" />
 
           {/* blush */}
-          <Ellipse cx="19" cy="46" rx="5.5" ry="3" fill="#f9a8d4" opacity="0.5" />
-          <Ellipse cx="61" cy="46" rx="5.5" ry="3" fill="#f9a8d4" opacity="0.5" />
+          <Ellipse cx="15" cy="58" rx="5.5" ry="3" fill="#f9a8d4" opacity="0.5" />
+          <Ellipse cx="63" cy="58" rx="5.5" ry="3" fill="#f9a8d4" opacity="0.5" />
 
           {/* mouth */}
           <Path
-            d="M32 54 Q40 60 48 54"
-            stroke="#fff" strokeWidth="2" strokeLinecap="round"
-            fill="none" opacity="0.75"
+            d="M27,66 Q40,73 53,66"
+            stroke="#ffffff" strokeWidth="2" strokeLinecap="round"
+            fill="none" opacity="0.85"
           />
 
           {/* drop shadow */}
