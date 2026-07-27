@@ -97,7 +97,11 @@ Electron window: 340×340, transparent, always-on-top, bottom-right corner. Mous
 
 Static `web/index.html` — no build step, deployed to Netlify via `publish = "web"` in `netlify.toml`. Supports Hebrew/English/Russian (i18n via `setLanguage()`), dark/light theme, and motion toggle. Contains an interactive text analyzer (9 categories), live demo, animated story player, and a Netlify Forms waitlist.
 
-**Deployment:** Netlify may be connected to GitHub (auto-deploy) or deployed manually. The live site at `teshuva-algorithm.netlify.app` reflects whichever was last deployed. After pushing `web/index.html` to `master`, verify the live site matches.
+**⚠️ Deployment — NOT connected to GitHub for auto-deploy** (confirmed 2026-07-27 via `netlify api listSiteDeploys` — every past deploy has `"deploy_source": "cli"`, none from a GitHub webhook). `git push` to `master` does **not** update the live site — deploy manually every time:
+```bash
+cd "C:\Users\DAVID\Desktop\teshuva-algorithm" && netlify deploy --dir=web --prod
+```
+The project has no local `.netlify/state.json` by default — running any `netlify` command from this directory auto-links it (siteId `6e5d4c7d-bdf3-4217-8b15-2bae3338d7ec`, project name `teshuva-algorithm`). If a stray `~/.netlify/state.json` at the user root causes `JSONHTTPError: Not Found`, see the main `CLAUDE.md` §6 workaround.
 
 ### Mobile (`mobile/`)
 
