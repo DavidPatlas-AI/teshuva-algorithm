@@ -194,10 +194,18 @@ npm start
 
 ## Roadmap
 
-- **v0.4.0** — Improved YouTube selector (InnerTube API)
-- **v0.5.0** — TikTok action adapter
-- **v0.6.0** — AI dialogue via Claude API (ask Clippy "why?")
-- **v1.0.0** — Category blocklist, export preferences, multi-language
+**Shipped:**
+- ✅ Improved YouTube selector (InnerTube API)
+- ✅ TikTok action adapter
+- ✅ AI dialogue via Claude API (ask Clippy "why?")
+- ✅ Landing page in Hebrew/English/Russian — the extension popup itself is still Hebrew-only
+- ✅ Mobile app (React Native, Android) — on-device brain, a real floating Clippy bubble over other apps, and real feed monitoring on Instagram/TikTok/Twitter. **Sideload-only, not on Google Play** (Accessibility API policy risk — see `CLAUDE.md`)
+
+**Open:**
+- Real-device verification of mobile feed monitoring against live Instagram/TikTok/Twitter (so far only tested on a Play-Store-less emulator)
+- LinkedIn/Reddit/Threads action-engine selectors need real-browser testing with a logged-in account
+- Category blocklist, export preferences, full multi-language extension popup — not started
+- Decision pending: publish `mobile/` to Google Play with the feed-monitoring service disabled
 
 ---
 
