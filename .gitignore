@@ -9,12 +9,14 @@ build/
 /out
 *.zip
 *.exe
+*.apk
 desktop/err*.log
 desktop/out*.log
 *.log
 .DS_Store
 Thumbs.db
 גרסאות קודמות/
+_לסקירה/
 .git-remote-linked
 
 # Local Netlify folder

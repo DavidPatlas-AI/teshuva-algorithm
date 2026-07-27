@@ -1087,6 +1087,10 @@
         <span class="roadmap-status">✓ זמין · Electron</span><h3>קליפי Desktop</h3><p>עוזר ה-AI על שולחן העבודה — מסביר, שואל ופועל בשמך.</p>
       </article>
       <article class="roadmap-step">
+        <span class="roadmap-number"><svg width="11" height="15" viewBox="0 0 76 108" fill="none"><rect x="6" y="6" width="64" height="96" rx="10" stroke="currentColor" stroke-width="7"/><circle cx="38" cy="90" r="3.5" fill="currentColor"/></svg></span>
+        <span class="roadmap-status">בבנייה · Android</span><h3>קליפי מובייל</h3><p>אפליקציית Android עם אותו מוח מסווג — בבדיקות פנימיות, עדיין לא זמינה להורדה.</p>
+      </article>
+      <article class="roadmap-step">
         <span class="roadmap-number"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
         <span class="roadmap-status">במחקר</span><h3>הגנה על ילדים</h3><p>תמונת מצב להורים על מגמות תוכן, בלי לקרוא הודעות פרטיות.</p>
       </article>
@@ -1411,7 +1415,9 @@
     // story step 5
     'דוח שבועי מוכן.':'Weekly report ready.','ניתוח קטגוריות, זמן מסך ומגמות — בלי לקרוא הודעות פרטיות.':'Category analysis, screen time and trends — without reading private messages.',
     // nav
-    'מחיר':'Pricing','הורים':'Parents'
+    'מחיר':'Pricing','הורים':'Parents',
+    // roadmap — mobile
+    'בבנייה · Android':'In progress · Android','קליפי מובייל':'Clippy Mobile','אפליקציית Android עם אותו מוח מסווג — בבדיקות פנימיות, עדיין לא זמינה להורדה.':'An Android app with the same classifying brain — in internal testing, not yet available for download.'
   });
   Object.assign(translations.ru, {
     'נתח תוכן':'Анализ','נתח כל תוכן — מה האלגוריתם רואה?':'Анализируй любой контент — что видит алгоритм?',
@@ -1430,7 +1436,9 @@
     // nav
     'מחיר':'Цена','הורים':'Родители',
     // story 5
-    'דוח שבועי מוכן.':'Еженедельный отчёт готов.','ניתוח קטגוריות, זמן מסך ומגמות — בלי לקרוא הודעות פרטיות.':'Анализ категорий, экранного времени и тенденций без доступа к личным сообщениям.'
+    'דוח שבועי מוכן.':'Еженедельный отчёт готов.','ניתוח קטגוריות, זמן מסך ומגמות — בלי לקרוא הודעות פרטיות.':'Анализ категорий, экранного времени и тенденций без доступа к личным сообщениям.',
+    // roadmap — mobile
+    'בבנייה · Android':'В разработке · Android','קליפי מובייל':'Clippy Мобильный','אפליקציית Android עם אותו מוח מסווג — בבדיקות פנימיות, עדיין לא זמינה להורדה.':'Android-приложение с тем же классифицирующим мозгом — во внутреннем тестировании, пока недоступно для скачивания.'
   });
   let currentLanguage = new URLSearchParams(location.search).get('lang') || localStorage.getItem('teshuva-language') || 'he';
   window.translateText = text => (translations[currentLanguage] && translations[currentLanguage][text]) || text;

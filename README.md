@@ -71,8 +71,9 @@ teshuva-algorithm/
 │   ├── intent.js             # "Why are you seeing this?" explanations
 │   ├── explanations.js       # Human-readable summaries
 │   └── adapters/
-│       ├── chrome-adapter.js # chrome.storage.local
-│       └── memory-adapter.js # In-memory (for tests/desktop)
+│       ├── chrome-adapter.js       # chrome.storage.local
+│       ├── electron-adapter.js     # In-memory store (desktop, via IPC)
+│       └── react-native-adapter.js # AsyncStorage (mobile)
 │
 ├── mascot/
 │   ├── mascot-controller.js  # Brain ↔ Mascot ↔ User bridge
@@ -104,6 +105,11 @@ teshuva-algorithm/
 ├── agent/
 │   └── dialogue.js           # Conversational AI stub
 │
+├── mobile/                   # React Native app (Android + iOS, sideload-only)
+│   ├── src/                  # Screens, mascot, services (brain runs on-device)
+│   └── android/              # FloatingService.java (overlay), FeedWatcherService.kt
+│                              # (AccessibilityService feed monitoring)
+│
 ├── web/                      # Landing page & marketing site (Netlify)
 │   ├── index.html            # Main landing page (HE/EN/RU, dark/light)
 │   ├── features.html         # Features page
@@ -126,6 +132,10 @@ When the user presses 👎 or when the brain weight drops below 0.4 (configurabl
 | **X / Twitter** | "Not interested in this post" | `[data-testid="caret"]` → menu item |
 | **Facebook** | "Hide post" | `[aria-label="More options"]` → menu item |
 | **Instagram** | "Not interested" | Three-dot button → dialog button |
+| **TikTok** | "Not interested" | Direct button (newer layouts) → overflow menu fallback |
+| **LinkedIn** | "Not interested" / unfollow / hide | Control menu → option click *(best-effort, needs logged-in testing)* |
+| **Reddit** | "Not interested" / hide / block | Overflow menu → option click *(best-effort, needs logged-in testing)* |
+| **Threads** | "Not interested" / hide / mute | More menu → option click *(best-effort, needs logged-in testing)* |
 
 ---
 
