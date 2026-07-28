@@ -105,15 +105,16 @@ PLATFORMS['twitter.com'] = PLATFORMS['x.com']
 
 PLATFORMS['linkedin.com'] = {
   container: el =>
+    el.closest('[role="listitem"]') ||
     el.closest('.feed-shared-update-v2, .occludable-update, [data-urn]') ||
     el.closest('li.artdeco-list__item'),
 
   reveal: () => {},
 
   menuBtn: c =>
-    c.querySelector('[aria-label="Open control menu"], [aria-label="פתח תפריט בקרה"], button.feed-shared-control-menu__trigger') ||
+    c.querySelector('[aria-label="Open control menu"], button.feed-shared-control-menu__trigger') ||
     [...c.querySelectorAll('button')].find(b =>
-      /control menu|more options/i.test(b.getAttribute('aria-label') ?? '')
+      /control menu|more options|תפריט הבקרה/i.test(b.getAttribute('aria-label') ?? '')
     ),
 
   option: () =>

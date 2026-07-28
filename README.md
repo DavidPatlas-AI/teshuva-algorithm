@@ -52,7 +52,9 @@ This project is a small act of rebellion: a browser extension + desktop agent (C
 | AI-powered dialogue layer (click Clippy to chat) | ✅ Working |
 | TikTok action adapter | ✅ Working |
 | YouTube InnerTube API integration | ✅ Working |
-| LinkedIn / Reddit / Threads action adapter | ✅ Working (needs real-browser testing) |
+| LinkedIn action adapter | ✅ Working (verified live 2026-07-28, fixed 2 broken selectors) |
+| Reddit action adapter | ⚠️ Unverifiable — Reddit blocks automated browsers |
+| Threads action adapter | ⚠️ Best-effort — only verified logged-out so far |
 | Web text analyzer (9 categories, Hebrew/EN/RU) | ✅ Working |
 | 37 unit tests (brain, classifier, state, questions) | ✅ Passing |
 
@@ -133,9 +135,9 @@ When the user presses 👎 or when the brain weight drops below 0.4 (configurabl
 | **Facebook** | "Hide post" | `[aria-label="More options"]` → menu item |
 | **Instagram** | "Not interested" | Three-dot button → dialog button |
 | **TikTok** | "Not interested" | Direct button (newer layouts) → overflow menu fallback |
-| **LinkedIn** | "Not interested" / unfollow / hide | Control menu → option click *(best-effort, needs logged-in testing)* |
-| **Reddit** | "Not interested" / hide / block | Overflow menu → option click *(best-effort, needs logged-in testing)* |
-| **Threads** | "Not interested" / hide / mute | More menu → option click *(best-effort, needs logged-in testing)* |
+| **LinkedIn** | "Not interested" / unfollow / hide | Control menu → option click *(verified live 2026-07-28)* |
+| **Reddit** | "Not interested" / hide / block | Overflow menu → option click *(best-effort — Reddit blocks automated verification)* |
+| **Threads** | "Not interested" / hide / mute | More menu → option click *(best-effort — only verified logged-out)* |
 
 ---
 
@@ -203,7 +205,7 @@ npm start
 
 **Open:**
 - Real-device verification of mobile feed monitoring against live Instagram/TikTok/Twitter (so far only tested on a Play-Store-less emulator)
-- LinkedIn/Reddit/Threads action-engine selectors need real-browser testing with a logged-in account
+- Threads action-engine needs real-browser testing with a logged-in account (Reddit can't be tested this way at all — see Known Gaps)
 - Category blocklist, export preferences, full multi-language extension popup — not started
 - Decision pending: publish `mobile/` to Google Play with the feed-monitoring service disabled
 
