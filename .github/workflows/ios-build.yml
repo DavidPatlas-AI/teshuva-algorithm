@@ -1,0 +1,57 @@
+name: iOS Build (unsigned)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'mobile/**'
+      - 'brain/**'
+      - 'shared/**'
+      - '.github/workflows/ios-build.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'mobile/**'
+      - 'brain/**'
+      - 'shared/**'
+      - '.github/workflows/ios-build.yml'
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - run: npm ci
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: mobile/ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('mobile/ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install pods
+        working-directory: mobile/ios
+        run: pod install
+
+      - name: Build for simulator (no signing)
+        working-directory: mobile/ios
+        run: |
+          xcodebuild build \
+            -workspace TeshuvaAlgorithm.xcworkspace \
+            -scheme TeshuvaAlgorithm \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO
