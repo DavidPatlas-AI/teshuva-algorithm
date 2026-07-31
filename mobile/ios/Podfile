@@ -31,5 +31,16 @@ target 'TeshuvaAlgorithm' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # RN 0.81's vendored fmt pod uses consteval in a way that Apple Clang 21
+    # (Xcode 26.x) rejects (facebook/react-native#55601). consteval doesn't
+    # exist pre-C++20, so building just this pod against C++17 sidesteps it.
+    # Fixed upstream in fmt 12.1.0 / RN >=0.83.9 - drop this once we upgrade.
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'fmt'
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+      end
+    end
   end
 end
