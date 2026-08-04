@@ -34,6 +34,12 @@ jobs:
 
       - run: npm ci
 
+      - name: Generate Xcode project (xcodegen)
+        working-directory: mobile/ios
+        run: |
+          brew list xcodegen &>/dev/null || brew install xcodegen
+          xcodegen generate
+
       - name: Cache CocoaPods
         uses: actions/cache@v4
         with:

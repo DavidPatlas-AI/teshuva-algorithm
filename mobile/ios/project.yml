@@ -1,0 +1,35 @@
+name: TeshuvaAlgorithm
+
+options:
+  deploymentTarget:
+    iOS: "15.1"
+  developmentLanguage: he
+
+settings:
+  base:
+    ENABLE_BITCODE: NO
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+
+targets:
+  TeshuvaAlgorithm:
+    type: application
+    platform: iOS
+    sources:
+      - path: TeshuvaAlgorithm
+        excludes:
+          - Info.plist
+    info:
+      path: TeshuvaAlgorithm/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.teshuva.algorithm
+        TARGETED_DEVICE_FAMILY: "1,2"
+        OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          - -lc++
+    configFiles:
+      Debug: Pods/Target Support Files/Pods-TeshuvaAlgorithm/Pods-TeshuvaAlgorithm.debug.xcconfig
+      Release: Pods/Target Support Files/Pods-TeshuvaAlgorithm/Pods-TeshuvaAlgorithm.release.xcconfig
