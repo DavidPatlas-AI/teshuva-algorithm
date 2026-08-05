@@ -30,6 +30,3 @@ targets:
           - $(inherited)
           - -ObjC
           - -lc++
-    configFiles:
-      Debug: Pods/Target Support Files/Pods-TeshuvaAlgorithm/Pods-TeshuvaAlgorithm.debug.xcconfig
-      Release: Pods/Target Support Files/Pods-TeshuvaAlgorithm/Pods-TeshuvaAlgorithm.release.xcconfig
